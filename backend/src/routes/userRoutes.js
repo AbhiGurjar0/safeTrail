@@ -1,7 +1,8 @@
-const express = requiree(express);
+const express = require('express');
 const router = express.Router();
-const { loginUser, registerUser, logoutUser ,forgotPass} = require('../controllers/userAuth');
-const {emergencyService} = require('../services/emergencyService');
+const { loginUser, registerUser, logoutUser, forgotPass } = require('../controllers/userAuth');
+const { emergencyService } = require('../services/emergencyService');
+
 
 
 
@@ -13,7 +14,7 @@ router.post('/forgot', forgotPass);
 
 //services
 
-router.post('/emergency',emergencyService());
+router.post('/emergency', emergencyService);
 
 // render Routes
 router.get('/', (req, res) => {

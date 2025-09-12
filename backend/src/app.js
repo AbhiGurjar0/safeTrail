@@ -1,7 +1,8 @@
-const express = reqire('express');
+const express = require('express');
 const app = express();
-
-app.use('/',userRouter);
+const db = require('../src/db/db');
+const userRouter = require('../src/routes/userRoutes')
+app.use('/', userRouter);
 
 module.exports = app;
 

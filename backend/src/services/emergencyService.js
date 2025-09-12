@@ -1,5 +1,5 @@
+const emergencyService = async (orderId) => {
+   // emergency service logic
+};
 
-exports.emergencyService = async (orderId) => {
-
-// emergency service logic
-}
+module.exports = { emergencyService };

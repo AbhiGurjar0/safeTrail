@@ -1,8 +1,8 @@
-const userModel = require("../models/user-model");
+const userModel = require("../models/User");
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
-const { generateToken } = require("../utils/generateToken");
+const  generateToken  = require("../utils/generateToken");
 module.exports.registerUser = async function (req, res) {
   try {
     let { email, password, fullname } = req.body;
