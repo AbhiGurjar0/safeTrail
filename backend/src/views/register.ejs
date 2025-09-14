@@ -7,7 +7,6 @@
     <title>Tourist Registration</title>
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Montserrat font -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -17,9 +16,22 @@
 </head>
 
 <body class="min-h-screen flex items-center justify-center bg-gray-50">
+    <div class="absolute top-4 w-full max-w-2xl px-4">
+        <% if (success && success.length> 0) { %>
+            <div class="bg-green-500 text-white px-4 py-2 rounded mb-2">
+                <%= success %>
+            </div>
+            <% } %>
+
+                <% if (error && error.length> 0) { %>
+                    <div class="bg-red-500 text-white px-4 py-2 rounded mb-2">
+                        <%= error %>
+                    </div>
+                    <% } %>
+    </div>
 
     <div class="w-full max-w-2xl bg-white shadow-md rounded-xl p-8">
-        <!-- Logo / Heading -->
+
         <div class="text-center mb-6">
             <div class="mx-auto h-12 w-12 flex items-center justify-center text-blue-600">
                 <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -31,73 +43,73 @@
             <p class="text-gray-500">Create your secure digital tourist identity</p>
         </div>
 
-        <!-- Form -->
-        <form id="registerForm" class="space-y-4">
+
+        <form id="registerForm" class="space-y-4" method="post" action="/signup">
             <h3 class="text-lg font-semibold">Registration Form</h3>
             <p class="text-gray-500 text-sm">Please fill in your details to register as a tourist</p>
 
-            <!-- Two Column Fields -->
+
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-bold text-gray-700">Full Name</label>
                     <input type="text" id="fullName"
                         class="mt-1 w-full px-3 py-2 border rounded-lg focus:ring focus:ring-blue-200 focus:outline-none"
-                        placeholder="Enter your full name" required>
+                        placeholder="Enter your full name" name="name" required>
                 </div>
                 <div>
                     <label class="block text-sm font-bold text-gray-700">Email</label>
                     <input type="email" id="email"
                         class="mt-1 w-full px-3 py-2 border rounded-lg focus:ring focus:ring-blue-200 focus:outline-none"
-                        placeholder="Enter your email" required>
+                        placeholder="Enter your email" name="email" required>
                 </div>
                 <div>
                     <label class="block text-sm font-bold text-gray-700">Passport/ID Number</label>
-                    <input type="text" id="passportId"
+                    <input type="text" id="passportId" name="passportId"
                         class="mt-1 w-full px-3 py-2 border rounded-lg focus:ring focus:ring-blue-200 focus:outline-none"
                         placeholder="Enter passport or ID number" required>
                 </div>
                 <div>
                     <label class="block text-sm font-bold  text-gray-700">Nationality</label>
-                    <input type="text" id="nationality"
+                    <input type="text" id="nationality" name="national"
                         class="mt-1 w-full px-3 py-2 border rounded-lg focus:ring focus:ring-blue-200 focus:outline-none"
                         placeholder="Enter your nationality" required>
                 </div>
                 <div>
                     <label class="block text-sm font-bold text-gray-700">Contact Number</label>
-                    <input type="text" id="contact"
+                    <input type="text" id="contact" name="contactNumber"
                         class="mt-1 w-full px-3 py-2 border rounded-lg focus:ring focus:ring-blue-200 focus:outline-none"
                         placeholder="Enter your phone number" required>
                 </div>
                 <div>
                     <label class="block text-sm font-bold text-gray-700">Password</label>
-                    <input type="password" id="password"
+                    <input type="password" id="password" name="password"
                         class="mt-1 w-full px-3 py-2 border rounded-lg focus:ring focus:ring-blue-200 focus:outline-none"
                         placeholder="Enter your password" required>
                 </div>
             </div>
 
-            <!-- Emergency Contact -->
+
             <div>
                 <label class="block text-sm font-bold text-red-600">Emergency Contact</label>
-                <input type="text" id="emergency"
+                <input type="text" id="emergency" name="emergencyContact"
                     class="mt-1 w-full px-3 py-2 border rounded-lg focus:ring focus:ring-red-200 focus:outline-none"
                     placeholder="Enter emergency contact number" required>
             </div>
 
-            <!-- ID Proof -->
+
             <div>
                 <label class="block text-sm font-bold text-gray-700">ID Proof (Optional)</label>
-                <input type="text" id="idProof"
+                <input type="text" id="idProof" name="idProof"
                     class="mt-1 w-full px-3 py-2 border rounded-lg focus:ring focus:ring-blue-200 focus:outline-none"
                     placeholder="ID proof details (optional for MVP)">
             </div>
 
-            <!-- Buttons -->
+
             <div class="flex gap-4">
                 <button id="submitBtn"
                     class="w-1/2 flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg disabled:opacity-70 disabled:cursor-not-allowed">
 
-                    <span id="btnText">register</span>
+                    <span id="btnText">Register</span>
 
 
                     <div id="btnLoader"
@@ -112,10 +124,10 @@
             </div>
         </form>
 
-        <!-- Login link -->
+
         <p class="mt-4 text-center text-sm text-gray-600">
             Already have an account?
-            <a href="#" class="text-blue-600 font-medium hover:underline">Login here</a>
+            <a href="/login" class="text-blue-600 font-medium hover:underline">Login here</a>
         </p>
     </div>
 
@@ -123,38 +135,37 @@
         const form = document.getElementById("registerForm");
         const generateIdBtn = document.getElementById("generateId");
 
-        form.addEventListener("submit", (e) => {
-            e.preventDefault();
-            const fullName = document.getElementById("fullName").value;
-            const passportId = document.getElementById("passportId").value;
-            const nationality = document.getElementById("nationality").value;
-            const contact = document.getElementById("contact").value;
-            const emergency = document.getElementById("emergency").value;
-            const idProof = document.getElementById("idProof").value;
+        // form.addEventListener("submit", (e) => {
+        //     e.preventDefault();
+        //     const fullName = document.getElementById("fullName").value;
+        //     const passportId = document.getElementById("passportId").value;
+        //     const nationality = document.getElementById("nationality").value;
+        //     const contact = document.getElementById("contact").value;
+        //     const emergency = document.getElementById("emergency").value;
+        //     const idProof = document.getElementById("idProof").value;
 
-            alert("✅ Registered:\nName: ${fullName}\nPassport/ID: ${passportId}\nNationality: ${nationality}\nContact: ${contact}\nEmergency: ${emergency}\nID Proof: })${idProof || 'N/A'}");
-        });
+        //     alert("✅ Registered:\nName: ${fullName}\nPassport/ID: ${passportId}\nNationality: ${nationality}\nContact: ${contact}\nEmergency: ${emergency}\nID Proof: })${idProof || 'N/A'}");
+        // });
 
         generateIdBtn.addEventListener("click", () => {
             const randomId = "TID-" + Math.floor(100000 + Math.random() * 900000);
             alert("🎉 Your Digital Tourist ID: ${randomId}");
         });
-        const btn = document.getElementById("submitBtn");
-        const btnText = document.getElementById("btnText");
-        const btnLoader = document.getElementById("btnLoader");
+        // const btn = document.getElementById("submitBtn");
+        // const btnText = document.getElementById("btnText");
+        // const btnLoader = document.getElementById("btnLoader");
 
-        btn.addEventListener("click", () => {
-            btn.disabled = true;
-            btnText.textContent = "Loading...";
-            btnLoader.classList.remove("hidden");
+        // btn.addEventListener("click", () => {
+        //     btn.disabled = true;
+        //     btnText.textContent = "Loading...";
+        //     btnLoader.classList.remove("hidden");
 
-            // simulate async task
-            setTimeout(() => {
-                btn.disabled = false;
-                btnText.textContent = "Submit";
-                btnLoader.classList.add("hidden");
-            }, 2000);
-        });
+        //     setTimeout(() => {
+        //         btn.disabled = false;
+        //         btnText.textContent = "Register";
+        //         btnLoader.classList.add("hidden");
+        //     }, 2000);
+        // });
 
     </script>
 </body>

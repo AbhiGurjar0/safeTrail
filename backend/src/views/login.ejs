@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TouristSafe Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center bg-gray-50 font-montserrat">
+    <div class="absolute top-4 w-full max-w-2xl px-4">
+        <% if (success && success.length> 0) { %>
+            <div class="bg-green-500 text-white px-4 py-2 rounded mb-2">
+                <%= success %>
+            </div>
+            <% } %>
+
+                <% if (error && error.length> 0) { %>
+                    <div class="bg-red-500 text-white px-4 py-2 rounded mb-2">
+                        <%= error %>
+                    </div>
+                    <% } %>
+    </div>
+    <div class="w-full max-w-md bg-white shadow-md rounded-xl p-8">
+        <!-- Logo / Heading -->
+        <div class="text-center mb-6">
+            <div class="mx-auto h-12 w-12 flex items-center justify-center text-blue-600">
+                <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 2l7 4v6c0 5-3.5 9.74-7 10-3.5-.26-7-5-7-10V6l7-4z" />
+                </svg>
+            </div>
+            <h2 class="mt-2 text-2xl font-bold">Welcome Back</h2>
+            <p class="text-gray-500">Sign in to your TouristSafe account</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="flex mb-4 border rounded-lg overflow-hidden">
+            <button id="touristTab" class="flex-1 py-2 text-center font-medium bg-blue-50 text-blue-600 ">
+                Tourist
+            </button>
+            <button id="adminTab" class="flex-1 py-2 text-center font-medium bg-gray-100 text-gray-600">
+                Admin
+            </button>
+        </div>
+
+        <!-- Form -->
+        <form id="loginForm" method="post" action="/signin" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Email / Tourist ID</label>
+                <input id="email" type="text"
+                    class="mt-1 w-full px-3 py-2 border rounded-lg focus:ring focus:ring-blue-200 focus:outline-none"
+                    placeholder="Enter your email or tourist ID"  name="email" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Password</label>
+                <input id="password" type="password"
+                    class="mt-1 w-full px-3 py-2 border rounded-lg focus:ring focus:ring-blue-200 focus:outline-none"
+                    placeholder="Enter your password" name="password" required>
+            </div>
+            <button id="submitBtn" type="submit"
+                class="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">
+                Login as Tourist
+            </button>
+        </form>
+
+        <!-- Register link -->
+        <p class="mt-4 text-center text-sm text-gray-600">
+            Don't have an account?
+            <a href="/register" class="text-blue-600 font-medium hover:underline">Register here</a>
+        </p>
+    </div>
+
+    <script>
+        const touristTab = document.getElementById("touristTab");
+        const adminTab = document.getElementById("adminTab");
+        const submitBtn = document.getElementById("submitBtn");
+        const loginForm = document.getElementById("loginForm");
+        let accountType = "Tourist";
+
+        // Tab switching
+        touristTab.addEventListener("click", () => {
+            accountType = "Tourist";
+            touristTab.classList.add("bg-gray-300", "text-black");
+            touristTab.classList.remove("bg-gray-100", "text-gray-600");
+            adminTab.classList.add("bg-gray-100", "text-gray-600");
+            adminTab.classList.remove("bg-gray-300", "text-black");
+            submitBtn.textContent = "Login as Tourist";
+        });
+
+        adminTab.addEventListener("click", () => {
+            accountType = "Admin";
+            adminTab.classList.add("bg-gray-300", "text-black");
+            adminTab.classList.remove("bg-gray-100", "text-gray-600");
+            touristTab.classList.add("bg-gray-100", "text-gray-600");
+            touristTab.classList.remove("bg-gray-300", "text-black");
+            submitBtn.textContent = "Login as Admin";
+        });
+
+
+
+    </script>
+</body>
+
+</html>

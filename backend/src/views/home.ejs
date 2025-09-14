@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,7 +30,8 @@
     </script>
     <style>
         body {
-            font-family: 'Montserrat', sans-serif; /* Changed to Montserrat */
+            font-family: 'Montserrat', sans-serif;
+            /* Changed to Montserrat */
             background-color: #F9FAFB;
         }
 
@@ -43,7 +45,7 @@
             padding-top: 4rem;
             padding-bottom: 2rem;
         }
-        
+
         .section-header::after {
             content: '';
             position: absolute;
@@ -61,6 +63,7 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -78,32 +81,52 @@
         }
     </style>
 </head>
+
 <body class="text-dark">
 
     <header class="bg-white shadow-md py-4 px-6 md:px-12 flex items-center justify-between">
         <a href="#" class="flex items-center space-x-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.3l6.5 3.25L12 10.8l-6.5-3.25L12 4.3zM4 9l8 4 8-4v6l-8 4-8-4V9z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" viewBox="0 0 24 24"
+                fill="currentColor">
+                <path
+                    d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.3l6.5 3.25L12 10.8l-6.5-3.25L12 4.3zM4 9l8 4 8-4v6l-8 4-8-4V9z" />
+            </svg>
             <span class="text-xl font-bold text-dark">TouristSafe</span>
         </a>
         <nav class="hidden md:flex items-center space-x-6">
             <a href="#" class="text-gray-600 hover:text-primary transition duration-300">Home</a>
-            <a href="#" class="text-gray-600 hover:text-primary transition duration-300">Register</a>
-            <a href="#" class="text-gray-600 hover:text-primary transition duration-300">Login</a>
             <a href="#" class="text-gray-600 hover:text-primary transition duration-300">Emergency</a>
             <a href="#" class="text-gray-600 hover:text-primary transition duration-300">Dashboard</a>
         </nav>
         <div class="flex items-center space-x-4">
-            <a href="#" class="text-gray-600 hover:text-primary transition duration-300 hidden md:inline-block">Login</a>
-            <button class="bg-primary hover:bg-secondary text-white font-semibold py-2 px-6 rounded-full shadow-md hover:shadow-lg transition duration-300">
-                Get Started
-            </button>
+            <% if(user && user.length>0){ %>
+                <a href="/login"
+                    class="text-gray-600 hover:text-primary transition duration-300 hidden md:inline-block">Login</a>
+                <a href="/register"
+                    class="bg-primary hover:bg-secondary text-white font-semibold py-2 px-6 rounded-full shadow-md hover:shadow-lg transition duration-300">
+                    Get Started
+                </a>
+                <% } else { %>
+                    <a href="/profile" class="flex items-center space-x-2">
+                        <img src="https://placehold.co/32x32/E5E7EB/4B5563?text=<%= user.name.substring(0,2).toUpperCase() %>"
+                            alt="Profile" class="w-8 h-8 rounded-full border border-gray-300">
+                        <span class="text-gray-700 font-semibold">
+                            <%= user.name %>
+                        </span>
+                    </a>
+                    <% } %>
         </div>
     </header>
 
     <section class="gradient-bg text-white py-24 px-6 text-center shadow-lg">
         <div class="container mx-auto animate-fade-in-up">
             <div class="flex justify-center mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-white p-4 bg-white bg-opacity-20 rounded-full shadow-lg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 16c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm-1-8v4h2v-4h-2zm0-4h2v2h-2z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="h-24 w-24 text-white p-4 bg-white bg-opacity-20 rounded-full shadow-lg" viewBox="0 0 24 24"
+                    fill="currentColor">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 16c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm-1-8v4h2v-4h-2zm0-4h2v2h-2z" />
+                </svg>
             </div>
             <h1 class="text-5xl md:text-6xl font-extrabold leading-tight tracking-tight mb-4 text-center">
                 Smart Tourist Safety System
@@ -111,64 +134,113 @@
             <p class="text-lg md:text-xl font-light mb-8 opacity-90 text-center">
                 Safe & Trusted Travel – Your digital companion for secure tourism experiences worldwide
             </p>
-            <div class="space-x-4">
-                <button class="bg-white text-primary font-bold py-3 px-8 rounded-full shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105">
-                    Register as Tourist
-                </button>
-                <button class="bg-transparent border-2 border-white text-white font-bold py-3 px-8 rounded-full hover:bg-white hover:text-primary transition duration-300 transform hover:scale-105">
-                    Login
-                </button>
-            </div>
+            <% if(user && user.length>0){ %>
+                <div class="space-x-4">
+                    <a href="/register"
+                        class="bg-white text-primary font-bold py-3 px-8 rounded-full shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105">
+                        Register as Tourist
+                    </a>
+                    <a href="/login"
+                        class="bg-transparent border-2 border-white text-white font-bold py-3 px-8 rounded-full hover:bg-white hover:text-primary transition duration-300 transform hover:scale-105">
+                        Login
+                    </a>
+                </div>
+                <% } else{%>
+                    <a href="/dashboard"
+                        class="bg-white text-primary font-bold py-3 px-8 rounded-full shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105">
+                        Go to Dashboard
+                    </a>
+                    <% } %>
         </div>
     </section>
 
     <section class="py-20 px-6 container mx-auto">
         <div class="section-header mb-12 animate-fade-in-up">
             <h2 class="text-3xl md:text-4xl font-bold mb-2">Why Choose TouristSafe?</h2>
-            <p class="text-lg text-gray-600">Advanced safety features designed to protect tourists and provide peace of mind</p>
+            <p class="text-lg text-gray-600">Advanced safety features designed to protect tourists and provide peace of
+                mind</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 hover:shadow-2xl transition duration-500 transform hover:-translate-y-2 animate-fade-in-up text-center" style="animation-delay: 0.1s;">
+            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 hover:shadow-2xl transition duration-500 transform hover:-translate-y-2 animate-fade-in-up text-center"
+                style="animation-delay: 0.1s;">
                 <div class="flex justify-center mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-primary p-2 bg-primary bg-opacity-10 rounded-full" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 16c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm-1-8v4h2v-4h-2zm0-4h2v2h-2z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="h-16 w-16 text-primary p-2 bg-primary bg-opacity-10 rounded-full" viewBox="0 0 24 24"
+                        fill="currentColor">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 16c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm-1-8v4h2v-4h-2zm0-4h2v2h-2z" />
+                    </svg>
                 </div>
                 <h3 class="text-xl font-bold mb-2">Digital Tourist ID</h3>
-                <p class="text-gray-600">Get a unique digital ID with QR code for instant identification and verification by authorities</p>
+                <p class="text-gray-600">Get a unique digital ID with QR code for instant identification and
+                    verification by authorities</p>
             </div>
-            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 hover:shadow-2xl transition duration-500 transform hover:-translate-y-2 animate-fade-in-up text-center" style="animation-delay: 0.2s;">
+            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 hover:shadow-2xl transition duration-500 transform hover:-translate-y-2 animate-fade-in-up text-center"
+                style="animation-delay: 0.2s;">
                 <div class="flex justify-center mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-primary p-2 bg-primary bg-opacity-10 rounded-full" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="h-16 w-16 text-primary p-2 bg-primary bg-opacity-10 rounded-full" viewBox="0 0 24 24"
+                        fill="currentColor">
+                        <path
+                            d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                    </svg>
                 </div>
                 <h3 class="text-xl font-bold mb-2">Journey Tracking</h3>
                 <p class="text-gray-600">Log your travel plans and current location for enhanced safety monitoring</p>
             </div>
-            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 hover:shadow-2xl transition duration-500 transform hover:-translate-y-2 animate-fade-in-up text-center" style="animation-delay: 0.3s;">
+            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 hover:shadow-2xl transition duration-500 transform hover:-translate-y-2 animate-fade-in-up text-center"
+                style="animation-delay: 0.3s;">
                 <div class="flex justify-center mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-red-500 p-2 bg-red-500 bg-opacity-10 rounded-full" viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="h-16 w-16 text-red-500 p-2 bg-red-500 bg-opacity-10 rounded-full" viewBox="0 0 24 24"
+                        fill="currentColor">
+                        <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
+                    </svg>
                 </div>
                 <h3 class="text-xl font-bold mb-2">Emergency SOS</h3>
-                <p class="text-gray-600">One-click emergency alert that shares your location with nearest authorities</p>
+                <p class="text-gray-600">One-click emergency alert that shares your location with nearest authorities
+                </p>
             </div>
-            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 hover:shadow-2xl transition duration-500 transform hover:-translate-y-2 animate-fade-in-up text-center" style="animation-delay: 0.4s;">
+            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 hover:shadow-2xl transition duration-500 transform hover:-translate-y-2 animate-fade-in-up text-center"
+                style="animation-delay: 0.4s;">
                 <div class="flex justify-center mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-primary p-2 bg-primary bg-opacity-10 rounded-full" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="h-16 w-16 text-primary p-2 bg-primary bg-opacity-10 rounded-full" viewBox="0 0 24 24"
+                        fill="currentColor">
+                        <path
+                            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                    </svg>
                 </div>
                 <h3 class="text-xl font-bold mb-2">Admin Monitoring</h3>
-                <p class="text-gray-600">24/7 monitoring by authorities with real-time tourist tracking and emergency response</p>
+                <p class="text-gray-600">24/7 monitoring by authorities with real-time tourist tracking and emergency
+                    response</p>
             </div>
-            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 hover:shadow-2xl transition duration-500 transform hover:-translate-y-2 animate-fade-in-up text-center" style="animation-delay: 0.5s;">
+            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 hover:shadow-2xl transition duration-500 transform hover:-translate-y-2 animate-fade-in-up text-center"
+                style="animation-delay: 0.5s;">
                 <div class="flex justify-center mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-accent p-2 bg-accent bg-opacity-10 rounded-full" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H4V4h16v16zM11 9.5H8v-2h3V6H8V4h3c1.1 0 2 .9 2 2v3.5h-2v-2zm-2-2h-1v-1h1v1zM11 15.5H8v-2h3v2zm-2-2H8v-1h1v1zM16 12h-3v-2h3v2zm-1-1h-1v-1h1v1zm1 3.5h-3v-2h3v2zm-1-2h-1v-1h1v1zm1 3.5h-3v-2h3v2zm-1-2h-1v-1h1v1z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="h-16 w-16 text-accent p-2 bg-accent bg-opacity-10 rounded-full" viewBox="0 0 24 24"
+                        fill="currentColor">
+                        <path
+                            d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H4V4h16v16zM11 9.5H8v-2h3V6H8V4h3c1.1 0 2 .9 2 2v3.5h-2v-2zm-2-2h-1v-1h1v1zM11 15.5H8v-2h3v2zm-2-2H8v-1h1v1zM16 12h-3v-2h3v2zm-1-1h-1v-1h1v1zm1 3.5h-3v-2h3v2zm-1-2h-1v-1h1v1zm1 3.5h-3v-2h3v2zm-1-2h-1v-1h1v1z" />
+                    </svg>
                 </div>
                 <h3 class="text-xl font-bold mb-2">Safety Alerts</h3>
                 <p class="text-gray-600">Receive important safety updates and travel advisories for your destination</p>
             </div>
-            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 hover:shadow-2xl transition duration-500 transform hover:-translate-y-2 animate-fade-in-up text-center" style="animation-delay: 0.6s;">
+            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 hover:shadow-2xl transition duration-500 transform hover:-translate-y-2 animate-fade-in-up text-center"
+                style="animation-delay: 0.6s;">
                 <div class="flex justify-center mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-accent p-2 bg-accent bg-opacity-10 rounded-full" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99c-2.34 0-4.25-1.91-4.25-4.25s1.91-4.25 4.25-4.25 4.25 1.91 4.25 4.25-1.91 4.25-4.25 4.25z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="h-16 w-16 text-accent p-2 bg-accent bg-opacity-10 rounded-full" viewBox="0 0 24 24"
+                        fill="currentColor">
+                        <path
+                            d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99c-2.34 0-4.25-1.91-4.25-4.25s1.91-4.25 4.25-4.25 4.25 1.91 4.25 4.25-1.91 4.25-4.25 4.25z" />
+                    </svg>
                 </div>
                 <h3 class="text-xl font-bold mb-2">Secure Verification</h3>
-                <p class="text-gray-600">Blockchain-secured identity verification ensuring authenticity and preventing fraud</p>
+                <p class="text-gray-600">Blockchain-secured identity verification ensuring authenticity and preventing
+                    fraud</p>
             </div>
         </div>
     </section>
@@ -181,33 +253,44 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
             <div class="flex flex-col items-center animate-fade-in-up" style="animation-delay: 0.5s;">
                 <div class="relative mb-6">
-                    <div class="w-24 h-24 flex items-center justify-center rounded-full bg-primary text-white text-3xl font-bold shadow-md">
+                    <div
+                        class="w-24 h-24 flex items-center justify-center rounded-full bg-primary text-white text-3xl font-bold shadow-md">
                         1
                     </div>
-                    <div class="absolute inset-0 rounded-full border-4 border-primary border-opacity-20 transform scale-110"></div>
+                    <div
+                        class="absolute inset-0 rounded-full border-4 border-primary border-opacity-20 transform scale-110">
+                    </div>
                 </div>
                 <h3 class="text-2xl font-semibold mb-2">Register & Verify</h3>
                 <p class="text-gray-600">Create your account and verify your identity to get your secure digital ID.</p>
             </div>
             <div class="flex flex-col items-center animate-fade-in-up" style="animation-delay: 0.6s;">
                 <div class="relative mb-6">
-                    <div class="w-24 h-24 flex items-center justify-center rounded-full bg-primary text-white text-3xl font-bold shadow-md">
+                    <div
+                        class="w-24 h-24 flex items-center justify-center rounded-full bg-primary text-white text-3xl font-bold shadow-md">
                         2
                     </div>
-                    <div class="absolute inset-0 rounded-full border-4 border-primary border-opacity-20 transform scale-110"></div>
+                    <div
+                        class="absolute inset-0 rounded-full border-4 border-primary border-opacity-20 transform scale-110">
+                    </div>
                 </div>
                 <h3 class="text-2xl font-semibold mb-2">Add Journey Details</h3>
-                <p class="text-gray-600">Plan your trip by adding your destination, duration, and important contacts.</p>
+                <p class="text-gray-600">Plan your trip by adding your destination, duration, and important contacts.
+                </p>
             </div>
             <div class="flex flex-col items-center animate-fade-in-up" style="animation-delay: 0.7s;">
                 <div class="relative mb-6">
-                    <div class="w-24 h-24 flex items-center justify-center rounded-full bg-primary text-white text-3xl font-bold shadow-md">
+                    <div
+                        class="w-24 h-24 flex items-center justify-center rounded-full bg-primary text-white text-3xl font-bold shadow-md">
                         3
                     </div>
-                    <div class="absolute inset-0 rounded-full border-4 border-primary border-opacity-20 transform scale-110"></div>
+                    <div
+                        class="absolute inset-0 rounded-full border-4 border-primary border-opacity-20 transform scale-110">
+                    </div>
                 </div>
                 <h3 class="text-2xl font-semibold mb-2">Stay Protected</h3>
-                <p class="text-gray-600">Activate your safety features and travel with confidence, knowing help is a tap away.</p>
+                <p class="text-gray-600">Activate your safety features and travel with confidence, knowing help is a tap
+                    away.</p>
             </div>
         </div>
     </section>
@@ -219,30 +302,39 @@
                 <p class="text-lg text-gray-600">Hear from travelers who trust TouristSafe</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 animate-fade-in-up" style="animation-delay: 0.8s;">
-                    <p class="text-gray-700 italic mb-4 text-center">"TouristSafe gave me complete peace of mind during my solo trip to Paris. The journey tracking feature was a lifesaver!"</p>
+                <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 animate-fade-in-up"
+                    style="animation-delay: 0.8s;">
+                    <p class="text-gray-700 italic mb-4 text-center">"TouristSafe gave me complete peace of mind during
+                        my solo trip to Paris. The journey tracking feature was a lifesaver!"</p>
                     <div class="flex items-center justify-center">
-                        <img src="https://placehold.co/64x64/E5E7EB/4B5563?text=AN" alt="Avatar" class="w-12 h-12 rounded-full mr-4">
+                        <img src="https://placehold.co/64x64/E5E7EB/4B5563?text=AN" alt="Avatar"
+                            class="w-12 h-12 rounded-full mr-4">
                         <div>
                             <p class="font-bold text-dark">Jane Doe</p>
                             <p class="text-sm text-gray-500">Solo Traveler, USA</p>
                         </div>
                     </div>
                 </div>
-                <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 animate-fade-in-up" style="animation-delay: 0.9s;">
-                    <p class="text-gray-700 italic mb-4 text-center">"The Emergency SOS button is a fantastic feature. It's great to know that help is always just a tap away, no matter where I am."</p>
+                <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 animate-fade-in-up"
+                    style="animation-delay: 0.9s;">
+                    <p class="text-gray-700 italic mb-4 text-center">"The Emergency SOS button is a fantastic feature.
+                        It's great to know that help is always just a tap away, no matter where I am."</p>
                     <div class="flex items-center justify-center">
-                        <img src="https://placehold.co/64x64/E5E7EB/4B5563?text=AN" alt="Avatar" class="w-12 h-12 rounded-full mr-4">
+                        <img src="https://placehold.co/64x64/E5E7EB/4B5563?text=AN" alt="Avatar"
+                            class="w-12 h-12 rounded-full mr-4">
                         <div>
                             <p class="font-bold text-dark">John Smith</p>
                             <p class="text-sm text-gray-500">Business Traveller, UK</p>
                         </div>
                     </div>
                 </div>
-                <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 animate-fade-in-up" style="animation-delay: 1.0s;">
-                    <p class="text-gray-700 italic mb-4 text-center">"We used TouristSafe for our family vacation. It was so reassuring to have everyone's location and digital IDs in one place."</p>
+                <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 animate-fade-in-up"
+                    style="animation-delay: 1.0s;">
+                    <p class="text-gray-700 italic mb-4 text-center">"We used TouristSafe for our family vacation. It
+                        was so reassuring to have everyone's location and digital IDs in one place."</p>
                     <div class="flex items-center justify-center">
-                        <img src="https://placehold.co/64x64/E5E7EB/4B5563?text=AN" alt="Avatar" class="w-12 h-12 rounded-full mr-4">
+                        <img src="https://placehold.co/64x64/E5E7EB/4B5563?text=AN" alt="Avatar"
+                            class="w-12 h-12 rounded-full mr-4">
                         <div>
                             <p class="font-bold text-dark">Emily Johnson</p>
                             <p class="text-sm text-gray-500">Family Vacationer, Canada</p>
@@ -260,10 +352,16 @@
                 <p class="text-gray-400">Your digital companion for secure tourism experiences worldwide.</p>
                 <div class="flex space-x-4 mt-6 justify-center md:justify-start">
                     <a href="#" class="text-gray-400 hover:text-white transition duration-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 16c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zM9 13v-2h2v2H9zm3-3v2h2v-2h-2z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 16c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zM9 13v-2h2v2H9zm3-3v2h2v-2h-2z" />
+                        </svg>
                     </a>
                     <a href="#" class="text-gray-400 hover:text-white transition duration-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M22 6.5C22 4.41 20.21 2 18 2c-2.42 0-3.69 1.6-4.99 3.51C11.71 3.6 10.42 2 8 2c-2.21 0-4 2.41-4 4.5 0 3.32 2.61 5.95 6.94 9.17C14.07 18.23 18.3 22 18 22c2.21 0 4-2.41 4-4.5 0-3.32-2.61-5.95-6.94-9.17L18 6.5z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M22 6.5C22 4.41 20.21 2 18 2c-2.42 0-3.69 1.6-4.99 3.51C11.71 3.6 10.42 2 8 2c-2.21 0-4 2.41-4 4.5 0 3.32 2.61 5.95 6.94 9.17C14.07 18.23 18.3 22 18 22c2.21 0 4-2.41 4-4.5 0-3.32-2.61-5.95-6.94-9.17L18 6.5z" />
+                        </svg>
                     </a>
                 </div>
             </div>
@@ -292,4 +390,5 @@
     </footer>
 
 </body>
+
 </html>
