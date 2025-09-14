@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white text-gray-900 font-sans min-h-screen p-8">
+  <div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <header class="mb-6">
+      <h1 class="text-2xl font-bold">Admin Dashboard</h1>
+      <p class="text-gray-500 mt-1">Manage tourists and emergency responses</p>
+    </header>
+
+    <!-- Tabs -->
+    <nav class="mb-6 flex border border-gray-200 rounded-md text-gray-600 text-sm">
+      <button
+        class="flex-1 py-2 px-4 flex items-center justify-center gap-2 bg-gray-100 text-gray-900 font-semibold rounded-l-md border-r border-gray-200"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 12h18M3 17h18"></path>
+          <circle cx="8" cy="12" r="2" stroke="currentColor" stroke-width="2" />
+        </svg>
+        Tourist List
+      </button>
+      <button
+        class="flex-1 py-2 px-4 flex items-center justify-center gap-2 hover:bg-gray-50 rounded-none border-r border-gray-200"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M6.938 4.938a10.012 10.012 0 0110.124 0"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21L3 3"></path>
+        </svg>
+        SOS Requests
+      </button>
+      <button
+        class="flex-1 py-2 px-4 flex items-center justify-center gap-2 hover:bg-gray-50 rounded-r-md"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 00-5-5.917V5a1 1 0 10-2 0v.083A6 6 0 006 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+        </svg>
+        Safety Alerts
+      </button>
+    </nav>
+
+    <!-- Registered Tourists -->
+    <section class="border border-gray-200 rounded-lg p-6">
+      <h2 class="flex items-center text-lg font-semibold text-gray-800 mb-1">
+        <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M7 7a4 4 0 018 0m-8 4a4 4 0 018 0m-8 4a4 4 0 018 0"></path>
+        </svg>
+        Registered Tourists
+      </h2>
+      <p class="text-gray-500 text-sm mb-4">View and manage all registered tourists in the system</p>
+
+      <!-- Tourist list container -->
+      <div class="space-y-4">
+        <!-- Tourist Item Template -->
+        <!-- Repeat this block for each tourist -->
+
+        <div class="flex items-center justify-between border border-gray-200 rounded-md p-4">
+          <div class="flex items-center gap-4">
+            <div class="flex-shrink-0 p-3 rounded-lg bg-blue-50 text-blue-600">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 18.243A7.965 7.965 0 0112 15a7.965 7.965 0 016.879 3.243"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="font-semibold text-gray-900">John Doe</div>
+              <div class="text-xs text-gray-600">
+                TS–A7X9K2M4P
+              </div>
+              <div class="text-xs text-gray-600 flex items-center gap-1 mt-1">
+                Nationality: USA
+                <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 9a5 5 0 00-10 0c0 7 10 13 10 13s-3-3.5-3-8a2 2 0 114 0z"></path>
+                </svg>
+                <span>Paris, France</span>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-blue-600 text-white lowercase">active</span>
+            <button type="button" class="flex items-center gap-2 px-3 py-1 border border-gray-300 rounded-md text-gray-800 text-sm hover:bg-gray-100">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+              </svg>
+              View
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between border border-gray-200 rounded-md p-4">
+          <div class="flex items-center gap-4">
+            <div class="flex-shrink-0 p-3 rounded-lg bg-blue-50 text-blue-600">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 18.243A7.965 7.965 0 0112 15a7.965 7.965 0 016.879 3.243"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="font-semibold text-gray-900">Jane Smith</div>
+              <div class="text-xs text-gray-600">
+                TS–B8Y1L3N5Q
+              </div>
+              <div class="text-xs text-gray-600 flex items-center gap-1 mt-1">
+                Nationality: UK
+                <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 9a5 5 0 00-10 0c0 7 10 13 10 13s-3-3.5-3-8a2 2 0 114 0z"></path>
+                </svg>
+                <span>London, UK</span>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-blue-600 text-white lowercase">active</span>
+            <button type="button" class="flex items-center gap-2 px-3 py-1 border border-gray-300 rounded-md text-gray-800 text-sm hover:bg-gray-100">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+              </svg>
+              View
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between border border-gray-200 rounded-md p-4">
+          <div class="flex items-center gap-4">
+            <div class="flex-shrink-0 p-3 rounded-lg bg-blue-50 text-blue-600">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 18.243A7.965 7.965 0 0112 15a7.965 7.965 0 016.879 3.243"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="font-semibold text-gray-900">Hans Mueller</div>
+              <div class="text-xs text-gray-600">
+                TS–C9Z2M406R
+              </div>
+              <div class="text-xs text-gray-600 flex items-center gap-1 mt-1">
+                Nationality: Germany
+                <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 9a5 5 0 00-10 0c0 7 10 13 10 13s-3-3.5-3-8a2 2 0 114 0z"></path>
+                </svg>
+                <span>Berlin, Germany</span>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-gray-300 text-gray-700 lowercase">inactive</span>
+            <button type="button" class="flex items-center gap-2 px-3 py-1 border border-gray-300 rounded-md text-gray-800 text-sm hover:bg-gray-100">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+              </svg>
+              View
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between border border-gray-200 rounded-md p-4">
+          <div class="flex items-center gap-4">
+            <div class="flex-shrink-0 p-3 rounded-lg bg-blue-50 text-blue-600">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 18.243A7.965 7.965 0 0112 15a7.965 7.965 0 016.879 3.243"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="font-semibold text-gray-900">Maria Garcia</div>
+              <div class="text-xs text-gray-600">
+                TS–D1A3N5P7S
+              </div>
+              <div class="text-xs text-gray-600 flex items-center gap-1 mt-1">
+                Nationality: Spain
+                <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 9a5 5 0 00-10 0c0 7 10 13 10 13s-3-3.5-3-8a2 2 0 114 0z"></path>
+                </svg>
+                <span>Madrid, Spain</span>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-blue-600 text-white lowercase">active</span>
+            <button type="button" class="flex items-center gap-2 px-3 py-1 border border-gray-300 rounded-md text-gray-800 text-sm hover:bg-gray-100">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+              </svg>
+              View
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
