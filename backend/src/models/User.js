@@ -13,6 +13,8 @@ const userSchema = mongoose.Schema(
             required: true,
         },
         nationality: { type: String },
+        contact: { type: Number },
+        emergency: { type: Number },
         email: {
             type: String,
             required: true,

@@ -2,10 +2,10 @@ const userModel = require("../models/User");
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
-const  generateToken  = require("../utils/generateToken");
+const generateToken = require("../utils/generateToken");
 module.exports.registerUser = async function (req, res) {
   try {
-    let { email, password, fullname } = req.body;
+    let { name, email, password, passportId, nationality, contactNumber, emergencyContact, idProof } = req.body;
     if (!password) {
       req.flash("error", "Password is required");
       return res.redirect("/my-account");
@@ -20,13 +20,16 @@ module.exports.registerUser = async function (req, res) {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const newUser = await userModel.create({
+      name,
       email: email.trim().toLowerCase(),
       password: hashedPassword,
-      fullname,
+      passportId,
+      nationality,
+      contactNumber,
+      emergencyContact,
+      idProof,
     });
 
-    let token = generateToken(newUser);
-    res.cookie("token", token);
     req.flash("success", "Account created successfully!  You can login");
     return res.redirect("/my-account");
   } catch (err) {
@@ -70,5 +73,5 @@ module.exports.logoutUser = function (req, res) {
 };
 
 module.exports.forgotPass = function (req, res) {
- //forgot pass logic
+  //forgot pass logic
 };

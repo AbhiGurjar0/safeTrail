@@ -27,6 +27,9 @@ router.get('/dashboard', (req, res) => {
 router.get('/login', (req, res) => {
     res.render('login');
 })
+router.get('/register', (req, res) => {
+    res.render('register');
+})
 router.get('/emergencySos', (req, res) => {
     res.render('emergencySos');
 })
