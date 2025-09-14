@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema(
     {
-        fullname: {
+        name: {
             type: String,
             required: true,
             minlength: 4,
@@ -13,6 +13,8 @@ const userSchema = mongoose.Schema(
             required: true,
         },
         nationality: { type: String },
+        contact: { type: Number },
+        emergency: { type: Number },
         email: {
             type: String,
             required: true,

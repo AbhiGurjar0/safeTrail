@@ -1,16 +1,16 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const dbgr = require("debug")("development:mongoose");
-mongoose
-    .connect(`${process.env.MONGO_URI}/safeTrail`)
-    .then(function () {
-        dbgr("connected");
-    })
-    .catch(function (err) {
-        dbgr(err);
-    })
 
-// mongoose.connect(process.env.MONGO_URI)
-//     .then(() => console.log("✅ MongoDB Connected"))
-//     .catch((err) => console.error("❌ MongoDB connection failed:", err.message));
+async function connectDB() {
+    try {
+        await mongoose.connect(process.env.MONGO_URI, {
+          
+        });
+        dbgr("✅ MongoDB connected");
+    } catch (err) {
+        dbgr("❌ MongoDB connection error:", err.message);
+        process.exit(1);
+    }
+}
 
-module.exports = mongoose.connection;
+module.exports = connectDB;

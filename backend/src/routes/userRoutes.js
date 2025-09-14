@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { loginUser, registerUser, logoutUser, forgotPass } = require('../controllers/userAuth');
 const { emergencyService } = require('../services/emergencyService');
+const isLoggendIn = require('../middlewares/isLoggendIn');
+const userModel = require('../models/User');
 
 
 
@@ -17,8 +19,13 @@ router.post('/forgot', forgotPass);
 router.post('/emergency', emergencyService);
 
 // render Routes
-router.get('/', (req, res) => {
-    res.render('home');
+router.get('/', isLoggendIn, async (req, res) => {
+    let user = null;
+    if (req.user) {
+        user = await userModel.findById(req.user._id);
+    }
+
+    res.render('home', { user });
 })
 
 router.get('/dashboard', (req, res) => {
@@ -26,6 +33,9 @@ router.get('/dashboard', (req, res) => {
 })
 router.get('/login', (req, res) => {
     res.render('login');
+})
+router.get('/register', (req, res) => {
+    res.render('register');
 })
 router.get('/emergencySos', (req, res) => {
     res.render('emergencySos');
