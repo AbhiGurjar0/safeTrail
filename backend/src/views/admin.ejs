@@ -45,7 +45,7 @@
     </nav>
 
     <!-- Registered Tourists -->
-    <section class="border border-gray-200 rounded-lg p-6">
+    <section id="tourist-list" class="border border-gray-200 rounded-lg p-6">
       <h2 class="flex items-center text-lg font-semibold text-gray-800 mb-1">
         <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M7 7a4 4 0 018 0m-8 4a4 4 0 018 0m-8 4a4 4 0 018 0"></path>
@@ -196,6 +196,199 @@
         </div>
       </div>
     </section>
+    <!-- sos request -->
+<!-- SOS Emergency Requests Section -->
+    <section  id="sos-requests" aria-labelledby="sos-requests-title" class="border border-gray-200 rounded-lg p-6 bg-white">
+      <h2 id="sos-requests-title" class="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-1">
+        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+          <line x1="12" y1="9" x2="12" y2="13"></line>
+          <line x1="12" y1="17" x2="12" y2="17"></line>
+        </svg>
+        SOS Emergency Requests
+      </h2>
+      <p class="text-gray-600 mb-6">Monitor and respond to emergency alerts from tourists</p>
+
+      <!-- Request 1 -->
+      <article class="flex flex-col md:flex-row md:justify-between bg-red-50 border border-red-200 rounded-md p-4 mb-4">
+        <div class="flex items-start gap-4">
+          <div class="bg-red-600 text-white rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12" y2="17"></line>
+            </svg>
+          </div>
+          <div>
+            <p class="font-semibold text-gray-900">John Doe</p>
+            <p class="text-sm text-gray-600 mb-1">TS–A7X9K2M4P</p>
+            <p class="text-gray-700 flex items-center gap-1 text-sm">
+              <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 16v-4"></path>
+                <path d="M8 12h8"></path>
+              </svg>
+              Eiffel Tower, Paris
+            </p>
+            <p class="text-gray-700 text-xs">
+              Coordinates: <span class="font-mono font-semibold">48.8584° N</span>, <span class="font-mono font-semibold">2.2945° E</span>
+            </p>
+            <p class="text-gray-500 text-xs flex items-center gap-1 mt-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              2 minutes ago
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-3 mt-4 md:mt-0">
+          <span class="inline-block bg-red-600 text-white text-xs font-semibold rounded px-3 py-1 self-start">active</span>
+          <button class="bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500 transition">
+            Respond
+          </button>
+        </div>
+      </article>
+
+      <!-- Request 2 -->
+      <article class="flex flex-col md:flex-row md:justify-between bg-green-50 border border-green-200 rounded-md p-4">
+        <div class="flex items-start gap-4">
+          <div class="bg-green-600 text-white rounded-full w-10 h-10 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12" y2="17"></line>
+            </svg>
+          </div>
+          <div>
+            <p class="font-semibold text-gray-900">Jane Smith</p>
+            <p class="text-sm text-gray-600 mb-1">TS–B8Y1L3N5Q</p>
+            <p class="text-gray-700 flex items-center gap-1 text-sm">
+              <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 16v-4"></path>
+                <path d="M8 12h8"></path>
+              </svg>
+              Tower Bridge, London
+            </p>
+            <p class="text-gray-700 text-xs">
+              Coordinates: <span class="font-mono font-semibold">51.5055° N</span>, <span class="font-mono font-semibold">0.0754° W</span>
+            </p>
+            <p class="text-gray-500 text-xs flex items-center gap-1 mt-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              1 hour ago
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-3 mt-4 md:mt-0">
+          <span class="inline-block bg-blue-600 text-white text-xs font-semibold rounded px-3 py-1 self-start">resolved</span>
+        </div>
+      </article>
+    </section>
+    <!-- Safety alerts -->
+     <section id="safety-alerts" class="bg-white rounded-md border border-gray-200 p-6 space-y-5 shadow-sm">
+      <header class="flex items-center space-x-2">
+        <svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" stroke-width="2" 
+          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V4a2 2 0 10-4 0v1.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+        </svg>
+        <h2 class="font-semibold text-gray-900 text-lg">Broadcast Safety Alerts</h2>
+      </header>
+      <p class="text-gray-600 text-sm">
+        Send safety notifications to all registered tourists
+      </p>
+
+      <!-- Alert Message textarea -->
+      <div>
+        <label for="alert-message" class="block mb-1 text-sm font-medium text-gray-700">
+          Alert Message
+        </label>
+        <textarea id="alert-message" name="alert-message" rows="4" 
+          placeholder="Enter safety alert message to broadcast to all tourists..." 
+          class="w-full border border-gray-300 rounded-md p-3 text-gray-700 resize-y placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
+      </div>
+
+      <!-- Broadcast button -->
+      <button 
+        class="w-full bg-blue-400 hover:bg-blue-500 text-white font-semibold py-3 rounded-md flex items-center justify-center space-x-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+        type="button"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" 
+          xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l7-7 7-7M5 12h14"></path>
+        </svg>
+        <span>Broadcast Alert to All Tourists</span>
+      </button>
+
+      <!-- Divider -->
+      <hr class="border-gray-200" />
+
+      <!-- Recent Alerts Sent -->
+      <div>
+        <h3 class="font-semibold text-gray-900 mb-3">Recent Alerts Sent</h3>
+        <div class="space-y-3">
+          <div class="border border-gray-200 rounded-md p-3">
+            <p class="text-gray-800 text-sm">
+              "Weather alert: Heavy rain expected in Paris area. Seek indoor shelter."
+            </p>
+            <p class="text-gray-400 text-xs mt-1">
+              Sent 2 hours ago to 45 tourists
+            </p>
+          </div>
+          <div class="border border-gray-200 rounded-md p-3">
+            <p class="text-gray-800 text-sm">
+              "Traffic disruption on A1 highway. Use public transport for faster travel."
+            </p>
+            <p class="text-gray-400 text-xs mt-1">
+              Sent 1 day ago to 67 tourists
+            </p>
+          </div>
+          <div class="border border-gray-200 rounded-md p-3">
+            <p class="text-gray-800 text-sm">
+              "Cultural festival in city center. Expect crowds but enjoy the celebrations!"
+            </p>
+            <p class="text-gray-400 text-xs mt-1">
+              Sent 3 days ago to 89 tourists
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
+  <!-- fucntion -->
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const tabs = document.querySelectorAll("nav button"); // all 3 buttons
+    const sections = [
+      document.getElementById("tourist-list"),
+      document.getElementById("sos-requests"),
+      document.getElementById("safety-alerts"),
+    ];
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => {
+        // Hide all sections
+        sections.forEach(section => section.classList.add("hidden"));
+
+        // Show the clicked section
+        sections[index].classList.remove("hidden");
+
+        // Reset tab styles
+        tabs.forEach(btn => btn.classList.remove("bg-gray-100", "text-gray-900", "font-semibold"));
+
+        // Highlight active tab
+        tab.classList.add("bg-gray-100", "text-gray-900", "font-semibold");
+      });
+    });
+  });
+</script>
+
+
 </body>
 </html>
+
