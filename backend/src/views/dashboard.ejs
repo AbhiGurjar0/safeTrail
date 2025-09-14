@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tourist Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white p-8 font-sans text-gray-800">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-2xl font-bold mb-1">Tourist Dashboard</h1>
+      <p class="text-gray-500">Welcome back, John Doe</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+      <!-- Left Column -->
+      <div class="md:col-span-8 space-y-6">
+        <!-- My Digital ID -->
+        <div class="border border-gray-200 rounded-lg p-5">
+          <div class="flex items-center text-gray-700 mb-2">
+            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 11c.634 0 1.263-.21 1.754-.604l3.26 3.882a1 1 0 001.491-1.32l-3.261-3.882a2.387 2.387 0 00.006-2.952l2.621-3.134a1 1 0 10-1.512-1.296l-2.62 3.134a2.387 2.387 0 00-1.755-1.028"/>
+              <circle cx="12" cy="16" r="4" stroke-width="2" />
+            </svg>
+            <span class="font-semibold text-lg">My Digital ID</span>
+          </div>
+          <p class="text-gray-400 text-sm mb-4">Your secure tourist identification</p>
+
+          <!-- ID Card -->
+          <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg p-5 flex justify-between items-center text-white">
+            <div>
+              <h3 class="font-bold text-xl mb-1">John Doe</h3>
+              <p class="text-sm">Tourist ID</p>
+              <p class="text-lg font-mono tracking-wide mt-1">TS-A7X9K2M4P</p>
+              <p class="flex items-center mt-3 text-sm text-blue-200">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 12.414a2 2 0 10-2.828-2.828l-4.243 4.243a6 6 0 108.485 8.485z"/>
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                Paris, France
+              </p>
+            </div>
+            <div class="bg-white bg-opacity-80 p-2 rounded-md">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <!-- QR code icon simplified -->
+                <rect x="3" y="3" width="4" height="4" stroke="currentColor" stroke-width="2" />
+                <rect x="8" y="3" width="2" height="2" stroke="currentColor" stroke-width="2" />
+                <rect x="11" y="3" width="2" height="2" stroke="currentColor" stroke-width="2" />
+                <rect x="3" y="8" width="2" height="2" stroke="currentColor" stroke-width="2" />
+                <rect x="6" y="8" width="2" height="2" stroke="currentColor" stroke-width="2" />
+                <rect x="9" y="8" width="2" height="2" stroke="currentColor" stroke-width="2" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- My Journey Log -->
+        <div class="border border-gray-200 rounded-lg p-5">
+          <div class="flex items-center text-gray-700 mb-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-green-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 12.414a2 2 0 10-2.828-2.828l-4.243 4.243a6 6 0 108.485 8.485z"/>
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+            <span class="font-semibold text-lg">My Journey Log</span>
+          </div>
+          <p class="text-gray-400 text-sm mb-4">Track your travel history</p>
+
+          <!-- Entries -->
+          <div class="space-y-4">
+            <!-- Entry 1 -->
+            <div class="border border-gray-200 rounded-md p-3 flex justify-between items-center">
+              <div>
+                <p class="font-semibold">Eiffel Tower, Paris</p>
+                <p class="text-gray-400 text-sm flex items-center mt-1">
+                  <svg class="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3" />
+                    <circle cx="12" cy="12" r="10" />
+                  </svg>
+                  Today, 2:30 PM
+                </p>
+              </div>
+              <span class="px-3 py-1 rounded-full bg-gray-100 text-gray-600 text-xs font-semibold">Visited</span>
+            </div>
+
+            <!-- Entry 2 -->
+            <div class="border border-gray-200 rounded-md p-3 flex justify-between items-center">
+              <div>
+                <p class="font-semibold">Louvre Museum, Paris</p>
+                <p class="text-gray-400 text-sm flex items-center mt-1">
+                  <svg class="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3" />
+                    <circle cx="12" cy="12" r="10" />
+                  </svg>
+                  Today, 10:00 AM
+                </p>
+              </div>
+              <span class="px-3 py-1 rounded-full bg-gray-100 text-gray-600 text-xs font-semibold">Visited</span>
+            </div>
+
+            <!-- Entry 3 -->
+            <div class="border border-gray-200 rounded-md p-3 flex justify-between items-center">
+              <div>
+                <p class="font-semibold">Charles de Gaulle Airport</p>
+                <p class="text-gray-400 text-sm flex items-center mt-1">
+                  <svg class="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3" />
+                    <circle cx="12" cy="12" r="10" />
+                  </svg>
+                  Yesterday, 8:00 PM
+                </p>
+              </div>
+              <span class="px-3 py-1 rounded-full bg-gray-100 text-gray-600 text-xs font-semibold">Arrived</span>
+            </div>
+          </div>
+
+          <button class="mt-4 w-full border border-gray-200 rounded-md py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition">
+            Add Journey Entry
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="md:col-span-4 space-y-6">
+        <!-- Emergency Help -->
+        <div class="border border-gray-200 rounded-lg p-5">
+          <div class="flex items-center text-red-600 font-semibold mb-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.29 3.86L1.82 18a1.015 1.015 0 00.87 1.5h18.6a1.015 1.015 0 00.87-1.5L13.71 3.86a1 1 0 00-1.42 0zM12 9v4m0 4h.01" />
+            </svg>
+            Emergency Help
+          </div>
+          <p class="text-gray-400 text-sm mb-4">Instant emergency assistance</p>
+          <button class="w-full bg-red-500 hover:bg-red-600 rounded-md py-3 font-semibold text-white flex items-center justify-center gap-2 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 17.364A9 9 0 105.636 6.636a9 9 0 0012.728 10.728z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" /></svg>
+            SOS EMERGENCY
+          </button>
+          <p class="mt-3 text-center text-gray-400 text-xs">
+            Press only in real emergencies
+          </p>
+          <p class="mt-2 text-center text-gray-500 text-sm flex justify-center items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="inline w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h11M9 21V3m7 17a3 3 0 010-6m0 0a3 3 0 110 6z" />
+            </svg>
+            +33 123 456 789
+          </p>
+        </div>
+
+        <!-- Safety Alerts -->
+        <div class="border border-gray-200 rounded-lg p-5">
+          <div class="flex items-center font-semibold text-yellow-600 mb-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86l-7.32 12.48A1 1 0 003.87 18h16.26a1 1 0 00.87-1.5l-7.32-12.48a1 1 0 00-1.42 0z" />
+            </svg>
+            Safety Alerts
+          </div>
+          <p class="text-gray-400 text-sm mb-4">Latest safety information</p>
+
+          <div class="space-y-3">
+            <!-- Alert 1 -->
+            <div class="border border-gray-200 rounded-md p-3">
+              <p class="text-blue-600 text-sm font-semibold">Weather alert: Light rain expected in your area</p>
+              <p class="text-gray-400 text-xs mt-0.5">2 hours ago</p>
+            </div>
+
+            <!-- Alert 2 -->
+            <div class="border border-gray-200 rounded-md p-3">
+              <p class="text-yellow-600 text-sm font-semibold">Traffic disruption on Route A1 - use alternate routes</p>
+              <p class="text-gray-400 text-xs mt-0.5">4 hours ago</p>
+            </div>
+
+            <!-- Alert 3 -->
+            <div class="border border-gray-200 rounded-md p-3">
+              <p class="text-green-600 text-sm font-semibold">Your location is in a safe tourist zone</p>
+              <p class="text-gray-400 text-xs mt-0.5">1 day ago</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
