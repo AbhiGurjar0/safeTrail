@@ -12,7 +12,18 @@ const cookieParser = require('cookie-parser');
 const expressSession = require("express-session");
 const flash = require('connect-flash');
 app.set('view engine', 'ejs');
-app.set('views', 'src/views'); 
+app.set('views', 'src/views');
+
+const { initSocket } = require("./socket");
+const http = require("http");
+const { Server } = require("socket.io");
+
+const server = http.createServer(app);
+const io = initSocket(server);
+
+io.on("connection", (socket) => {
+    console.log("Client connected:", socket.id);
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -32,5 +43,5 @@ app.use((req, res, next) => {
     next();
 });
 app.use('/', userRouter);
-module.exports = app;
+module.exports = server;
 

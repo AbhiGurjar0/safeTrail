@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Dashboard | TravelLog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .trip-card {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .trip-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar {
+            transition: width 1s ease-in-out;
+        }
+
+        .modal {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .modal-hidden {
+            opacity: 0;
+            transform: scale(0.9);
+            pointer-events: none;
+        }
+
+        .modal-visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body class="py-8 px-4">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-10">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800">My Trip Dashboard</h1>
+                <p class="text-gray-600">Manage and track your travel adventures</p>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <input type="text" placeholder="Search trips..."
+                        class="pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">JD
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+            <div class="stats-card rounded-xl p-6 shadow-lg">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-sm opacity-80">Total Trips</p>
+                        <h3 class="text-2xl font-bold">12</h3>
+                    </div>
+                    <i class="fas fa-route text-2xl opacity-80"></i>
+                </div>
+                <div class="mt-4 text-sm">
+                    <span class="opacity-80">+2 this month</span>
+                </div>
+            </div>
+
+            <div class="stats-card rounded-xl p-6 shadow-lg"
+                style="background: linear-gradient(135deg, #5ee7df 0%, #b490ca 100%);">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-sm opacity-80">Active Trips</p>
+                        <h3 class="text-2xl font-bold">3</h3>
+                    </div>
+                    <i class="fas fa-compass text-2xl opacity-80"></i>
+                </div>
+                <div class="mt-4 text-sm">
+                    <span class="opacity-80">Ongoing journeys</span>
+                </div>
+            </div>
+
+            <div class="stats-card rounded-xl p-6 shadow-lg"
+                style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-sm opacity-80">Countries</p>
+                        <h3 class="text-2xl font-bold">8</h3>
+                    </div>
+                    <i class="fas fa-globe-americas text-2xl opacity-80"></i>
+                </div>
+                <div class="mt-4 text-sm">
+                    <span class="opacity-80">Visited so far</span>
+                </div>
+            </div>
+
+            <div class="stats-card rounded-xl p-6 shadow-lg"
+                style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-sm opacity-80">Upcoming</p>
+                        <h3 class="text-2xl font-bold">2</h3>
+                    </div>
+                    <i class="fas fa-calendar-alt text-2xl opacity-80"></i>
+                </div>
+                <div class="mt-4 text-sm">
+                    <span class="opacity-80">Next 30 days</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="flex flex-wrap items-center justify-between mb-6">
+            <div class="flex space-x-2 mb-4">
+                <button class="px-4 py-2 bg-blue-500 text-white rounded-lg">All Trips</button>
+                <button class="px-4 py-2 bg-white text-gray-700 rounded-lg border">Upcoming</button>
+                <button class="px-4 py-2 bg-white text-gray-700 rounded-lg border">Ongoing</button>
+                <button class="px-4 py-2 bg-white text-gray-700 rounded-lg border">Completed</button>
+            </div>
+            <div class="flex space-x-2 mb-4">
+                <button class="px-4 py-2 bg-white text-gray-700 rounded-lg border flex items-center">
+                    <i class="fas fa-sort mr-2"></i> Sort By
+                </button>
+                <button class="px-4 py-2 bg-blue-500 text-white rounded-lg flex items-center">
+                    <i class="fas fa-plus mr-2"></i> New Trip
+                </button>
+            </div>
+        </div>
+
+        <!-- Trip Logs Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Trip Card 1 -->
+            <%Trips.forEach((trip)=>{%>
+                <div data-trip-id="<%= trip._id %>"
+                    class="trip-card bg-white rounded-xl overflow-hidden border border-gray-200">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+                            alt="Rocky Mountains" class="w-full h-48 object-cover">
+                        <div
+                            class="absolute top-4 right-4 bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                            Upcoming
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-xl font-bold text-gray-800">
+                                <%=trip.endLocation%>
+                            </h3>
+                            <i class="fas fa-ellipsis-v text-gray-400"></i>
+                        </div>
+                        <p class="text-gray-600 mt-2">5-day hiking expedition through the Canadian Rockies</p>
+
+                        <div class="flex items-center mt-4 text-gray-500">
+                            <i class="fas fa-calendar-alt mr-2"></i>
+                            <span>
+                                <%=trip.travelDate.toString().slice(4, 15)%> - <%=trip.endDate%>
+                            </span>
+                        </div>
+
+                        <div class="flex items-center mt-2 text-gray-500">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            <span>
+                                <%=trip.startLocation%> - <%=trip.endLocation%>
+                            </span>
+                        </div>
+
+                        <div class="mt-6 flex justify-between">
+                          <% if(trip.status==="scheduled"){ %>
+                            <button 
+                                class="start-trip-btn px-4 py-2 bg-green-500 text-white rounded-lg flex items-center animate-pulse"
+                                data-trip-id="<%= trip._id %>">
+                                <i class="fas fa-play mr-2"></i> Start Trip
+                            </button>
+                       <% } else if(trip.status==="in-progress"){ %>
+                            <button onclick="endTrip('<%= trip._id %>')"
+                                class="end-trip-btn px-4 py-2 bg-blue-500 text-white rounded-lg flex items-center "
+                                data-trip-id="<%= trip._id %>">
+                               <i class="fas fa-pause mr-2"></i> End Trip
+                            </button>
+                            <% } else { %>
+                                <button 
+                                class=" disabled py-2 px-4 bg-gray-400 text-white rounded-lg flex items-center"
+                                disabled>
+                                <i class="fas fa-check mr-2"></i> Trip Completed
+                            </button>
+                            <% } %>
+
+                            <button
+                                class="details-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-lg flex items-center">
+                                <i class="fas fa-info-circle mr-2"></i> Details
+                            </button>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <%})%>
+
+
+        </div>
+
+        <!-- Trip Detail Modal -->
+        <div id="tripModal"
+            class="modal modal-hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center p-4 z-50">
+            <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="relative">
+                    <img id="modalImage" src="" alt="Trip image" class="w-full h-56 object-cover">
+                    <button id="closeModal" class="absolute top-4 right-4 bg-white rounded-full p-2">
+                        <i class="fas fa-times text-gray-800"></i>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h2 id="modalTitle" class="text-2xl font-bold text-gray-800"></h2>
+                            <p id="modalDescription" class="text-gray-600 mt-2"></p>
+                        </div>
+                        <span id="modalStatus" class="px-3 py-1 rounded-full text-sm font-medium"></span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mt-6">
+                        <div class="flex items-center text-gray-500">
+                            <i class="fas fa-calendar-alt mr-2"></i>
+                            <span id="modalDates"></span>
+                        </div>
+                        <div class="flex items-center text-gray-500">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            <span id="modalLocation"></span>
+                        </div>
+                        <div class="flex items-center text-gray-500">
+                            <i class="fas fa-users mr-2"></i>
+                            <span id="modalTravelers"></span>
+                        </div>
+                        <div class="flex items-center text-gray-500">
+                            <i class="fas fa-dollar-sign mr-2"></i>
+                            <span id="modalBudget"></span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <h3 class="text-lg font-semibold text-gray-800">Trip Itinerary</h3>
+                        <ul id="modalItinerary" class="mt-2 space-y-2">
+                            <!-- Itinerary items will be added here -->
+                        </ul>
+                    </div>
+
+                    <div class="mt-8 flex justify-end space-x-3">
+                        <button class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg">Edit Trip</button>
+                        <button class="px-4 py-2 bg-blue-500 text-white rounded-lg">Share</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Sample trip data
+            const trips = [
+                {
+                    id: 1,
+                    title: "Rocky Mountain Adventure",
+                    description: "5-day hiking expedition through the Canadian Rockies",
+                    dates: "Aug 15 - Aug 20, 2023",
+                    location: "Banff, Canada",
+                    status: "Upcoming",
+                    statusClass: "bg-blue-500 text-white",
+                    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                    travelers: "Solo traveler",
+                    budget: "$1,200",
+                    itinerary: [
+                        "Day 1: Arrival and accommodation check-in",
+                        "Day 2: Johnston Canyon hike",
+                        "Day 3: Lake Louise and Moraine Lake visit",
+                        "Day 4: Sulphur Mountain gondola ride",
+                        "Day 5: Departure"
+                    ]
+                },
+                {
+                    id: 2,
+                    title: "Bali Beach Retreat",
+                    description: "7-day relaxation and surfing in beautiful Bali",
+                    dates: "Jul 10 - Jul 17, 2023",
+                    location: "Bali, Indonesia",
+                    status: "Ongoing",
+                    statusClass: "bg-yellow-500 text-white",
+                    image: "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                    travelers: "2 travelers",
+                    budget: "$1,800",
+                    itinerary: [
+                        "Day 1: Arrival and beach time",
+                        "Day 2: Surfing lessons at Kuta Beach",
+                        "Day 3: Ubud monkey forest and rice terraces",
+                        "Day 4: Temple tour and traditional dance",
+                        "Day 5: Snorkeling at Menjangan Island",
+                        "Day 6: Free day for relaxation",
+                        "Day 7: Departure"
+                    ]
+                },
+                {
+                    id: 3,
+                    title: "Paris City Tour",
+                    description: "4-day exploration of Parisian culture and landmarks",
+                    dates: "Jun 5 - Jun 9, 2023",
+                    location: "Paris, France",
+                    status: "Completed",
+                    statusClass: "bg-green-500 text-white",
+                    image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                    travelers: "3 travelers",
+                    budget: "$2,500",
+                    itinerary: [
+                        "Day 1: Arrival and Eiffel Tower visit",
+                        "Day 2: Louvre Museum and Seine River cruise",
+                        "Day 3: Notre-Dame and Montmartre exploration",
+                        "Day 4: Versailles Palace day trip",
+                        "Day 5: Departure"
+                    ]
+                }
+            ];
+
+            // Get DOM elements
+            const modal = document.getElementById('tripModal');
+            const closeModalBtn = document.getElementById('closeModal');
+            const detailButtons = document.querySelectorAll('.details-btn');
+
+            // Add event listeners to detail buttons
+            detailButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const card = this.closest('.trip-card');
+                    const title = card.querySelector('h3').textContent;
+
+                    // Find the trip data
+                    const trip = trips.find(t => t.title === title);
+
+                    if (trip) {
+                        // Populate modal with trip data
+                        document.getElementById('modalImage').src = trip.image;
+                        document.getElementById('modalTitle').textContent = trip.title;
+                        document.getElementById('modalDescription').textContent = trip.description;
+                        document.getElementById('modalDates').textContent = trip.dates;
+                        document.getElementById('modalLocation').textContent = trip.location;
+                        document.getElementById('modalTravelers').textContent = trip.travelers;
+                        document.getElementById('modalBudget').textContent = trip.budget;
+
+                        const statusBadge = document.getElementById('modalStatus');
+                        statusBadge.textContent = trip.status;
+                        statusBadge.className = `px-3 py-1 rounded-full text-sm font-medium ${trip.statusClass}`;
+
+                        // Populate itinerary
+                        const itineraryList = document.getElementById('modalItinerary');
+                        itineraryList.innerHTML = '';
+                        trip.itinerary.forEach(item => {
+                            const li = document.createElement('li');
+                            li.className = 'flex items-start';
+                            li.innerHTML = `<i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i> <span>${item}</span>`;
+                            itineraryList.appendChild(li);
+                        });
+
+                        // Show modal
+                        modal.classList.remove('modal-hidden');
+                        modal.classList.add('modal-visible');
+                    }
+                });
+            });
+
+            // Close modal
+            closeModalBtn.addEventListener('click', function () {
+                modal.classList.remove('modal-visible');
+                modal.classList.add('modal-hidden');
+            });
+
+            // Start trip buttons
+            const startButtons = document.querySelectorAll('.start-trip-btn');
+
+            startButtons.forEach(button => {
+                button.addEventListener('click', function handleStart() {
+                    const card = this.closest('.trip-card');
+                    const statusBadge = card.querySelector('.bg-blue-500');
+
+                    if (statusBadge) {
+                        // update badge
+                        statusBadge.textContent = 'Ongoing';
+                        statusBadge.classList.remove('bg-blue-500');
+                        statusBadge.classList.add('bg-yellow-500');
+
+                        // update button
+                        this.innerHTML = `<i class="fas fa-pause mr-2"></i> End Trip`;
+                        this.classList.remove('bg-green-500', 'animate-pulse');
+                        this.classList.add('bg-blue-500');
+
+                        // remove start handler and add end handler
+                        this.removeEventListener('click', handleStart);
+                        this.addEventListener('click', () => endTrip(card.dataset.tripId));
+
+                        // backend call
+                        fetch('/startTrip', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ tripId: card.dataset.tripId })
+                        })
+                            .then(response => response.json())
+                            .then(data => console.log('Trip started:', data))
+                            .catch(err => console.error('Error starting trip:', err));
+                    }
+                });
+            });
+
+            function endTrip(tripId) {
+                const card = document.querySelector(`.trip-card[data-trip-id='${tripId}']`);
+                const statusBadge = card.querySelector('.bg-yellow-500');
+                console.log("called");
+
+                if (statusBadge) {
+                    // update badge
+                    statusBadge.textContent = 'Completed';
+                    statusBadge.classList.remove('bg-yellow-500');
+                    statusBadge.classList.add('bg-green-500');
+
+                    // update button
+                    const btn = card.querySelector('.end-trip-btn');
+                    btn.innerHTML = `<i class="fas fa-check mr-2"></i> Trip Completed`;
+                    btn.classList.remove('bg-blue-500');
+                    btn.classList.add('bg-gray-400');
+                    btn.disabled = true;
+
+                    // backend call
+                    fetch('/endTrip', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ tripId })
+                    })
+                        .then(r => r.json())
+                        .then(data => console.log('Trip ended:', data))
+                        .catch(err => console.error('Error ending trip:', err));
+                }
+            }
+
+        });
+    </script>
+</body>
+
+</html>

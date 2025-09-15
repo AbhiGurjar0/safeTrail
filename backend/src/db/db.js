@@ -3,8 +3,8 @@ const dbgr = require("debug")("development:mongoose");
 
 async function connectDB() {
     try {
-        await mongoose.connect(process.env.MONGO_URI, {
-          
+        await mongoose.connect(`${process.env.MONGO_URI}/safetrail`, {
+
         });
         dbgr("✅ MongoDB connected");
     } catch (err) {
