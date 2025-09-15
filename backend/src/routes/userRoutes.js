@@ -3,10 +3,12 @@ const router = express.Router();
 const { loginUser, registerUser, logoutUser, forgotPass } = require('../controllers/userAuth');
 const { emergencyService } = require('../services/emergencyService');
 const isLoggendIn = require('../middlewares/isLoggendIn');
+const mongoose = require('mongoose');
 const userModel = require('../models/User');
 const journeyModel = require('../models/Journey');
 const { getIO } = require("../socket");
 const Trip = require('../models/Trip');
+const Emergency = require('../models/emergency');
 
 
 
@@ -43,12 +45,14 @@ router.get('/register', (req, res) => {
 router.get('/emergencySos', (req, res) => {
     res.render('emergencySos');
 })
-router.get('/Admin', (req, res) => {
-    res.render('admin');
+router.get('/Admin', async (req, res) => {
+    let Trips = await Trip.find();
+    let emergency = await Emergency.find();
+    res.render('admin', { Trips, emergencies: emergency });
 })
-router.get('/Admin', (req, res) => {
-    res.render('admin');
-})
+// router.get('/Admin', (req, res) => {
+//     res.render('admin');
+// })
 router.get('/police', (req, res) => {
     res.render('police');
 })
@@ -120,7 +124,34 @@ router.post('/endTrip', async (req, res) => {
         res.redirect('/details');
     }
 });
+router.post('/emergencySos', isLoggendIn, async (req, res) => {
+    try {
+        const { location, message } = req.body;
+
+        // Notify emergency services
+        await Emergency.create({
+            userId: req.user._id,
+            startLocation: "N/A",
+            endLocation: "N/A",
+            travelDate: new Date(),
+            travelTime: "N/A",
+            passengers: 0,
+            status: 'in-progress'
+        });
+        getIO().emit("emergency", { location, message });
 
 
+        req.flash("success", "Emergency services notified.");
+        res.json({ success: true });
+    } catch (error) {
+        console.error("Error notifying emergency services:", error);
+        req.flash("error", "Failed to notify emergency services.");
+        res.json({ success: false });
+    }
+});
+
+// getIO().on("broadcast", (message) => {
+//     getIO().emit("alert", { message });
+// });
 
 module.exports = router;

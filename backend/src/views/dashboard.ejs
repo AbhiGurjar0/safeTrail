@@ -58,6 +58,19 @@
 </head>
 
 <body class="bg-white p-8 font-sans text-gray-800">
+  <div class="absolute top-4 w-full max-w-2xl px-4">
+    <% if (success && success.length> 0) { %>
+      <div class="bg-green-500 text-white px-4 py-2 rounded mb-2">
+        <%= success %>
+      </div>
+      <% } %>
+
+        <% if (error && error.length> 0) { %>
+          <div class="bg-red-500 text-white px-4 py-2 rounded mb-2">
+            <%= error %>
+          </div>
+          <% } %>
+  </div>
   <div class="max-w-7xl mx-auto">
     <!-- Header -->
     <div class="mb-8">
@@ -186,7 +199,7 @@
       <!-- Right Column -->
       <div class="md:col-span-4 space-y-6">
         <!-- Emergency Help -->
-        <div class="border border-gray-200 rounded-lg p-5">
+        <div class="border border-gray-200 rounded-lg p-5" onclick="emergencyService()">
           <div class="flex items-center text-red-600 font-semibold mb-1">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24"
               stroke="currentColor" stroke-width="2">
@@ -545,6 +558,25 @@
     function closeForm() {
       document.getElementById('journeyForm').style.display = 'none';
     }
+    async function emergencyService() {
+      await fetch('/emergencySos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify()
+      })
+        .then(response => response.json())
+        .then(data => {
+          alert('Emergency services have been notified. Help is on the way!');
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Failed to notify emergency services. Please try again.');
+        });
+    }
+    let socket = io();
+    socket.on("alert", ({ message }) => {
+      alert(`Safety Alert: ${message}`);
+    });
   </script>
 
 
