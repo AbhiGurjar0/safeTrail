@@ -6,7 +6,7 @@ const journeySchema = mongoose.Schema(
         startLocation: { type: String, required: true },
         endLocation: { type: String, required: true },
         travelDate: { type: Date, required: true },
-        travelTime: { type: String, required: true },
+        enddate: { type: Date, required: true },
         passengers: { type: Number, required: true },
         status: { type: String, enum: ['scheduled', 'in-progress', 'completed'], default: 'scheduled' },
     }

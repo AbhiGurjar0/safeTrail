@@ -245,6 +245,15 @@
       </div>
     </section>
   </div>
+  <!-- Modal -->
+  <div id="mapModal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center">
+    <div class="bg-white p-4 rounded-lg w-3/4 h-3/4">
+      <button onclick="closeMap()" class="float-right bg-red-500 text-white px-3 py-1 rounded">X</button>
+      <iframe id="mapFrame" class="w-full h-full" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+  </div>
+
+
   <!-- fucntion -->
   <script src="/socket.io/socket.io.js"></script>
 
@@ -272,6 +281,8 @@
     socket.on("tripStarted", (data) => {
       console.log("Trip started:", data);
       // Find the tourist list container
+
+      showMap(data.location.lat, data.location.long);
       const touristList = document.querySelector("#tourist-list .space-y-4");
       if (touristList) {
         // Create a new tourist card element
@@ -327,6 +338,7 @@
     });
     socket.on('emergency', (data) => {
       console.log('Emergency SOS received:', data);
+      showMap(data.location.lat, data.location.long);
       // You can add code here to update the SOS requests section in real-time
     });
 
@@ -345,6 +357,16 @@
       alert("Alert broadcasted to all tourists.");
       document.getElementById("alert-message").value = "";
     };
+    function showMap(lat, lng) {
+      document.getElementById("mapModal").classList.remove("hidden");
+      document.getElementById("mapFrame").src =
+        `https://www.google.com/maps?q=${lat},${lng}&z=15&output=embed`;
+    }
+
+    function closeMap() {
+      document.getElementById("mapModal").classList.add("hidden");
+      document.getElementById("mapFrame").src = "";
+    }
   </script>
 
 

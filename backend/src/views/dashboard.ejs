@@ -58,7 +58,7 @@
 </head>
 
 <body class="bg-white p-8 font-sans text-gray-800">
-  <div class="absolute top-4 w-full max-w-2xl px-4">
+  <div class="absolute top-4 w-full max-w-2xl px-4 z-99">
     <% if (success && success.length> 0) { %>
       <div class="bg-green-500 text-white px-4 py-2 rounded mb-2">
         <%= success %>
@@ -71,11 +71,17 @@
           </div>
           <% } %>
   </div>
-  <div class="max-w-7xl mx-auto">
+
+  <div class="sticky top-0 z-50 h-[5vh]">
+    <%- include('partials/navbar', { user: user }) %>
+  </div>
+  <div class="pt-20 max-w-7xl mx-auto">
     <!-- Header -->
     <div class="mb-8">
       <h1 class="text-2xl font-bold mb-1">Tourist Dashboard</h1>
-      <p class="text-gray-500">Welcome back, John Doe</p>
+      <p class="text-gray-500">Welcome back, <span class="font-semibold">
+          <%= user.name %>
+        </span></p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
@@ -125,76 +131,95 @@
           </div>
         </div>
 
-        <!-- My Journey Log -->
-        <div class="border border-gray-200 rounded-lg p-5">
-          <div class="flex items-center text-gray-700 mb-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-green-600 mr-2" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M17.657 16.657L13.414 12.414a2 2 0 10-2.828-2.828l-4.243 4.243a6 6 0 108.485 8.485z" />
-              <circle cx="12" cy="12" r="3" />
-            </svg>
-            <span class="font-semibold text-lg">My Journey Log</span>
+        <!-- Filter Bar -->
+        <div class="flex flex-wrap items-center justify-between mb-6">
+          <div class="flex space-x-2 mb-4">
+            <button class="px-4 py-2 bg-blue-500 text-white rounded-lg">All Trips</button>
+            <button class="px-4 py-2 bg-white text-gray-700 rounded-lg border">Upcoming</button>
+            <button class="px-4 py-2 bg-white text-gray-700 rounded-lg border">Ongoing</button>
+            <button class="px-4 py-2 bg-white text-gray-700 rounded-lg border">Completed</button>
           </div>
-          <p class="text-gray-400 text-sm mb-4">Track your travel history</p>
-
-          <!-- Entries -->
-          <div class="space-y-4">
-            <!-- Entry 1 -->
-            <div class="border border-gray-200 rounded-md p-3 flex justify-between items-center">
-              <div>
-                <p class="font-semibold">Eiffel Tower, Paris</p>
-                <p class="text-gray-400 text-sm flex items-center mt-1">
-                  <svg class="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" stroke-width="2"
-                    viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3" />
-                    <circle cx="12" cy="12" r="10" />
-                  </svg>
-                  Today, 2:30 PM
-                </p>
-              </div>
-              <span class="px-3 py-1 rounded-full bg-gray-100 text-gray-600 text-xs font-semibold">Visited</span>
-            </div>
-
-            <!-- Entry 2 -->
-            <div class="border border-gray-200 rounded-md p-3 flex justify-between items-center">
-              <div>
-                <p class="font-semibold">Louvre Museum, Paris</p>
-                <p class="text-gray-400 text-sm flex items-center mt-1">
-                  <svg class="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" stroke-width="2"
-                    viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3" />
-                    <circle cx="12" cy="12" r="10" />
-                  </svg>
-                  Today, 10:00 AM
-                </p>
-              </div>
-              <span class="px-3 py-1 rounded-full bg-gray-100 text-gray-600 text-xs font-semibold">Visited</span>
-            </div>
-
-            <!-- Entry 3 -->
-            <div class="border border-gray-200 rounded-md p-3 flex justify-between items-center">
-              <div>
-                <p class="font-semibold">Charles de Gaulle Airport</p>
-                <p class="text-gray-400 text-sm flex items-center mt-1">
-                  <svg class="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" stroke-width="2"
-                    viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3" />
-                    <circle cx="12" cy="12" r="10" />
-                  </svg>
-                  Yesterday, 8:00 PM
-                </p>
-              </div>
-              <span class="px-3 py-1 rounded-full bg-gray-100 text-gray-600 text-xs font-semibold">Arrived</span>
-            </div>
+          <div class="flex space-x-2 mb-4">
+            <button class="px-4 py-2 bg-white text-gray-700 rounded-lg border flex items-center">
+              <i class="fas fa-sort mr-2"></i> Sort By
+            </button>
+            <button onclick="document.getElementById('journeyForm').style.display='block'"
+              class="px-4 py-2 bg-blue-500 text-white rounded-lg flex items-center">
+              <i class="fas fa-plus mr-2"></i> New Trip
+            </button>
           </div>
+        </div>
 
-          <button onclick="document.getElementById('journeyForm').style.display='block'"
-            class="mt-4 w-full border border-gray-200 rounded-md py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition">
-            Add Journey Entry
-          </button>
+        <!-- Trip Logs Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Trip Card 1 -->
+          <%Trips.forEach((trip)=>{%>
+            <div data-trip-id="<%= trip._id %>"
+              class="trip-card bg-white rounded-xl overflow-hidden border border-gray-200">
+              <div class="relative">
+                <img
+                  src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+                  alt="Rocky Mountains" class="w-full h-48 object-cover">
+                <div class="absolute top-4 right-4 bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                  Upcoming
+                </div>
+              </div>
+              <div class="p-5">
+                <div class="flex justify-between items-start">
+                  <h3 class="text-xl font-bold text-gray-800">
+                    <%=trip.endLocation%>
+                  </h3>
+                  <i class="fas fa-ellipsis-v text-gray-400"></i>
+                </div>
+                <p class="text-gray-600 mt-2">5-day hiking expedition through the Canadian Rockies</p>
+
+                <div class="flex items-center mt-4 text-gray-500">
+                  <i class="fas fa-calendar-alt mr-2"></i>
+                  <span>
+                    <%=trip.travelDate.toString().slice(4, 15)%> - <%=trip.endDate%>
+                  </span>
+                </div>
+
+                <div class="flex items-center mt-2 text-gray-500">
+                  <i class="fas fa-map-marker-alt mr-2"></i>
+                  <span>
+                    <%=trip.startLocation%> - <%=trip.endLocation%>
+                  </span>
+                </div>
+
+                <div class="mt-6 flex justify-between">
+                  <% if(trip.status==="scheduled" ){ %>
+                    <button
+                      class="start-trip-btn px-4 py-2 bg-green-500 text-white rounded-lg flex items-center animate-pulse"
+                      data-trip-id="<%= trip._id %>">
+                      <i class="fas fa-play mr-2"></i> Start Trip
+                    </button>
+                    <% } else if(trip.status==="in-progress" ){ %>
+                      <button onclick="endTrip('<%= trip._id %>')"
+                        class="end-trip-btn px-4 py-2 bg-blue-500 text-white rounded-lg flex items-center "
+                        data-trip-id="<%= trip._id %>">
+                        <i class="fas fa-pause mr-2"></i> End Trip
+                      </button>
+                      <% } else { %>
+                        <button class=" disabled py-2 px-4 bg-gray-400 text-white rounded-lg flex items-center"
+                          disabled>
+                          <i class="fas fa-check mr-2"></i> Trip Completed
+                        </button>
+                        <% } %>
+
+                          <button class="details-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-lg flex items-center">
+                            <i class="fas fa-info-circle mr-2"></i> Details
+                          </button>
+
+                </div>
+
+              </div>
+            </div>
+            <%})%>
         </div>
       </div>
+
+
 
       <!-- Right Column -->
       <div class="md:col-span-4 space-y-6">
@@ -253,7 +278,8 @@
 
             <!-- Alert 2 -->
             <div class="border border-gray-200 rounded-md p-3">
-              <p class="text-yellow-600 text-sm font-semibold">Traffic disruption on Route A1 - use alternate routes</p>
+              <p class="text-yellow-600 text-sm font-semibold">Traffic disruption on Route A1 - use alternate routes
+              </p>
               <p class="text-gray-400 text-xs mt-0.5">4 hours ago</p>
             </div>
 
@@ -341,11 +367,11 @@
 
               <div class="col-md-6">
                 <div class="mb-3">
-                  <label for="time" class="form-label">
-                    <i class="far fa-clock me-1"></i>Journey Time
+                  <label for="enddate" class="form-label">
+                    <i class="far fa-calendar-alt me-1"></i>Journey End Date
                   </label>
-                  <input type="time" class="form-control" id="time" name="time" required>
-                  <div class="form-text" id="timeInfo"></div>
+                  <input type="date" class="form-control" id="enddate" name="enddate" required>
+                  <div class="form-text" id="enddateInfo"></div>
                 </div>
               </div>
             </div>
@@ -366,14 +392,6 @@
               </div>
             </div>
 
-            <div class="mb-3">
-              <label for="notes" class="form-label">
-                <i class="fas fa-sticky-note me-1"></i>Notes (Optional)
-              </label>
-              <textarea class="form-control" id="notes" name="notes" rows="2"
-                placeholder="Any special requirements or notes..."></textarea>
-              <div class="form-text"><span id="noteCount">0</span>/200 characters</div>
-            </div>
 
             <div class="form-check mb-3">
               <input class="form-check-input" type="checkbox" id="rememberDetails" name="rememberDetails">
@@ -392,14 +410,6 @@
   </div>
 
   <script>
-    // Sample location suggestions (in a real app, these would come from an API)
-    const locationSuggestions = [
-      "New York, NY", "Los Angeles, CA", "Chicago, IL", "Houston, TX",
-      "Phoenix, AZ", "Philadelphia, PA", "San Antonio, TX", "San Diego, CA",
-      "Dallas, TX", "San Jose, CA", "Austin, TX", "Jacksonville, FL",
-      "Fort Worth, TX", "Columbus, OH", "Indianapolis, IN", "Charlotte, NC",
-      "San Francisco, CA", "Seattle, WA", "Denver, CO", "Washington, DC"
-    ];
 
     // Initialize the form with current date and time
     document.addEventListener('DOMContentLoaded', function () {
@@ -409,36 +419,24 @@
       const today = now.toISOString().split('T')[0];
       document.getElementById('date').value = today;
       updateDateInfo(today);
-
-      // Set default time to next hour
-      const nextHour = new Date(now.setHours(now.getHours() + 1, 0, 0, 0));
-      const timeString = nextHour.toTimeString().substring(0, 5);
-      document.getElementById('time').value = timeString;
-      updateTimeInfo(timeString);
-
       // Add event listeners
       document.getElementById('date').addEventListener('change', function () {
         updateDateInfo(this.value);
       });
+      // document.getElementById('notes').addEventListener('input', function () {
+      //   const count = this.value.length;
+      //   document.getElementById('noteCount').textContent = count;
 
-      document.getElementById('time').addEventListener('change', function () {
-        updateTimeInfo(this.value);
-      });
-
-      document.getElementById('notes').addEventListener('input', function () {
-        const count = this.value.length;
-        document.getElementById('noteCount').textContent = count;
-
-        if (count > 200) {
-          this.classList.add('is-invalid');
-        } else {
-          this.classList.remove('is-invalid');
-        }
-      });
+      //   if (count > 200) {
+      //     this.classList.add('is-invalid');
+      //   } else {
+      //     this.classList.remove('is-invalid');
+      //   }
+      // });
 
       // Setup location autocomplete
-      setupAutocomplete('startLocation', 'startSuggestions');
-      setupAutocomplete('destination', 'destinationSuggestions');
+      // setupAutocomplete('startLocation', 'startSuggestions');
+      // setupAutocomplete('destination', 'destinationSuggestions');
     });
 
     function updateDateInfo(dateString) {
@@ -465,21 +463,6 @@
       document.getElementById('dateInfo').textContent = infoText;
     }
 
-    function updateTimeInfo(timeString) {
-      const [hours, minutes] = timeString.split(':');
-      const hour = parseInt(hours);
-      const ampm = hour >= 12 ? 'PM' : 'AM';
-      const displayHour = hour % 12 || 12;
-
-      let timeOfDay = "";
-      if (hour < 12) timeOfDay = "Morning";
-      else if (hour < 17) timeOfDay = "Afternoon";
-      else if (hour < 21) timeOfDay = "Evening";
-      else timeOfDay = "Night";
-
-      document.getElementById('timeInfo').textContent =
-        `${displayHour}:${minutes} ${ampm} (${timeOfDay})`;
-    }
 
     function adjustPassengers(change) {
       const passengersInput = document.getElementById('passengers');
@@ -496,83 +479,167 @@
       label.textContent = value || (elementId === 'startLabel' ? 'Start' : 'Destination');
     }
 
-    function setupAutocomplete(inputId, suggestionsId) {
-      const input = document.getElementById(inputId);
-      const suggestionsContainer = document.getElementById(suggestionsId);
+    // function setupAutocomplete(inputId, suggestionsId) {
+    //   const input = document.getElementById(inputId);
+    //   const suggestionsContainer = document.getElementById(suggestionsId);
 
-      input.addEventListener('focus', function () {
-        if (this.value.length > 1) {
-          showSuggestions(this.value, suggestionsContainer, input);
-        }
-      });
+    //   input.addEventListener('focus', function () {
+    //     if (this.value.length > 1) {
+    //       showSuggestions(this.value, suggestionsContainer, input);
+    //     }
+    //   });
 
-      input.addEventListener('input', function () {
-        showSuggestions(this.value, suggestionsContainer, input);
-      });
+    //   input.addEventListener('input', function () {
+    //     showSuggestions(this.value, suggestionsContainer, input);
+    //   });
 
-      // Hide suggestions when clicking outside
-      document.addEventListener('click', function (e) {
-        if (e.target !== input && !suggestionsContainer.contains(e.target)) {
-          suggestionsContainer.classList.add('d-none');
-        }
-      });
-    }
+    //   // Hide suggestions when clicking outside
+    //   document.addEventListener('click', function (e) {
+    //     if (e.target !== input && !suggestionsContainer.contains(e.target)) {
+    //       suggestionsContainer.classList.add('d-none');
+    //     }
+    //   });
+    // }
 
-    function showSuggestions(query, container, input) {
-      if (query.length < 2) {
-        container.classList.add('d-none');
-        return;
-      }
+    // function showSuggestions(query, container, input) {
+    //   if (query.length < 2) {
+    //     container.classList.add('d-none');
+    //     return;
+    //   }
 
-      const filtered = locationSuggestions.filter(location =>
-        location.toLowerCase().includes(query.toLowerCase())
-      );
+    //   const filtered = locationSuggestions.filter(location =>
+    //     location.toLowerCase().includes(query.toLowerCase())
+    //   );
 
-      if (filtered.length === 0) {
-        container.classList.add('d-none');
-        return;
-      }
+    //   if (filtered.length === 0) {
+    //     container.classList.add('d-none');
+    //     return;
+    //   }
 
-      container.innerHTML = '';
-      filtered.forEach(location => {
-        const item = document.createElement('button');
-        item.type = 'button';
-        item.classList.add('list-group-item', 'list-group-item-action');
-        item.textContent = location;
-        item.addEventListener('click', function () {
-          input.value = location;
-          updateLocationLabel(input.id === 'startLocation' ? 'startLabel' : 'destinationLabel', location);
-          container.classList.add('d-none');
-        });
-        container.appendChild(item);
-      });
+    //   container.innerHTML = '';
+    //   filtered.forEach(location => {
+    //     const item = document.createElement('button');
+    //     item.type = 'button';
+    //     item.classList.add('list-group-item', 'list-group-item-action');
+    //     item.textContent = location;
+    //     item.addEventListener('click', function () {
+    //       input.value = location;
+    //       updateLocationLabel(input.id === 'startLocation' ? 'startLabel' : 'destinationLabel', location);
+    //       container.classList.add('d-none');
+    //     });
+    //     container.appendChild(item);
+    //   });
 
-      // Position the suggestions container below the input
-      const rect = input.getBoundingClientRect();
-      container.style.top = `${rect.bottom + window.scrollY}px`;
-      container.style.left = `${rect.left + window.scrollX}px`;
-      container.style.width = `${rect.width}px`;
-      container.classList.remove('d-none');
-    }
+    //   // Position the suggestions container below the input
+    //   const rect = input.getBoundingClientRect();
+    //   container.style.top = `${rect.bottom + window.scrollY}px`;
+    //   container.style.left = `${rect.left + window.scrollX}px`;
+    //   container.style.width = `${rect.width}px`;
+    //   container.classList.remove('d-none');
+    // }
 
     function closeForm() {
       document.getElementById('journeyForm').style.display = 'none';
     }
     async function emergencyService() {
-      await fetch('/emergencySos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify()
-      })
-        .then(response => response.json())
-        .then(data => {
-          alert('Emergency services have been notified. Help is on the way!');
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          alert('Failed to notify emergency services. Please try again.');
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+          const payload = {
+            touristId: "<%= user._id %>", // dynamic from server
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude,
+          };
+          console.log("SOS Payload:", payload);
+          await fetch('/emergencySos', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ payload })
+          })
+            .then(response => response.json())
+            .then(data => {
+              alert('Emergency services have been notified. Help is on the way!');
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('Failed to notify emergency services. Please try again.');
+            });
+          alert("🚨 SOS sent to authorities!");
+        }, () => {
+          alert("❌ Failed to get location!");
         });
+      }
+      else {
+        alert("❌ Geolocation is not supported by this browser.");
+      }
     }
+    const startButtons = document.querySelectorAll('.start-trip-btn');
+
+    startButtons.forEach(button => {
+      button.addEventListener('click', function handleStart() {
+        const card = this.closest('.trip-card');
+        const statusBadge = card.querySelector('.bg-blue-500');
+
+        if (statusBadge) {
+          // update badge
+          statusBadge.textContent = 'Ongoing';
+          statusBadge.classList.remove('bg-blue-500');
+          statusBadge.classList.add('bg-yellow-500');
+
+          // update button
+          this.innerHTML = `<i class="fas fa-pause mr-2"></i> End Trip`;
+          this.classList.remove('bg-green-500', 'animate-pulse');
+          this.classList.add('bg-blue-500');
+
+          // remove start handler and add end handler
+          this.removeEventListener('click', handleStart);
+          this.addEventListener('click', () => endTrip(card.dataset.tripId));
+
+          // backend call
+          fetch('/startTrip', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tripId: card.dataset.tripId })
+          })
+            .then(response => response.json())
+            .then(data => console.log('Trip started:', data))
+            .catch(err => console.error('Error starting trip:', err));
+        }
+      });
+    });
+
+    function endTrip(tripId) {
+      const card = document.querySelector(`.trip-card[data-trip-id='${tripId}']`);
+      const statusBadge = card.querySelector('.bg-yellow-500');
+      console.log("called");
+
+      if (statusBadge) {
+        // update badge
+        statusBadge.textContent = 'Completed';
+        statusBadge.classList.remove('bg-yellow-500');
+        statusBadge.classList.add('bg-green-500');
+
+        // update button
+        const btn = card.querySelector('.end-trip-btn');
+        btn.innerHTML = `<i class="fas fa-check mr-2"></i> Trip Completed`;
+        btn.classList.remove('bg-blue-500');
+        btn.classList.add('bg-gray-400');
+        btn.disabled = true;
+
+        // backend call
+        fetch('/endTrip', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tripId })
+        })
+          .then(r => r.json())
+          .then(data => console.log('Trip ended:', data))
+          .catch(err => console.error('Error ending trip:', err));
+      }
+    }
+    function sos() {
+
+    }
+
     let socket = io();
     socket.on("alert", ({ message }) => {
       alert(`Safety Alert: ${message}`);

@@ -9,6 +9,7 @@ const journeyModel = require('../models/Journey');
 const { getIO } = require("../socket");
 const Trip = require('../models/Trip');
 const Emergency = require('../models/emergency');
+const e = require('connect-flash');
 
 
 
@@ -33,8 +34,11 @@ router.get('/', isLoggendIn, async (req, res) => {
     res.render('home', { user });
 })
 
-router.get('/dashboard', (req, res) => {
-    res.render('dashboard');
+router.get('/dashboard', isLoggendIn, async (req, res) => {
+    const Trips = await journeyModel.find();
+    let user = await userModel.findById(req.user._id);
+
+    res.render('dashboard', { Trips, user });
 })
 router.get('/login', (req, res) => {
     res.render('login');
@@ -42,8 +46,9 @@ router.get('/login', (req, res) => {
 router.get('/register', (req, res) => {
     res.render('register');
 })
-router.get('/emergencySos', (req, res) => {
-    res.render('emergencySos');
+router.get('/emergencySos', isLoggendIn, async (req, res) => {
+    let user = await userModel.findById(req.user._id);
+    res.render('emergencySos', { user });
 })
 router.get('/Admin', async (req, res) => {
     let Trips = await Trip.find();
@@ -62,14 +67,14 @@ router.get('/forgot', (req, res) => {
 
 router.post('/journey/submit', isLoggendIn, async (req, res) => {
     try {
-        const { startLocation, destination, date, time, passengers } = req.body;
+        const { startLocation, destination, date, enddate, passengers } = req.body;
 
         await journeyModel.create({
             userId: req.user._id,
             startLocation,
             endLocation: destination,
             travelDate: date,
-            travelTime: time,
+            enddate,
             passengers
 
         });
@@ -126,19 +131,15 @@ router.post('/endTrip', async (req, res) => {
 });
 router.post('/emergencySos', isLoggendIn, async (req, res) => {
     try {
-        const { location, message } = req.body;
+        const { payload } = req.body;
 
         // Notify emergency services
         await Emergency.create({
             userId: req.user._id,
-            startLocation: "N/A",
-            endLocation: "N/A",
-            travelDate: new Date(),
-            travelTime: "N/A",
-            passengers: 0,
-            status: 'in-progress'
+            lat: payload.lat,
+            long: payload.lng,
         });
-        getIO().emit("emergency", { location, message });
+        getIO().emit("emergency", { location: { lat: payload.lat, long: payload.lng }, message: payload.message });
 
 
         req.flash("success", "Emergency services notified.");
