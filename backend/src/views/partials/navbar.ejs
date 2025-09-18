@@ -8,9 +8,10 @@
 </head>
 
 <body>
-    <header class="bg-white shadow-md py-4 px-6 md:px-12 flex items-center justify-between">
-        <a href="#" class="flex items-center space-x-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" viewBox="0 0 24 24"
+    <header class="bg-white shadow-md py-4 px-6 md:px-12 flex items-center justify-between sticky top-0 z-50">
+        <a href="#" class="flex items-center space-x-2 [perspective:1000px]">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                class="h-8 w-8 text-primary animate-flip [transform-style:preserve-3d]" viewBox="0 0 24 24"
                 fill="currentColor">
                 <path
                     d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.3l6.5 3.25L12 10.8l-6.5-3.25L12 4.3zM4 9l8 4 8-4v6l-8 4-8-4V9z" />
@@ -18,9 +19,12 @@
             <span class="text-xl font-bold text-dark">TouristSafe</span>
         </a>
         <nav class="hidden md:flex items-center space-x-6">
-            <a href="/" class="text-gray-600 hover:text-primary transition duration-300">Home</a>
-            <a href="/emergencysos" class="text-gray-600 hover:text-primary transition duration-300">Emergency</a>
-            <a href="/dashboard" class="text-gray-600 hover:text-primary transition duration-300">Dashboard</a>
+            <a href="/"
+                class="text-gray-600 hover:text-primary transition duration-300 transform hover:-translate-y-1 hover:font-bold hover:[text-shadow:1px_1px_2px_rgba(59,130,246,0.2)]">Home</a>
+            <a href="/emergencysos"
+                class="text-gray-600 hover:text-primary transition duration-300 transform hover:-translate-y-1 hover:font-bold hover:[text-shadow:1px_1px_2px_rgba(59,130,246,0.2)]">Emergency</a>
+            <a href="/dashboard"
+                class="text-gray-600 hover:text-primary transition duration-300 transform hover:-translate-y-1 hover:font-bold hover:[text-shadow:1px_1px_2px_rgba(59,130,246,0.2)]">Dashboard</a>
         </nav>
         <div class="flex items-center space-x-4">
             <% if(user && user.length>0){ %>
@@ -41,6 +45,7 @@
                     <% } %>
         </div>
     </header>
+
 
 </body>
 

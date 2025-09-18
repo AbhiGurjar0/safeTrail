@@ -5,59 +5,108 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tourist Dashboard</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;display=swap"
+    rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
   <style>
-    .route-visualization {
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8fafc;
+    }
+
+    /* A subtle transition for cards on hover for a "lift" effect */
+    .card-hover {
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    }
+
+    /* Improved pulse animation for the 'Start Trip' button */
+    .start-trip-btn {
+      animation: pulse-light 2s infinite;
+    }
+
+    @keyframes pulse-light {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+      }
+
+      70% {
+        box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+      }
+    }
+
+    /* Sparkling Text Effect for the user's name */
+    .sparkle-text {
       position: relative;
-    }
-
-    .location-point {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      flex: 0 0 auto;
-    }
-
-    .circle {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
       display: inline-block;
+      overflow: hidden;
     }
 
-    .route-line {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .dashed-line {
-      border-top: 2px dashed #dee2e6;
-      width: 100%;
-    }
-
-    .route-line i {
+    .sparkle-text::after {
+      content: '';
       position: absolute;
-      right: 0;
-      background: white;
-      padding: 0 5px;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+      transform: translateX(-100%);
+      animation: sparkle-effect 3s infinite linear 2s;
+      /* Animate with a delay */
     }
 
-    .list-group {
-      z-index: 1060;
-      max-height: 200px;
-      overflow-y: auto;
+    @keyframes sparkle-effect {
+      0% {
+        transform: translateX(-100%);
+      }
+
+      100% {
+        transform: translateX(100%);
+      }
     }
 
-    #notes:focus {
-      border-color: #4361ee;
-      box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+    /* Fade-in animation for page content */
+    .fade-in {
+      animation: fadeInAnimation 0.8s ease-in-out forwards;
+    }
+
+    @keyframes fadeInAnimation {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
 
-<body class="bg-white p-8 font-sans text-gray-800">
+<body class="bg-gray-50 text-gray-800">
   <div class="absolute top-4 w-full max-w-2xl px-4 z-99">
     <% if (success && success.length> 0) { %>
       <div class="bg-green-500 text-white px-4 py-2 rounded mb-2">
@@ -75,225 +124,206 @@
   <div class="sticky top-0 z-50 h-[5vh]">
     <%- include('partials/navbar', { user: user }) %>
   </div>
-  <div class="pt-20 max-w-7xl mx-auto">
-    <!-- Header -->
-    <div class="mb-8">
-      <h1 class="text-2xl font-bold mb-1">Tourist Dashboard</h1>
-      <p class="text-gray-500">Welcome back, <span class="font-semibold">
-          <%= user.name %>
-        </span></p>
-    </div>
+  <div class="container mx-auto p-4 md:p-8 mt-5">
+    <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div class="lg:col-span-2 space-y-8">
+        <div>
+          <h2 class="text-2xl font-bold mb-4">Current Trip: Himalayan Adventure</h2>
+          <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <img alt="Scenic view of the Himalayas" class="w-full h-64 object-cover"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDd5mIlFera_H9OpD12tIyqueFtbFGbwoyD9A_XocW9TldSWWTtgzOuqiSrOJVwettWMTDKftCWf2yC7tnNM3dn2rxRpPR5Y6-SiFGe2kaRCAn7BGYns9kTetVZUFrclOmNEHQbEbFh2ORB9VF6_JlGG_vNaEIvmXTedreYXBCnetmyOif85C6uzLEg6yf6RawFX_leucgp_aL2KC-QwdqS6NjCh196AlY1gVwfIbX6It2RQld9kwTDQlrllZwb_gsn4Si2WdbvXPA" />
+            <div class="p-6">
+              <div class="bg-blue-500 text-white p-6 rounded-lg flex items-center justify-between mb-10">
+                <div>
+                  <p class="font-bold text-xl"><%=user.name%></p>
+                  <p class="text-sm opacity-80">Tourist ID: TS-A7X9K2MAP</p>
+                  <p class="text-sm opacity-80 mt-2 flex items-center"><span
+                      class="material-icons text-sm mr-1">location_on</span> Paris, France</p>
+                </div>
+                <div class="bg-white p-3 rounded-md">
+                  <span class="material-icons text-blue-500 text-3xl">qr_code_2</span>
+                </div>
+              </div>
+              <div class="flex  justify-between items-start mb-4">
 
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-      <!-- Left Column -->
-      <div class="md:col-span-8 space-y-6">
-        <!-- My Digital ID -->
-        <div class="border border-gray-200 rounded-lg p-5">
-          <div class="flex items-center text-gray-700 mb-2">
-            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" stroke-width="2"
-              viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M12 11c.634 0 1.263-.21 1.754-.604l3.26 3.882a1 1 0 001.491-1.32l-3.261-3.882a2.387 2.387 0 00.006-2.952l2.621-3.134a1 1 0 10-1.512-1.296l-2.62 3.134a2.387 2.387 0 00-1.755-1.028" />
-              <circle cx="12" cy="16" r="4" stroke-width="2" />
-            </svg>
-            <span class="font-semibold text-lg">My Digital ID</span>
-          </div>
-          <p class="text-gray-400 text-sm mb-4">Your secure tourist identification</p>
-
-          <!-- ID Card -->
-          <div
-            class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg p-5 flex justify-between items-center text-white">
-            <div>
-              <h3 class="font-bold text-xl mb-1">John Doe</h3>
-              <p class="text-sm">Tourist ID</p>
-              <p class="text-lg font-mono tracking-wide mt-1">TS-A7X9K2M4P</p>
-              <p class="flex items-center mt-3 text-sm text-blue-200">
-                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M17.657 16.657L13.414 12.414a2 2 0 10-2.828-2.828l-4.243 4.243a6 6 0 108.485 8.485z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-                Paris, France
-              </p>
-            </div>
-            <div class="bg-white bg-opacity-80 p-2 rounded-md">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14 text-blue-600" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor" stroke-width="2">
-                <!-- QR code icon simplified -->
-                <rect x="3" y="3" width="4" height="4" stroke="currentColor" stroke-width="2" />
-                <rect x="8" y="3" width="2" height="2" stroke="currentColor" stroke-width="2" />
-                <rect x="11" y="3" width="2" height="2" stroke="currentColor" stroke-width="2" />
-                <rect x="3" y="8" width="2" height="2" stroke="currentColor" stroke-width="2" />
-                <rect x="6" y="8" width="2" height="2" stroke="currentColor" stroke-width="2" />
-                <rect x="9" y="8" width="2" height="2" stroke="currentColor" stroke-width="2" />
-              </svg>
+                <div>
+                  <h3 class="text-xl font-bold text-gray-900">5-Day Hiking Expedition</h3>
+                  <p class="text-gray-600">Manali, India</p>
+                </div>
+                <div class="text-right">
+                  <p class="text-gray-500 text-sm">Start Date: 2024-07-28</p>
+                  <p class="text-gray-500 text-sm">End Date: 2024-08-01</p>
+                </div>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                <div class="bg-blue-50 p-4 rounded-lg flex items-center">
+                  <span class="material-icons text-blue-500 mr-3">thermostat</span>
+                  <div>
+                    <p class="font-semibold">Weather</p>
+                    <p class="text-sm">Sunny, 22°C</p>
+                  </div>
+                </div>
+                <div class="bg-yellow-50 p-4 rounded-lg flex items-center">
+                  <span class="material-icons text-yellow-500 mr-3">assessment</span>
+                  <div>
+                    <p class="font-semibold">Risk Score</p>
+                    <p class="text-sm">Low (15/100)</p>
+                  </div>
+                </div>
+                <div class="bg-red-50 p-4 rounded-lg flex items-center">
+                  <span class="material-icons text-red-500 mr-3">block</span>
+                  <div>
+                    <p class="font-semibold">Restricted Areas</p>
+                    <p class="text-sm">Rohtang Pass (seasonal)</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
-        <!-- Filter Bar -->
-        <div class="flex flex-wrap items-center justify-between mb-6">
-          <div class="flex space-x-2 mb-4">
-            <button class="px-4 py-2 bg-blue-500 text-white rounded-lg">All Trips</button>
-            <button class="px-4 py-2 bg-white text-gray-700 rounded-lg border">Upcoming</button>
-            <button class="px-4 py-2 bg-white text-gray-700 rounded-lg border">Ongoing</button>
-            <button class="px-4 py-2 bg-white text-gray-700 rounded-lg border">Completed</button>
+        <div class="flex items-center justify-between">
+          <div class="flex space-x-2">
+            <button onclick="tripsToggle(this ,'AllTrips')"
+              class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-sm hover:bg-blue-600 transition-colors">All
+              Trips</button>
+            <button onclick="tripsToggle(this ,'Upcoming')"
+              class="px-4 py-2 bg-white text-gray-700 rounded-lg shadow-sm hover:bg-gray-100 transition-colors">Upcoming</button>
+            <button onclick="tripsToggle(this ,'Completed')"
+              class="px-4 py-2 bg-white text-gray-700 rounded-lg shadow-sm hover:bg-gray-100 transition-colors">Completed</button>
           </div>
           <div class="flex space-x-2 mb-4">
-            <button class="px-4 py-2 bg-white text-gray-700 rounded-lg border flex items-center">
-              <i class="fas fa-sort mr-2"></i> Sort By
-            </button>
+
             <button onclick="document.getElementById('journeyForm').style.display='block'"
-              class="px-4 py-2 bg-blue-500 text-white rounded-lg flex items-center">
+              class="px-4 py-2 bg-blue-600 text-white rounded-lg flex items-center hover:bg-blue-700 shadow-sm transition-all duration-200 hover:scale-105">
               <i class="fas fa-plus mr-2"></i> New Trip
             </button>
           </div>
         </div>
-
-        <!-- Trip Logs Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Trip Card 1 -->
+        <div id="AllTrips" class="flex gap-10 justify-center items-center flex-wrap">
           <%Trips.forEach((trip)=>{%>
-            <div data-trip-id="<%= trip._id %>"
-              class="trip-card bg-white rounded-xl overflow-hidden border border-gray-200">
-              <div class="relative">
-                <img
-                  src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
-                  alt="Rocky Mountains" class="w-full h-48 object-cover">
-                <div class="absolute top-4 right-4 bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                  Upcoming
+            <div data-trip-id="<%= trip._id %>" class="trip-card w-56 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col card-hover transition-transform hover:scale-105">
+              <div class="relative h-28">
+                <img alt="trip image" class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD667dmGLhWQ6d8Bf-MVC4SWtGcH6JWQbQCEZumB46_rBxV8rUXzN9QQvw_NnrHr1eME2zqGpwbqgVnOS6nG0-5WrzPp1yYv3S9vqA8DT90-ra9ynKPTqEgvr6O7kyUrkXMxBJYcAPAg3860IxGTTHJlTigjBtUIIcLcVb711N50HzIJZ9-ZOHrW5F0ukc_3zHa3teqVWxyVjlmHsLDXuzkdJb7gMLgflTanXAeiE49Av3Hoor14kMgpQcle-Ouya0daHSSyHa2g9o" />
+                <span class="absolute top-2 right-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-50 text-blue-600">Upcoming</span>
+              </div>
+
+              <div class="p-3 flex-1">
+                <div class="flex items-center gap-2 text-sm text-gray-700 font-medium truncate">
+                  <i class="fas fa-map-marker-alt text-gray-400"></i>
+                  <span class="truncate"><%= trip.startLocation %> → <%= trip.endLocation %></span>
+                </div>
+                <div class="mt-1 text-xs text-gray-500 truncate">
+                  <%= trip.travelDate.toString().slice(4, 15) %> — <%= trip.endDate %>
                 </div>
               </div>
-              <div class="p-5">
-                <div class="flex justify-between items-start">
-                  <h3 class="text-xl font-bold text-gray-800">
-                    <%=trip.endLocation%>
-                  </h3>
-                  <i class="fas fa-ellipsis-v text-gray-400"></i>
-                </div>
-                <p class="text-gray-600 mt-2">5-day hiking expedition through the Canadian Rockies</p>
 
-                <div class="flex items-center mt-4 text-gray-500">
-                  <i class="fas fa-calendar-alt mr-2"></i>
-                  <span>
-                    <%=trip.travelDate.toString().slice(4, 15)%> - <%=trip.endDate%>
-                  </span>
-                </div>
-
-                <div class="flex items-center mt-2 text-gray-500">
-                  <i class="fas fa-map-marker-alt mr-2"></i>
-                  <span>
-                    <%=trip.startLocation%> - <%=trip.endLocation%>
-                  </span>
-                </div>
-
-                <div class="mt-6 flex justify-between">
-                  <% if(trip.status==="scheduled" ){ %>
-                    <button
-                      class="start-trip-btn px-4 py-2 bg-green-500 text-white rounded-lg flex items-center animate-pulse"
-                      data-trip-id="<%= trip._id %>">
-                      <i class="fas fa-play mr-2"></i> Start Trip
-                    </button>
-                    <% } else if(trip.status==="in-progress" ){ %>
-                      <button onclick="endTrip('<%= trip._id %>')"
-                        class="end-trip-btn px-4 py-2 bg-blue-500 text-white rounded-lg flex items-center "
-                        data-trip-id="<%= trip._id %>">
-                        <i class="fas fa-pause mr-2"></i> End Trip
-                      </button>
-                      <% } else { %>
-                        <button class=" disabled py-2 px-4 bg-gray-400 text-white rounded-lg flex items-center"
-                          disabled>
-                          <i class="fas fa-check mr-2"></i> Trip Completed
-                        </button>
-                        <% } %>
-
-                          <button class="details-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-lg flex items-center">
-                            <i class="fas fa-info-circle mr-2"></i> Details
-                          </button>
-
-                </div>
-
+              <div class="p-3 flex items-center justify-between gap-2">
+                <button class="start-trip-btn flex-1 flex items-center justify-center gap-2 text-xs py-1 rounded-md bg-green-600 text-white transition-colors hover:bg-green-700" data-trip-id="<%= trip._id %>">
+                  <i class="fas fa-play"></i>
+                  Start
+                </button>
+                <button class="details-btn text-xs py-1 px-3 rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200">
+                  <i class="fas fa-info-circle"></i>
+                </button>
               </div>
             </div>
             <%})%>
+
+
+        </div>
+        <div id="Upcoming" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-white rounded-xl shadow-md overflow-hidden group">
+            <div class="relative">
+              <img alt="Eiffel Tower in Paris" class="h-48 w-full object-cover"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD667dmGLhWQ6d8Bf-MVC4SWtGcH6JWQbQCEZumB46_rBxV8rUXzN9QQvw_NnrHr1eME2zqGpwbqgVnOS6nG0-5WrzPp1yYv3S9vqA8DT90-ra9ynKPTqEgvr6O7kyUrkXMxBJYcAPAg3860IxGTTHJlTigjBtUIIcLcVb711N50HzIJZ9-ZOHrW5F0ukc_3zHa3teqVWxyVjlmHsLDXuzkdJb7gMLgflTanXAeiE49Av3Hoor14kMgpQcle-Ouya0daHSSyHa2g9o" />
+              <div
+                class="absolute top-2 right-2 bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                Upcoming</div>
+            </div>
+            <div class="p-4">
+              <h3 class="text-lg font-bold text-gray-900">Parisian Dreams</h3>
+              <p class="text-gray-600">3-Day City Tour</p>
+              <p class="text-sm text-gray-500 mt-2">Starts: 2024-09-15</p>
+              <p class="text-sm text-gray-500 mt-2">Ends: 2024-09-18</p>
+            </div>
+            <div class="mt-6 flex justify-between p-5">
+
+              <button
+                class="start-trip-btn px-4 py-2 bg-green-500 text-white rounded-lg flex items-center animate-pulse"
+                data-trip-id="">
+                <i class="fas fa-play mr-2"></i> Start Trip
+              </button>
+
+              <button class="details-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-lg flex items-center">
+                <i class="fas fa-info-circle mr-2"></i> Details
+              </button>
+
+            </div>
+          </div>
+        </div>
+        <div id="Completed" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-white rounded-xl shadow-md overflow-hidden group">
+            <div class="relative">
+              <img alt="Eiffel Tower in Paris" class="h-48 w-full object-cover"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD667dmGLhWQ6d8Bf-MVC4SWtGcH6JWQbQCEZumB46_rBxV8rUXzN9QQvw_NnrHr1eME2zqGpwbqgVnOS6nG0-5WrzPp1yYv3S9vqA8DT90-ra9ynKPTqEgvr6O7kyUrkXMxBJYcAPAg3860IxGTTHJlTigjBtUIIcLcVb711N50HzIJZ9-ZOHrW5F0ukc_3zHa3teqVWxyVjlmHsLDXuzkdJb7gMLgflTanXAeiE49Av3Hoor14kMgpQcle-Ouya0daHSSyHa2g9o" />
+              <div
+                class="absolute top-2 right-2 bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                Upcoming</div>
+            </div>
+            <div class="p-4">
+              <h3 class="text-lg font-bold text-gray-900">Parisian Dreams</h3>
+              <p class="text-gray-600">3-Day City Tour</p>
+              <p class="text-sm text-gray-500 mt-2">Starts: 2024-09-15</p>
+              <p class="text-sm text-gray-500 mt-2">Ends: 2024-09-18</p>
+            </div>
+            <div class="mt-6 flex justify-between p-5">
+
+              <button
+                class="start-trip-btn px-4 py-2 bg-green-500 text-white rounded-lg flex items-center animate-pulse"
+                data-trip-id="">
+                <i class="fas fa-play mr-2"></i> Start Trip
+              </button>
+
+              <button class="details-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-lg flex items-center">
+                <i class="fas fa-info-circle mr-2"></i> Details
+              </button>
+
+            </div>
+          </div>
         </div>
       </div>
-
-
-
-      <!-- Right Column -->
-      <div class="md:col-span-4 space-y-6">
-        <!-- Emergency Help -->
-        <div class="border border-gray-200 rounded-lg p-5" onclick="emergencyService()">
-          <div class="flex items-center text-red-600 font-semibold mb-1">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M10.29 3.86L1.82 18a1.015 1.015 0 00.87 1.5h18.6a1.015 1.015 0 00.87-1.5L13.71 3.86a1 1 0 00-1.42 0zM12 9v4m0 4h.01" />
-            </svg>
-            Emergency Help
+      <div class="space-y-8">
+        <div class="bg-white p-6 rounded-xl shadow-md">
+          <div class="flex items-center mb-4">
+            <span class="material-icons text-red-500 mr-3">campaign</span>
+            <h3 class="text-xl font-bold text-gray-900">Emergency Broadcasts</h3>
           </div>
-          <p class="text-gray-400 text-sm mb-4">Instant emergency assistance</p>
-          <button
-            class="w-full bg-red-500 hover:bg-red-600 rounded-md py-3 font-semibold text-white flex items-center justify-center gap-2 transition">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"
-              viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M18.364 17.364A9 9 0 105.636 6.636a9 9 0 0012.728 10.728z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
-            </svg>
-            SOS EMERGENCY
-          </button>
-          <p class="mt-3 text-center text-gray-400 text-xs">
-            Press only in real emergencies
-          </p>
-          <p class="mt-2 text-center text-gray-500 text-sm flex justify-center items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="inline w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M3 10h11M9 21V3m7 17a3 3 0 010-6m0 0a3 3 0 110 6z" />
-            </svg>
-            +33 123 456 789
-          </p>
-        </div>
-
-        <!-- Safety Alerts -->
-        <div class="border border-gray-200 rounded-lg p-5">
-          <div class="flex items-center font-semibold text-yellow-600 mb-1">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M12 9v2m0 4h.01M10.29 3.86l-7.32 12.48A1 1 0 003.87 18h16.26a1 1 0 00.87-1.5l-7.32-12.48a1 1 0 00-1.42 0z" />
-            </svg>
-            Safety Alerts
-          </div>
-          <p class="text-gray-400 text-sm mb-4">Latest safety information</p>
-
-          <div class="space-y-3">
-            <!-- Alert 1 -->
-            <div class="border border-gray-200 rounded-md p-3">
-              <p class="text-blue-600 text-sm font-semibold">Weather alert: Light rain expected in your area</p>
-              <p class="text-gray-400 text-xs mt-0.5">2 hours ago</p>
+          <div class="space-y-4">
+            <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
+              <p class="font-semibold text-red-800">High Alert: Landslide Warning</p>
+              <p class="text-sm text-red-700">Heavy rainfall has increased the risk of landslides in the upper Manali
+                region. Avoid trekking in high-altitude areas.</p>
+              <p class="text-xs text-red-500 mt-2">Issued: 1 hour ago</p>
             </div>
-
-            <!-- Alert 2 -->
-            <div class="border border-gray-200 rounded-md p-3">
-              <p class="text-yellow-600 text-sm font-semibold">Traffic disruption on Route A1 - use alternate routes
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-r-lg">
+              <p class="font-semibold text-yellow-800">Traffic Advisory</p>
+              <p class="text-sm text-yellow-700">Roadblock on NH3 towards Solang Valley. Please use alternate routes
+                advised by local authorities.</p>
+              <p class="text-xs text-yellow-500 mt-2">Issued: 5 hours ago</p>
+            </div>
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
+              <p class="font-semibold text-blue-800">General Update</p>
+              <p class="text-sm text-blue-700">Tourist helpline is active 24/7. Dial 123-456-7890 for any assistance.
               </p>
-              <p class="text-gray-400 text-xs mt-0.5">4 hours ago</p>
-            </div>
-
-            <!-- Alert 3 -->
-            <div class="border border-gray-200 rounded-md p-3">
-              <p class="text-green-600 text-sm font-semibold">Your location is in a safe tourist zone</p>
-              <p class="text-gray-400 text-xs mt-0.5">1 day ago</p>
+              <p class="text-xs text-blue-500 mt-2">Issued: 1 day ago</p>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
+        </div>
+
+      </div>
+    </main>
+  </div>
 
   <!-- views/journeyForm.ejs -->
   <div class="modal" id="journeyForm" style="display:none; background: rgba(0,0,0,0.5);">
@@ -408,8 +438,35 @@
       </div>
     </div>
   </div>
+</body>
+<script>
 
-  <script>
+  function tripsToggle(button, sectionId) {
+
+    document.getElementById('AllTrips').classList.add('hidden');
+    document.getElementById('Upcoming').classList.add('hidden');
+    document.getElementById('Completed').classList.add('hidden');
+
+
+    document.getElementById(sectionId).classList.remove('hidden');
+
+
+    const buttons = button.parentElement.querySelectorAll('button');
+    buttons.forEach(btn => {
+      btn.classList.remove('bg-blue-500', 'text-white');
+      btn.classList.add('bg-white', 'text-gray-700');
+      btn.classList.remove('hover:bg-blue-600');
+      btn.classList.add('hover:bg-gray-100');
+    });
+
+
+    button.classList.remove('bg-white', 'text-gray-700');
+    button.classList.add('bg-blue-500', 'text-white');
+    button.classList.remove('hover:bg-gray-100');
+    button.classList.add('hover:bg-blue-600');
+
+
+
 
     // Initialize the form with current date and time
     document.addEventListener('DOMContentLoaded', function () {
@@ -423,20 +480,20 @@
       document.getElementById('date').addEventListener('change', function () {
         updateDateInfo(this.value);
       });
-      // document.getElementById('notes').addEventListener('input', function () {
-      //   const count = this.value.length;
-      //   document.getElementById('noteCount').textContent = count;
+      document.getElementById('notes').addEventListener('input', function () {
+        const count = this.value.length;
+        document.getElementById('noteCount').textContent = count;
 
-      //   if (count > 200) {
-      //     this.classList.add('is-invalid');
-      //   } else {
-      //     this.classList.remove('is-invalid');
-      //   }
-      // });
+        if (count > 200) {
+          this.classList.add('is-invalid');
+        } else {
+          this.classList.remove('is-invalid');
+        }
+      });
 
       // Setup location autocomplete
-      // setupAutocomplete('startLocation', 'startSuggestions');
-      // setupAutocomplete('destination', 'destinationSuggestions');
+      setupAutocomplete('startLocation', 'startSuggestions');
+      setupAutocomplete('destination', 'destinationSuggestions');
     });
 
     function updateDateInfo(dateString) {
@@ -479,64 +536,64 @@
       label.textContent = value || (elementId === 'startLabel' ? 'Start' : 'Destination');
     }
 
-    // function setupAutocomplete(inputId, suggestionsId) {
-    //   const input = document.getElementById(inputId);
-    //   const suggestionsContainer = document.getElementById(suggestionsId);
+    function setupAutocomplete(inputId, suggestionsId) {
+      const input = document.getElementById(inputId);
+      const suggestionsContainer = document.getElementById(suggestionsId);
 
-    //   input.addEventListener('focus', function () {
-    //     if (this.value.length > 1) {
-    //       showSuggestions(this.value, suggestionsContainer, input);
-    //     }
-    //   });
+      input.addEventListener('focus', function () {
+        if (this.value.length > 1) {
+          showSuggestions(this.value, suggestionsContainer, input);
+        }
+      });
 
-    //   input.addEventListener('input', function () {
-    //     showSuggestions(this.value, suggestionsContainer, input);
-    //   });
+      input.addEventListener('input', function () {
+        showSuggestions(this.value, suggestionsContainer, input);
+      });
 
-    //   // Hide suggestions when clicking outside
-    //   document.addEventListener('click', function (e) {
-    //     if (e.target !== input && !suggestionsContainer.contains(e.target)) {
-    //       suggestionsContainer.classList.add('d-none');
-    //     }
-    //   });
-    // }
+      // Hide suggestions when clicking outside
+      document.addEventListener('click', function (e) {
+        if (e.target !== input && !suggestionsContainer.contains(e.target)) {
+          suggestionsContainer.classList.add('d-none');
+        }
+      });
+    }
 
-    // function showSuggestions(query, container, input) {
-    //   if (query.length < 2) {
-    //     container.classList.add('d-none');
-    //     return;
-    //   }
+    function showSuggestions(query, container, input) {
+      if (query.length < 2) {
+        container.classList.add('d-none');
+        return;
+      }
 
-    //   const filtered = locationSuggestions.filter(location =>
-    //     location.toLowerCase().includes(query.toLowerCase())
-    //   );
+      const filtered = locationSuggestions.filter(location =>
+        location.toLowerCase().includes(query.toLowerCase())
+      );
 
-    //   if (filtered.length === 0) {
-    //     container.classList.add('d-none');
-    //     return;
-    //   }
+      if (filtered.length === 0) {
+        container.classList.add('d-none');
+        return;
+      }
 
-    //   container.innerHTML = '';
-    //   filtered.forEach(location => {
-    //     const item = document.createElement('button');
-    //     item.type = 'button';
-    //     item.classList.add('list-group-item', 'list-group-item-action');
-    //     item.textContent = location;
-    //     item.addEventListener('click', function () {
-    //       input.value = location;
-    //       updateLocationLabel(input.id === 'startLocation' ? 'startLabel' : 'destinationLabel', location);
-    //       container.classList.add('d-none');
-    //     });
-    //     container.appendChild(item);
-    //   });
+      container.innerHTML = '';
+      filtered.forEach(location => {
+        const item = document.createElement('button');
+        item.type = 'button';
+        item.classList.add('list-group-item', 'list-group-item-action');
+        item.textContent = location;
+        item.addEventListener('click', function () {
+          input.value = location;
+          updateLocationLabel(input.id === 'startLocation' ? 'startLabel' : 'destinationLabel', location);
+          container.classList.add('d-none');
+        });
+        container.appendChild(item);
+      });
 
-    //   // Position the suggestions container below the input
-    //   const rect = input.getBoundingClientRect();
-    //   container.style.top = `${rect.bottom + window.scrollY}px`;
-    //   container.style.left = `${rect.left + window.scrollX}px`;
-    //   container.style.width = `${rect.width}px`;
-    //   container.classList.remove('d-none');
-    // }
+      // Position the suggestions container below the input
+      const rect = input.getBoundingClientRect();
+      container.style.top = `${rect.bottom + window.scrollY}px`;
+      container.style.left = `${rect.left + window.scrollX}px`;
+      container.style.width = `${rect.width}px`;
+      container.classList.remove('d-none');
+    }
 
     function closeForm() {
       document.getElementById('journeyForm').style.display = 'none';
@@ -644,10 +701,7 @@
     socket.on("alert", ({ message }) => {
       alert(`Safety Alert: ${message}`);
     });
-  </script>
-
-
-
-</body>
+  }
+</script>
 
 </html>
