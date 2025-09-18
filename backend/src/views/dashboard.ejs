@@ -495,173 +495,173 @@
     button.classList.add('hover:bg-blue-600');
 
 
+  }
 
+  // Initialize the form with current date and time
+  document.addEventListener('DOMContentLoaded', function () {
+    const now = new Date();
 
-    // Initialize the form with current date and time
-    document.addEventListener('DOMContentLoaded', function () {
-      const now = new Date();
+    // Set default date to today
+    const today = now.toISOString().split('T')[0];
+    document.getElementById('date').value = today;
+    updateDateInfo(today);
+    // Add event listeners
+    document.getElementById('date').addEventListener('change', function () {
+      updateDateInfo(this.value);
+    });
+    document.getElementById('notes').addEventListener('input', function () {
+      const count = this.value.length;
+      document.getElementById('noteCount').textContent = count;
 
-      // Set default date to today
-      const today = now.toISOString().split('T')[0];
-      document.getElementById('date').value = today;
-      updateDateInfo(today);
-      // Add event listeners
-      document.getElementById('date').addEventListener('change', function () {
-        updateDateInfo(this.value);
-      });
-      document.getElementById('notes').addEventListener('input', function () {
-        const count = this.value.length;
-        document.getElementById('noteCount').textContent = count;
-
-        if (count > 200) {
-          this.classList.add('is-invalid');
-        } else {
-          this.classList.remove('is-invalid');
-        }
-      });
-
-      // Setup location autocomplete
-      setupAutocomplete('startLocation', 'startSuggestions');
-      setupAutocomplete('destination', 'destinationSuggestions');
+      if (count > 200) {
+        this.classList.add('is-invalid');
+      } else {
+        this.classList.remove('is-invalid');
+      }
     });
 
-    function updateDateInfo(dateString) {
-      const date = new Date(dateString);
-      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      const formattedDate = date.toLocaleDateString('en-US', options);
+    // Setup location autocomplete
+    setupAutocomplete('startLocation', 'startSuggestions');
+    setupAutocomplete('destination', 'destinationSuggestions');
+  });
 
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const selectedDate = new Date(dateString);
+  function updateDateInfo(dateString) {
+    const date = new Date(dateString);
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = date.toLocaleDateString('en-US', options);
 
-      let infoText = formattedDate;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const selectedDate = new Date(dateString);
 
-      if (selectedDate.getTime() === today.getTime()) {
-        infoText += " (Today)";
-      } else if (selectedDate.getTime() === today.getTime() + 86400000) {
-        infoText += " (Tomorrow)";
-      } else {
-        const diffTime = selectedDate.getTime() - today.getTime();
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        infoText += ` (in ${diffDays} days)`;
-      }
+    let infoText = formattedDate;
 
-      document.getElementById('dateInfo').textContent = infoText;
+    if (selectedDate.getTime() === today.getTime()) {
+      infoText += " (Today)";
+    } else if (selectedDate.getTime() === today.getTime() + 86400000) {
+      infoText += " (Tomorrow)";
+    } else {
+      const diffTime = selectedDate.getTime() - today.getTime();
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      infoText += ` (in ${diffDays} days)`;
     }
 
-
-    function adjustPassengers(change) {
-      const passengersInput = document.getElementById('passengers');
-      let currentValue = parseInt(passengersInput.value);
-      let newValue = currentValue + change;
-
-      if (newValue < 1) newValue = 1;
-
-      passengersInput.value = newValue;
-    }
-
-    function updateLocationLabel(elementId, value) {
-      const label = document.getElementById(elementId);
-      label.textContent = value || (elementId === 'startLabel' ? 'Start' : 'Destination');
-    }
-
-    function setupAutocomplete(inputId, suggestionsId) {
-      const input = document.getElementById(inputId);
-      const suggestionsContainer = document.getElementById(suggestionsId);
-
-      input.addEventListener('focus', function () {
-        if (this.value.length > 1) {
-          showSuggestions(this.value, suggestionsContainer, input);
-        }
-      });
-
-      input.addEventListener('input', function () {
-        showSuggestions(this.value, suggestionsContainer, input);
-      });
-
-      // Hide suggestions when clicking outside
-      document.addEventListener('click', function (e) {
-        if (e.target !== input && !suggestionsContainer.contains(e.target)) {
-          suggestionsContainer.classList.add('d-none');
-        }
-      });
-    }
-
-    function showSuggestions(query, container, input) {
-      if (query.length < 2) {
-        container.classList.add('d-none');
-        return;
-      }
-
-      const filtered = locationSuggestions.filter(location =>
-        location.toLowerCase().includes(query.toLowerCase())
-      );
-
-      if (filtered.length === 0) {
-        container.classList.add('d-none');
-        return;
-      }
-
-      container.innerHTML = '';
-      filtered.forEach(location => {
-        const item = document.createElement('button');
-        item.type = 'button';
-        item.classList.add('list-group-item', 'list-group-item-action');
-        item.textContent = location;
-        item.addEventListener('click', function () {
-          input.value = location;
-          updateLocationLabel(input.id === 'startLocation' ? 'startLabel' : 'destinationLabel', location);
-          container.classList.add('d-none');
-        });
-        container.appendChild(item);
-      });
-
-      // Position the suggestions container below the input
-      const rect = input.getBoundingClientRect();
-      container.style.top = `${rect.bottom + window.scrollY}px`;
-      container.style.left = `${rect.left + window.scrollX}px`;
-      container.style.width = `${rect.width}px`;
-      container.classList.remove('d-none');
-    }
-
-    function closeForm() {
-      document.getElementById('journeyForm').style.display = 'none';
-    }
-    async function emergencyService() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(async (pos) => {
-          const payload = {
-            touristId: "<%= user._id %>", // dynamic from server
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude,
-          };
-          console.log("SOS Payload:", payload);
-          await fetch('/emergencySos', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ payload })
-          })
-            .then(response => response.json())
-            .then(data => {
-              alert('Emergency services have been notified. Help is on the way!');
-            })
-            .catch(error => {
-              console.error('Error:', error);
-              alert('Failed to notify emergency services. Please try again.');
-            });
-          alert("🚨 SOS sent to authorities!");
-        }, () => {
-          alert("❌ Failed to get location!");
-        });
-      }
-      else {
-        alert("❌ Geolocation is not supported by this browser.");
-      }
-    }
-    // const startButtons = document.querySelectorAll('.start-trip-btn');
-
-
+    document.getElementById('dateInfo').textContent = infoText;
   }
+
+
+  function adjustPassengers(change) {
+    const passengersInput = document.getElementById('passengers');
+    let currentValue = parseInt(passengersInput.value);
+    let newValue = currentValue + change;
+
+    if (newValue < 1) newValue = 1;
+
+    passengersInput.value = newValue;
+  }
+
+  function updateLocationLabel(elementId, value) {
+    const label = document.getElementById(elementId);
+    label.textContent = value || (elementId === 'startLabel' ? 'Start' : 'Destination');
+  }
+
+  function setupAutocomplete(inputId, suggestionsId) {
+    const input = document.getElementById(inputId);
+    const suggestionsContainer = document.getElementById(suggestionsId);
+
+    input.addEventListener('focus', function () {
+      if (this.value.length > 1) {
+        showSuggestions(this.value, suggestionsContainer, input);
+      }
+    });
+
+    input.addEventListener('input', function () {
+      showSuggestions(this.value, suggestionsContainer, input);
+    });
+
+    // Hide suggestions when clicking outside
+    document.addEventListener('click', function (e) {
+      if (e.target !== input && !suggestionsContainer.contains(e.target)) {
+        suggestionsContainer.classList.add('d-none');
+      }
+    });
+  }
+
+  function showSuggestions(query, container, input) {
+    if (query.length < 2) {
+      container.classList.add('d-none');
+      return;
+    }
+
+    const filtered = locationSuggestions.filter(location =>
+      location.toLowerCase().includes(query.toLowerCase())
+    );
+
+    if (filtered.length === 0) {
+      container.classList.add('d-none');
+      return;
+    }
+
+    container.innerHTML = '';
+    filtered.forEach(location => {
+      const item = document.createElement('button');
+      item.type = 'button';
+      item.classList.add('list-group-item', 'list-group-item-action');
+      item.textContent = location;
+      item.addEventListener('click', function () {
+        input.value = location;
+        updateLocationLabel(input.id === 'startLocation' ? 'startLabel' : 'destinationLabel', location);
+        container.classList.add('d-none');
+      });
+      container.appendChild(item);
+    });
+
+    // Position the suggestions container below the input
+    const rect = input.getBoundingClientRect();
+    container.style.top = `${rect.bottom + window.scrollY}px`;
+    container.style.left = `${rect.left + window.scrollX}px`;
+    container.style.width = `${rect.width}px`;
+    container.classList.remove('d-none');
+  }
+
+  function closeForm() {
+    document.getElementById('journeyForm').style.display = 'none';
+  }
+  async function emergencyService() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(async (pos) => {
+        const payload = {
+          touristId: "<%= user._id %>", // dynamic from server
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+        };
+        console.log("SOS Payload:", payload);
+        await fetch('/emergencySos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ payload })
+        })
+          .then(response => response.json())
+          .then(data => {
+            alert('Emergency services have been notified. Help is on the way!');
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to notify emergency services. Please try again.');
+          });
+        alert("🚨 SOS sent to authorities!");
+      }, () => {
+        alert("❌ Failed to get location!");
+      });
+    }
+    else {
+      alert("❌ Geolocation is not supported by this browser.");
+    }
+  }
+
+
+
+
   function startTrip(element, id) {
     console.log(element)
     let tripStatus = document.getElementById(`tripStatus${id}`);
