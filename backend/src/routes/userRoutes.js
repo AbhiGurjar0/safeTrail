@@ -58,7 +58,7 @@ router.get('/Admin', async (req, res) => {
 // router.get('/Admin', (req, res) => {
 //     res.render('admin');
 // })
-router.get('/police', isLoggendIn ,async (req, res) => {
+router.get('/police', isLoggendIn, async (req, res) => {
     let user = await userModel.findById(req.user._id);
     res.render('police', { user });
 })

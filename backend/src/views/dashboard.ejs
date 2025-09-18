@@ -135,7 +135,9 @@
             <div class="p-6">
               <div class="bg-blue-500 text-white p-6 rounded-lg flex items-center justify-between mb-10">
                 <div>
-                  <p class="font-bold text-xl"><%=user.name%></p>
+                  <p class="font-bold text-xl">
+                    <%=user.name%>
+                  </p>
                   <p class="text-sm opacity-80">Tourist ID: TS-A7X9K2MAP</p>
                   <p class="text-sm opacity-80 mt-2 flex items-center"><span
                       class="material-icons text-sm mr-1">location_on</span> Paris, France</p>
@@ -201,16 +203,23 @@
         </div>
         <div id="AllTrips" class="flex gap-10 justify-center items-center flex-wrap">
           <%Trips.forEach((trip)=>{%>
-            <div data-trip-id="<%= trip._id %>" class="trip-card w-56 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col card-hover transition-transform hover:scale-105">
+            <div data-trip-id="<%= trip._id %>"
+              class="trip-card w-56 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col card-hover transition-transform hover:scale-105">
               <div class="relative h-28">
-                <img alt="trip image" class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD667dmGLhWQ6d8Bf-MVC4SWtGcH6JWQbQCEZumB46_rBxV8rUXzN9QQvw_NnrHr1eME2zqGpwbqgVnOS6nG0-5WrzPp1yYv3S9vqA8DT90-ra9ynKPTqEgvr6O7kyUrkXMxBJYcAPAg3860IxGTTHJlTigjBtUIIcLcVb711N50HzIJZ9-ZOHrW5F0ukc_3zHa3teqVWxyVjlmHsLDXuzkdJb7gMLgflTanXAeiE49Av3Hoor14kMgpQcle-Ouya0daHSSyHa2g9o" />
-                <span class="absolute top-2 right-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-50 text-blue-600">Upcoming</span>
+                <img alt="trip image" class="h-full w-full object-cover"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuD667dmGLhWQ6d8Bf-MVC4SWtGcH6JWQbQCEZumB46_rBxV8rUXzN9QQvw_NnrHr1eME2zqGpwbqgVnOS6nG0-5WrzPp1yYv3S9vqA8DT90-ra9ynKPTqEgvr6O7kyUrkXMxBJYcAPAg3860IxGTTHJlTigjBtUIIcLcVb711N50HzIJZ9-ZOHrW5F0ukc_3zHa3teqVWxyVjlmHsLDXuzkdJb7gMLgflTanXAeiE49Av3Hoor14kMgpQcle-Ouya0daHSSyHa2g9o" />
+                <span id="tripStatus<%=trip._id%>"
+                  class="absolute top-2 right-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-50 text-blue-600">
+                  <%=trip.status%>
+                </span>
               </div>
 
               <div class="p-3 flex-1">
                 <div class="flex items-center gap-2 text-sm text-gray-700 font-medium truncate">
                   <i class="fas fa-map-marker-alt text-gray-400"></i>
-                  <span class="truncate"><%= trip.startLocation %> → <%= trip.endLocation %></span>
+                  <span class="truncate">
+                    <%= trip.startLocation %> → <%= trip.endLocation %>
+                  </span>
                 </div>
                 <div class="mt-1 text-xs text-gray-500 truncate">
                   <%= trip.travelDate.toString().slice(4, 15) %> — <%= trip.endDate %>
@@ -218,13 +227,33 @@
               </div>
 
               <div class="p-3 flex items-center justify-between gap-2">
-                <button class="start-trip-btn flex-1 flex items-center justify-center gap-2 text-xs py-1 rounded-md bg-green-600 text-white transition-colors hover:bg-green-700" data-trip-id="<%= trip._id %>">
-                  <i class="fas fa-play"></i>
-                  Start
-                </button>
-                <button class="details-btn text-xs py-1 px-3 rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200">
-                  <i class="fas fa-info-circle"></i>
-                </button>
+                <%if(trip.status==="scheduled"){ %>
+                  <button onclick="startTrip(this,'<%= trip._id %>' )"
+                    class="start-trip-btn flex-1 flex items-center justify-center gap-2 text-xs py-1 rounded-md bg-green-600 text-white transition-colors hover:bg-green-700"
+                    data-trip-id="<%= trip._id %>">
+                    <i class="fas fa-play"></i>
+                    Start
+                  </button>
+                  <%}else if(trip.status==="in-progress" ){%>
+                    <button onclick="endTrip(this,'<%= trip._id %>' )"
+                      class="start-trip-btn flex-1 flex items-center justify-center gap-2 text-xs py-1 rounded-md bg-green-600 text-white transition-colors hover:bg-green-700"
+                      data-trip-id="<%= trip._id %>">
+                      <i class="fas fa-play"></i>
+                      in-progress
+                    </button>
+                    <% }else {%>
+                      <button
+                        class="  flex-1 flex items-center justify-center gap-2 text-xs py-1 rounded-md bg-green-600 text-white transition-colors hover:bg-green-700"
+                        data-trip-id="<%= trip._id %>">
+                        <i class="fas fa-play"></i>
+                        Completed
+                      </button>
+                      <%}%>
+
+                        <button
+                          class="details-btn text-xs py-1 px-3 rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200">
+                          <i class="fas fa-info-circle"></i>
+                        </button>
               </div>
             </div>
             <%})%>
@@ -629,79 +658,63 @@
         alert("❌ Geolocation is not supported by this browser.");
       }
     }
-    const startButtons = document.querySelectorAll('.start-trip-btn');
+    // const startButtons = document.querySelectorAll('.start-trip-btn');
 
-    startButtons.forEach(button => {
-      button.addEventListener('click', function handleStart() {
-        const card = this.closest('.trip-card');
-        const statusBadge = card.querySelector('.bg-blue-500');
 
-        if (statusBadge) {
-          // update badge
-          statusBadge.textContent = 'Ongoing';
-          statusBadge.classList.remove('bg-blue-500');
-          statusBadge.classList.add('bg-yellow-500');
-
-          // update button
-          this.innerHTML = `<i class="fas fa-pause mr-2"></i> End Trip`;
-          this.classList.remove('bg-green-500', 'animate-pulse');
-          this.classList.add('bg-blue-500');
-
-          // remove start handler and add end handler
-          this.removeEventListener('click', handleStart);
-          this.addEventListener('click', () => endTrip(card.dataset.tripId));
-
-          // backend call
-          fetch('/startTrip', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ tripId: card.dataset.tripId })
-          })
-            .then(response => response.json())
-            .then(data => console.log('Trip started:', data))
-            .catch(err => console.error('Error starting trip:', err));
-        }
-      });
-    });
-
-    function endTrip(tripId) {
-      const card = document.querySelector(`.trip-card[data-trip-id='${tripId}']`);
-      const statusBadge = card.querySelector('.bg-yellow-500');
-      console.log("called");
-
-      if (statusBadge) {
-        // update badge
-        statusBadge.textContent = 'Completed';
-        statusBadge.classList.remove('bg-yellow-500');
-        statusBadge.classList.add('bg-green-500');
-
-        // update button
-        const btn = card.querySelector('.end-trip-btn');
-        btn.innerHTML = `<i class="fas fa-check mr-2"></i> Trip Completed`;
-        btn.classList.remove('bg-blue-500');
-        btn.classList.add('bg-gray-400');
-        btn.disabled = true;
-
-        // backend call
-        fetch('/endTrip', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ tripId })
-        })
-          .then(r => r.json())
-          .then(data => console.log('Trip ended:', data))
-          .catch(err => console.error('Error ending trip:', err));
-      }
-    }
-    function sos() {
-
-    }
-
-    let socket = io();
-    socket.on("alert", ({ message }) => {
-      alert(`Safety Alert: ${message}`);
-    });
   }
+  function startTrip(element, id) {
+    console.log(element)
+    let tripStatus = document.getElementById(`tripStatus${id}`);
+    tripStatus.innerHTML = '';
+    tripStatus.innerHTML = 'Ongoing'
+    element.innerHTML = '';
+    element.innerHTML = `
+     <i class="fas fa-play"></i>
+        in-progress
+     `
+    element.setAttribute("onclick", `endTrip(this,${id})`);
+
+    fetch('/startTrip', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tripId: id })
+    })
+      .then(response => response.json())
+      .then(data => console.log('Trip started:', data))
+      .catch(err => console.error('Error starting trip:', err));
+  }
+
+  function endTrip(element, tripId) {
+
+
+    let tripStatus = document.getElementById(`tripStatus${tripId}`);
+    tripStatus.innerHTML = '';
+    tripStatus.innerHTML = 'Completed'
+
+    element.innerHTML = '';
+    element.innerHTML = `
+     <i class="fas fa-play"></i>
+        completed
+     `
+    element.removeAttribute("onclick")
+    // backend call
+    fetch('/endTrip', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tripId })
+    })
+      .then(r => r.json())
+      .then(data => console.log('Trip ended:', data))
+      .catch(err => console.error('Error ending trip:', err));
+  }
+
+
+
+  let socket = io();
+  socket.on("alert", ({ message }) => {
+    alert(`Safety Alert: ${message}`);
+  });
+
 </script>
 
 </html>
