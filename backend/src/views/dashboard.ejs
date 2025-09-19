@@ -353,6 +353,7 @@
       </div>
     </main>
   </div>
+  <button  onclick="emergencyService()">Add Emergency</button>
 
   <!-- views/journeyForm.ejs -->
   <div class="modal" id="journeyForm" style="display:none; background: rgba(0,0,0,0.5);">
@@ -509,16 +510,16 @@
     document.getElementById('date').addEventListener('change', function () {
       updateDateInfo(this.value);
     });
-    document.getElementById('notes').addEventListener('input', function () {
-      const count = this.value.length;
-      document.getElementById('noteCount').textContent = count;
+    // document.getElementById('notes').addEventListener('input', function () {
+    //   const count = this.value.length;
+    //   document.getElementById('noteCount').textContent = count;
 
-      if (count > 200) {
-        this.classList.add('is-invalid');
-      } else {
-        this.classList.remove('is-invalid');
-      }
-    });
+    //   if (count > 200) {
+    //     this.classList.add('is-invalid');
+    //   } else {
+    //     this.classList.remove('is-invalid');
+    //   }
+    // });
 
     // Setup location autocomplete
     setupAutocomplete('startLocation', 'startSuggestions');
@@ -672,7 +673,7 @@
      <i class="fas fa-play"></i>
         in-progress
      `
-    element.setAttribute("onclick", `endTrip(this,${id})`);
+    element.setAttribute("onclick", `endTrip(this,'${id}')`);
 
     fetch('/startTrip', {
       method: 'POST',
@@ -710,10 +711,10 @@
 
 
 
-  let socket = io();
-  socket.on("alert", ({ message }) => {
-    alert(`Safety Alert: ${message}`);
-  });
+  // let socket = io();
+  // socket.on("alert", ({ message }) => {
+  //   alert(`Safety Alert: ${message}`);
+  // });
 
 </script>
 

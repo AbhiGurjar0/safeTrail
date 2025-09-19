@@ -97,7 +97,7 @@ router.post('/startTrip', isLoggendIn, async (req, res) => {
         const journey = await journeyModel.findByIdAndUpdate(tripId, { status: 'in-progress' }, { new: true });
         if (!journey) {
             req.flash("error", "Journey not found.");
-            return res.redirect('/details');
+            return res.redirect('/dashboard');
         }
 
         await Trip.create({
@@ -105,17 +105,16 @@ router.post('/startTrip', isLoggendIn, async (req, res) => {
             startLocation: journey.startLocation,
             endLocation: journey.endLocation,
             travelDate: journey.travelDate,
-            travelTime: journey.travelTime,
             passengers: journey.passengers
         });
 
         getIO().emit("tripStarted", { tripId, status: "Ongoing" });
 
-        res.redirect('/details');
+        res.redirect('/dashboard');
     } catch (error) {
         console.error("Error starting trip:", error);
         req.flash("error", "Failed to start trip.");
-        res.redirect('/details');
+        res.redirect('/dashboard');
     }
 });
 router.post('/endTrip', async (req, res) => {
@@ -123,11 +122,11 @@ router.post('/endTrip', async (req, res) => {
     try {
         await journeyModel.findByIdAndUpdate(tripId, { status: 'completed' });
         getIO().emit("tripEnded", { tripId, status: "Completed" });
-        res.redirect('/details');
+        res.redirect('/dashboard');
     } catch (error) {
         console.error("Error ending trip:", error);
         req.flash("error", "Failed to end trip.");
-        res.redirect('/details');
+        res.redirect('/dashboard');
     }
 });
 router.post('/emergencySos', isLoggendIn, async (req, res) => {
