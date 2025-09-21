@@ -116,7 +116,7 @@
 
     <!-- SOS Emergency Requests Section -->
     <section id="sos-requests" aria-labelledby="sos-requests-title"
-      class="border border-gray-200 rounded-lg p-6 bg-white">
+      class="border border-gray-200 rounded-lg p-6 bg-white hidden">
       <h2 id="sos-requests-title" class="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-1">
         <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
           stroke-linecap="round" stroke-linejoin="round">
@@ -177,7 +177,7 @@
         <% })%>
     </section>
     <!-- Safety alerts -->
-    <section id="safety-alerts" class="bg-white rounded-md border border-gray-200 p-6 space-y-5 shadow-sm">
+    <section id="safety-alerts" class="bg-white rounded-md border border-gray-200 p-6 space-y-5 shadow-sm hidden">
       <header class="flex items-center space-x-2">
         <svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -258,7 +258,11 @@
   <script src="/socket.io/socket.io.js"></script>
 
   <script>
+    
     document.addEventListener("DOMContentLoaded", () => {
+
+      
+
       const tabs = document.querySelectorAll("nav button");
       const sections = [
         document.getElementById("tourist-list"),
@@ -266,9 +270,12 @@
         document.getElementById("safety-alerts"),
       ];
 
+      
+      
+
       tabs.forEach((tab, index) => {
         tab.addEventListener("click", () => {
-
+            
           sections.forEach(section => section.classList.add("hidden"));
           sections[index].classList.remove("hidden");
           tabs.forEach(btn => btn.classList.remove("bg-gray-100", "text-gray-900", "font-semibold"));
