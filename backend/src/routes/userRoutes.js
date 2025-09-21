@@ -53,6 +53,7 @@ router.get('/emergencySos', isLoggendIn, async (req, res) => {
 router.get('/Admin', async (req, res) => {
     let Trips = await Trip.find();
     let emergency = await Emergency.find();
+    let user = await userModel.findById()
     res.render('admin', { Trips, emergencies: emergency });
 })
 // router.get('/Admin', (req, res) => {
