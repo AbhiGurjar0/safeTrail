@@ -11,6 +11,7 @@ const Trip = require('../models/Trip');
 const Emergency = require('../models/emergency');
 const e = require('connect-flash');
 
+const turf = require("@turf/turf");
 
 
 //controllers 
@@ -155,5 +156,13 @@ router.post('/emergencySos', isLoggendIn, async (req, res) => {
 // getIO().on("broadcast", (message) => {
 //     getIO().emit("alert", { message });
 // });
+
+
+
+
+
+router.get('/map',(req,res)=>{
+    res.render('A');
+})
 
 module.exports = router;

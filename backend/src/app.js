@@ -13,7 +13,7 @@ const expressSession = require("express-session");
 const flash = require('connect-flash');
 app.set('view engine', 'ejs');
 app.set('views', 'src/views');
-
+const Ai = require('../src/routes/ai');
 const { initSocket } = require("./socket");
 const http = require("http");
 const { Server } = require("socket.io");
@@ -43,5 +43,6 @@ app.use((req, res, next) => {
     next();
 });
 app.use('/', userRouter);
+app.use('/ai',Ai);
 module.exports = server;
 
