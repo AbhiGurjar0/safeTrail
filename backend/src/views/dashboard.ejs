@@ -24,6 +24,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
 
 
   <style>
@@ -354,6 +355,10 @@
 
       </div>
     </main>
+  </div>
+  <div>
+    <h1>Alerts</h1>
+    <div id="Alerts"></div>
   </div>
   <button onclick="emergencyService()">Add Emergency</button>
 
@@ -740,7 +745,7 @@
     }
   }
 
-  // /* Usage example:
+  // Usage example:
   (async () => {
     const coords1 = await coOrdinates('mumbai');
     const coords2 = await coOrdinates('jaipur')
@@ -756,7 +761,7 @@
     const routeLine = L.polyline([startPoint, endPoint], { color: 'blue' }).addTo(map);
 
   })();
-  // */
+  // 
 
 
 
@@ -775,7 +780,8 @@
         .bindPopup('Current Position');
     });
 
-  } const restrictedZones = {
+  }
+  const restrictedZones = {
     "type": "FeatureCollection",
     "features": [
       {
@@ -783,7 +789,16 @@
         "properties": { "name": "Restricted Zone", "severity": 8 },
         "geometry": {
           "type": "Polygon",
-          "coordinates": [[[77.592, 12.971], [77.595, 12.971], [77.595, 12.973], [77.592, 12.973], [77.592, 12.971]]]
+          "coordinates": [
+            [
+              [76.86411835620566, 26.824511139750535],
+              [76.86611835620567, 26.824511139750535],
+              [76.86611835620567, 26.826511139750536],
+              [76.86411835620566, 26.826511139750536],
+              [76.86411835620566, 26.824511139750535]
+            ]
+          ]
+
         }
       }
     ]
@@ -793,30 +808,87 @@
     style: { color: 'blue', fillColor: '#ff4d4d', fillOpacity: 0.35 }
   }).addTo(map);
 
+  const currentPoint = turf.point([currentLng, currentLat]);
+  const inside = turf.booleanPointInPolygon(currentPoint, restrictedZones.features[0]);
+
+  if (inside) {
+    alert("⚠️ You are inside a restricted area!");
+  } else {
+    console.log("✅ Safe zone");
+  }
+
+
+  async function getWeather(city) {
+    const apiKey = 'fab1287105dc652116091b8007a1638a';
+    const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
+    const data = await res.json();
+    console.log(data);
+    let rainLevel = data.rain && data.rain["1h"] ? data.rain["1h"] : 0;
+    let text = "";
+    if (rainLevel === 0) {
+      text = "🌤 No recent rain. Weather is clear.";
+    } else if (rainLevel < 2.5) {
+      text = `🌧 Light rain: ${rainLevel} mm in last 1h.`;
+    } else if (rainLevel < 7.6) {
+      text = `🌧🌧 Moderate rain: ${rainLevel} mm in last 1h. Carry an umbrella.`;
+    } else {
+      text = `🌧🌧🌧 Heavy rain alert! ${rainLevel} mm in last 1h. Stay safe.`;
+    }
 
 
 
+
+    return {
+      city: data.name,
+      country: data.sys.country,
+      temperature: Math.floor(data.main.temp),
+      humidity: data.main.humidity,
+      description: data.weather[0].description,
+      icon: data.weather[0].icon,
+      windSpeed: (data.wind.speed * (5 / 18)).toFixed(2),
+      windDirection: data.wind.deg,
+      pressure: data.main.pressure,
+      visibility: (data.visibility / 1000),
+      dateTime: new Date(data.dt * 1000).toLocaleString(),
+      rainChance: data.rain && data.rain["1h"] ? `${data.rain["1h"]} mm (last 1h)` : "No recent rain"
+    }
+  }
 
   // weights
   const weights = { zone: 30, route: 20, inactivity: 20, time: 15, anomaly: 15 };
 
-  function calculateSafetyScore(userLocation, userRoute, geoFences, lastActiveTime) {
+  async function calculateSafetyScore(userLocation, userRoute, geoFences, lastActiveTime) {
     let score = 100;
+    // 2. Weather Based
+    async function getWeatherScore(data) {
+      let res = await fetch('/ai/genai/score', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data }),
 
-    // 1. Zone risk check
-    for (const fence of geoFences) {
-      if (turf.booleanPointInPolygon(userLocation, fence.geometry)) {
-        if (fence.properties.type === "restricted") score -= 30;
-        else if (fence.properties.type === "caution") score -= 15;
+      })
+      res = await res.json();
+      return res;
+
+    }
+    async function main() {
+      try {
+        const weatherData = await getWeather("jaipur");
+        let data = await getWeatherScore(weatherData);
+        data = data.reply;
+        data = data.replace(/```json/g, "").replace(/```/g, "").trim();
+        let parsed = JSON.parse(data);
+        console.log(parsed)
+        console.log(parsed["Risk_score"]);
+        score -= parsed["Risk_score"];
+      } catch (err) {
+        console.error(err);
       }
     }
 
-    // // 2. Route deviation
-    // if (userRoute) {
-    //   const snap = turf.nearestPointOnLine(userRoute, userLocation);
-    //   const dist = turf.distance(userLocation, snap);
-    //   if (dist > 0.5) score -= 10; // >500m deviation
-    // }
+    main();
 
     // 3. Inactivity
     const now = new Date();
@@ -826,12 +898,19 @@
     const hour = now.getUTCHours() + 5.5; // IST
     if (hour >= 23 || hour <= 4) score -= 10;
 
-    // 5. Anomaly placeholder (could be ML model)
-    // e.g. sudden speed drop detection
-
     return Math.max(0, score); // keep between 0–100
   }
-  calculateSafetyScore()
+  calculateSafetyScore(" ", " ", " ", " ")
+    .then(score => {
+
+    });
+
+
+
+
+
+  // console.log(data)
+
 
 </script>
 
