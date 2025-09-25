@@ -16,7 +16,7 @@ app.set('views', 'src/views');
 const Ai = require('../src/routes/ai');
 const { initSocket } = require("./socket");
 const http = require("http");
-const { Server } = require("socket.io");
+const { Server } = require("socket.io");             
 
 const server = http.createServer(app);
 const io = initSocket(server);
