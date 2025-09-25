@@ -4,4 +4,6 @@ const adminLogin = require('../controllers/adminAuth');
 
 router.post('/adminLogin', adminLogin);
 
+
+
 module.exports = router;
