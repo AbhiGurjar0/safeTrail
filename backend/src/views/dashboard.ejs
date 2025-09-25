@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tourist Dashboard</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TravelSafe Dashboard</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -26,330 +25,469 @@
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f8fafc;
-    }
-
-    /* A subtle transition for cards on hover for a "lift" effect */
-    .card-hover {
-      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    }
-
-    .card-hover:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    }
-
-    /* Improved pulse animation for the 'Start Trip' button */
-    .start-trip-btn {
-      animation: pulse-light 2s infinite;
-    }
-
-    @keyframes pulse-light {
-
-      0%,
-      100% {
-        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+    <style>
+      .no-scrollbar::-webkit-scrollbar {
+        display: none; /* Hide scrollbar for Chrome, Safari and Opera */
       }
-
-      70% {
-        box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+      .no-scrollbar {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
       }
-    }
-
-    /* Sparkling Text Effect for the user's name */
-    .sparkle-text {
-      position: relative;
-      display: inline-block;
-      overflow: hidden;
-    }
-
-    .sparkle-text::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
-      transform: translateX(-100%);
-      animation: sparkle-effect 3s infinite linear 2s;
-      /* Animate with a delay */
-    }
-
-    @keyframes sparkle-effect {
-      0% {
-        transform: translateX(-100%);
+      body {
+        font-family: "Inter", sans-serif;
       }
-
-      100% {
-        transform: translateX(100%);
+      .card-hover {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
       }
-    }
-
-    /* Fade-in animation for page content */
-    .fade-in {
-      animation: fadeInAnimation 0.8s ease-in-out forwards;
-    }
-
-    @keyframes fadeInAnimation {
-      from {
-        opacity: 0;
-        transform: translateY(15px);
+      .card-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+          0 4px 6px -4px rgb(0 0 0 / 0.1);
       }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
+      .start-trip-btn {
+        animation: pulse-light 2s infinite;
       }
-    }
-  </style>
-</head>
+      @keyframes pulse-light {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+        }
+        70% {
+          box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+        }
+      }
+    </style>
+  </head>
 
-<body class="bg-gray-50 text-gray-800">
-  <div class="absolute top-4 w-full max-w-2xl px-4 z-99">
-    <% if (success && success.length> 0) { %>
-      <div class="bg-green-500 text-white px-4 py-2 rounded mb-2">
+  <body class="bg-blue-50 text-gray-800 font-sans overflow-hidden mt-10">
+    <div class="sticky top-0 z-50">
+      <%- include('partials/navbar', { user: user }) %>
+    </div>
+    <div
+      class="absolute top-20 w-full max-w-2xl px-4 left-1/2 -translate-x-1/2 z-40"
+    >
+      <% if (success && success.length > 0) { %>
+      <div class="bg-green-500 text-white px-4 py-2 rounded mb-2 shadow-lg">
         <%= success %>
       </div>
-      <% } %>
-
-        <% if (error && error.length> 0) { %>
-          <div class="bg-red-500 text-white px-4 py-2 rounded mb-2">
-            <%= error %>
-          </div>
-          <% } %>
-  </div>
-
-  <div class="sticky top-0 z-50 h-[5vh]">
-    <%- include('partials/navbar', { user: user }) %>
-  </div>
-  <div class="container mx-auto p-4 md:p-8 mt-5">
-    <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <div class="lg:col-span-2 space-y-8">
-        <div>
-          <h2 class="text-2xl font-bold mb-4">Current Trip: Himalayan Adventure</h2>
-          <div class="bg-white rounded-xl shadow-md overflow-hidden">
-            <div id="map" class="w-full h-64 "></div>
-
-            <div class="p-6">
-              <div class="bg-blue-500 text-white p-6 rounded-lg flex items-center justify-between mb-10">
-                <div>
-                  <p class="font-bold text-xl">
-                    <%=user.name%>
-                  </p>
-                  <p class="text-sm opacity-80">Tourist ID: TS-A7X9K2MAP</p>
-                  <p class="text-sm opacity-80 mt-2 flex items-center"><span
-                      class="material-icons text-sm mr-1">location_on</span> Paris, France</p>
-                </div>
-                <div class="bg-white p-3 rounded-md">
-                  <span class="material-icons text-blue-500 text-3xl">qr_code_2</span>
-                </div>
-              </div>
-              <div class="flex  justify-between items-start mb-4">
-
-                <div>
-                  <h3 class="text-xl font-bold text-gray-900">5-Day Hiking Expedition</h3>
-                  <p class="text-gray-600">Manali, India</p>
-                </div>
-                <div class="text-right">
-                  <p class="text-gray-500 text-sm">Start Date: 2024-07-28</p>
-                  <p class="text-gray-500 text-sm">End Date: 2024-08-01</p>
-                </div>
-              </div>
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                <div class="bg-blue-50 p-4 rounded-lg flex items-center">
-                  <span class="material-icons text-blue-500 mr-3">thermostat</span>
-                  <div>
-                    <p class="font-semibold">Weather</p>
-                    <p class="text-sm">Sunny, 22°C</p>
-                  </div>
-                </div>
-                <div class="bg-yellow-50 p-4 rounded-lg flex items-center">
-                  <span class="material-icons text-yellow-500 mr-3">assessment</span>
-                  <div>
-                    <p class="font-semibold">Risk Score</p>
-                    <p class="text-sm">Low (15/100)</p>
-                  </div>
-                </div>
-                <div class="bg-red-50 p-4 rounded-lg flex items-center">
-                  <span class="material-icons text-red-500 mr-3">block</span>
-                  <div>
-                    <p class="font-semibold">Restricted Areas</p>
-                    <p class="text-sm">Rohtang Pass (seasonal)</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="flex items-center justify-between">
-          <div class="flex space-x-2">
-            <button onclick="tripsToggle(this ,'AllTrips')"
-              class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-sm hover:bg-blue-600 transition-colors">All
-              Trips</button>
-            <button onclick="tripsToggle(this ,'Upcoming')"
-              class="px-4 py-2 bg-white text-gray-700 rounded-lg shadow-sm hover:bg-gray-100 transition-colors">Upcoming</button>
-            <button onclick="tripsToggle(this ,'Completed')"
-              class="px-4 py-2 bg-white text-gray-700 rounded-lg shadow-sm hover:bg-gray-100 transition-colors">Completed</button>
-          </div>
-          <div class="flex space-x-2 mb-4">
-
-            <button onclick="document.getElementById('journeyForm').style.display='block'"
-              class="px-4 py-2 bg-blue-600 text-white rounded-lg flex items-center hover:bg-blue-700 shadow-sm transition-all duration-200 hover:scale-105">
-              <i class="fas fa-plus mr-2"></i> New Trip
-            </button>
-          </div>
-        </div>
-        <div id="AllTrips" class="flex gap-10 justify-center items-center flex-wrap">
-          <%Trips.forEach((trip)=>{%>
-            <div data-trip-id="<%= trip._id %>"
-              class="trip-card w-56 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col card-hover transition-transform hover:scale-105">
-              <div class="relative h-28">
-                <img alt="trip image" class="h-full w-full object-cover"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuD667dmGLhWQ6d8Bf-MVC4SWtGcH6JWQbQCEZumB46_rBxV8rUXzN9QQvw_NnrHr1eME2zqGpwbqgVnOS6nG0-5WrzPp1yYv3S9vqA8DT90-ra9ynKPTqEgvr6O7kyUrkXMxBJYcAPAg3860IxGTTHJlTigjBtUIIcLcVb711N50HzIJZ9-ZOHrW5F0ukc_3zHa3teqVWxyVjlmHsLDXuzkdJb7gMLgflTanXAeiE49Av3Hoor14kMgpQcle-Ouya0daHSSyHa2g9o" />
-                <span id="tripStatus<%=trip._id%>"
-                  class="absolute top-2 right-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-50 text-blue-600">
-                  <%=trip.status%>
-                </span>
-              </div>
-
-              <div class="p-3 flex-1">
-                <div class="flex items-center gap-2 text-sm text-gray-700 font-medium truncate">
-                  <i class="fas fa-map-marker-alt text-gray-400"></i>
-                  <span class="truncate">
-                    <%= trip.startLocation %> → <%= trip.endLocation %>
-                  </span>
-                </div>
-                <div class="mt-1 text-xs text-gray-500 truncate">
-                  <%= trip.travelDate.toString().slice(4, 15) %> — <%= trip.endDate %>
-                </div>
-              </div>
-
-              <div class="p-3 flex items-center justify-between gap-2">
-                <%if(trip.status==="scheduled"){ %>
-                  <button onclick="startTrip(this,'<%= trip._id %>' )"
-                    class="start-trip-btn flex-1 flex items-center justify-center gap-2 text-xs py-1 rounded-md bg-green-600 text-white transition-colors hover:bg-green-700"
-                    data-trip-id="<%= trip._id %>">
-                    <i class="fas fa-play"></i>
-                    Start
-                  </button>
-                  <%}else if(trip.status==="in-progress" ){%>
-                    <button onclick="endTrip(this,'<%= trip._id %>' )"
-                      class="start-trip-btn flex-1 flex items-center justify-center gap-2 text-xs py-1 rounded-md bg-green-600 text-white transition-colors hover:bg-green-700"
-                      data-trip-id="<%= trip._id %>">
-                      <i class="fas fa-play"></i>
-                      in-progress
-                    </button>
-                    <% }else {%>
-                      <button
-                        class="  flex-1 flex items-center justify-center gap-2 text-xs py-1 rounded-md bg-green-600 text-white transition-colors hover:bg-green-700"
-                        data-trip-id="<%= trip._id %>">
-                        <i class="fas fa-play"></i>
-                        Completed
-                      </button>
-                      <%}%>
-
-                        <button
-                          class="details-btn text-xs py-1 px-3 rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200">
-                          <i class="fas fa-info-circle"></i>
-                        </button>
-              </div>
-            </div>
-            <%})%>
-
-
-        </div>
-        <div id="Upcoming" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="bg-white rounded-xl shadow-md overflow-hidden group">
-            <div class="relative">
-              <img alt="Eiffel Tower in Paris" class="h-48 w-full object-cover"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD667dmGLhWQ6d8Bf-MVC4SWtGcH6JWQbQCEZumB46_rBxV8rUXzN9QQvw_NnrHr1eME2zqGpwbqgVnOS6nG0-5WrzPp1yYv3S9vqA8DT90-ra9ynKPTqEgvr6O7kyUrkXMxBJYcAPAg3860IxGTTHJlTigjBtUIIcLcVb711N50HzIJZ9-ZOHrW5F0ukc_3zHa3teqVWxyVjlmHsLDXuzkdJb7gMLgflTanXAeiE49Av3Hoor14kMgpQcle-Ouya0daHSSyHa2g9o" />
-              <div
-                class="absolute top-2 right-2 bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
-                Upcoming</div>
-            </div>
-            <div class="p-4">
-              <h3 class="text-lg font-bold text-gray-900">Parisian Dreams</h3>
-              <p class="text-gray-600">3-Day City Tour</p>
-              <p class="text-sm text-gray-500 mt-2">Starts: 2024-09-15</p>
-              <p class="text-sm text-gray-500 mt-2">Ends: 2024-09-18</p>
-            </div>
-            <div class="mt-6 flex justify-between p-5">
-
-              <button
-                class="start-trip-btn px-4 py-2 bg-green-500 text-white rounded-lg flex items-center animate-pulse"
-                data-trip-id="">
-                <i class="fas fa-play mr-2"></i> Start Trip
-              </button>
-
-              <button class="details-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-lg flex items-center">
-                <i class="fas fa-info-circle mr-2"></i> Details
-              </button>
-
-            </div>
-          </div>
-        </div>
-        <div id="Completed" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="bg-white rounded-xl shadow-md overflow-hidden group">
-            <div class="relative">
-              <img alt="Eiffel Tower in Paris" class="h-48 w-full object-cover"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD667dmGLhWQ6d8Bf-MVC4SWtGcH6JWQbQCEZumB46_rBxV8rUXzN9QQvw_NnrHr1eME2zqGpwbqgVnOS6nG0-5WrzPp1yYv3S9vqA8DT90-ra9ynKPTqEgvr6O7kyUrkXMxBJYcAPAg3860IxGTTHJlTigjBtUIIcLcVb711N50HzIJZ9-ZOHrW5F0ukc_3zHa3teqVWxyVjlmHsLDXuzkdJb7gMLgflTanXAeiE49Av3Hoor14kMgpQcle-Ouya0daHSSyHa2g9o" />
-              <div
-                class="absolute top-2 right-2 bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
-                Upcoming</div>
-            </div>
-            <div class="p-4">
-              <h3 class="text-lg font-bold text-gray-900">Parisian Dreams</h3>
-              <p class="text-gray-600">3-Day City Tour</p>
-              <p class="text-sm text-gray-500 mt-2">Starts: 2024-09-15</p>
-              <p class="text-sm text-gray-500 mt-2">Ends: 2024-09-18</p>
-            </div>
-            <div class="mt-6 flex justify-between p-5">
-
-              <button
-                class="start-trip-btn px-4 py-2 bg-green-500 text-white rounded-lg flex items-center animate-pulse"
-                data-trip-id="">
-                <i class="fas fa-play mr-2"></i> Start Trip
-              </button>
-
-              <button class="details-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-lg flex items-center">
-                <i class="fas fa-info-circle mr-2"></i> Details
-              </button>
-
-            </div>
-          </div>
-        </div>
+      <% } %> <% if (error && error.length > 0) { %>
+      <div class="bg-red-500 text-white px-4 py-2 rounded mb-2 shadow-lg">
+        <%= error %>
       </div>
-      <div class="space-y-8">
-        <div class="bg-white p-6 rounded-xl shadow-md">
-          <div class="flex items-center mb-4">
-            <span class="material-icons text-red-500 mr-3">campaign</span>
-            <h3 class="text-xl font-bold text-gray-900">Emergency Broadcasts</h3>
-          </div>
-          <div class="space-y-4">
-            <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
-              <p class="font-semibold text-red-800">High Alert: Landslide Warning</p>
-              <p class="text-sm text-red-700">Heavy rainfall has increased the risk of landslides in the upper Manali
-                region. Avoid trekking in high-altitude areas.</p>
-              <p class="text-xs text-red-500 mt-2">Issued: 1 hour ago</p>
+      <% } %>
+    </div>
+
+    <div class="max-w-7xl mx-auto p-6 min-h-screen">
+      <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 h-[calc(100vh-5rem)]">
+        <main class="xl:col-span-2 space-y-6 overflow-y-auto no-scrollbar mt-8">
+          <section class="bg-white rounded-lg shadow p-6 space-y-4">
+            <div class="flex justify-between items-center">
+              <div>
+                <h2 class="text-2xl font-bold">
+                  Welcome, <span class="text-gray-900"><%= user.name %></span>
+                </h2>
+                <p class="text-gray-500">Your safety is our priority.</p>
+              </div>
             </div>
-            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-r-lg">
-              <p class="font-semibold text-yellow-800">Traffic Advisory</p>
-              <p class="text-sm text-yellow-700">Roadblock on NH3 towards Solang Valley. Please use alternate routes
-                advised by local authorities.</p>
-              <p class="text-xs text-yellow-500 mt-2">Issued: 5 hours ago</p>
+            <div
+              class="flex flex-col md:flex-row items-center justify-between bg-blue-50 rounded-lg p-4"
+            >
+              <div>
+                <h3 class="font-semibold text-lg mb-1">Digital Tourist ID</h3>
+                <p class="text-gray-600 text-sm mb-2">
+                  Use this ID for quick identification.
+                </p>
+                <p
+                  class="inline-flex items-center space-x-2 bg-white border border-gray-300 rounded-md px-3 py-1 text-gray-600 text-sm w-max"
+                >
+                  <i class="fas fa-barcode text-gray-400"></i>
+                  <span
+                    >ID: <%= user._id.toString().slice(-10).toUpperCase()
+                    %></span
+                  >
+                </p>
+              </div>
+              <div class="mt-4 md:mt-0">
+                <div
+                  class="w-28 h-28 bg-white flex items-center justify-center rounded-md shadow-lg p-1"
+                >
+                  <img
+                    src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=<%= user._id %>"
+                    alt="QR Code"
+                    class="rounded-sm"
+                  />
+                </div>
+              </div>
             </div>
-            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
-              <p class="font-semibold text-blue-800">General Update</p>
-              <p class="text-sm text-blue-700">Tourist helpline is active 24/7. Dial 123-456-7890 for any assistance.
+          </section>
+
+          <!-- safety setting -->
+          <section class="bg-white rounded-lg shadow p-6 space-y-6">
+            <h3 class="text-lg font-semibold">Safety Settings</h3>
+
+            <div>
+              <label class="block font-semibold mb-2"
+                >Real-time Location Sharing</label
+              >
+              <p class="text-sm text-gray-500 mb-2">
+                Choose who can see your location.
               </p>
-              <p class="text-xs text-blue-500 mt-2">Issued: 1 day ago</p>
+              <div id="locationSharingButtons" class="space-x-2 inline-flex">
+                <button
+                  onclick="updateLocationSetting(this, 'always')"
+                  class="px-3 py-1 rounded-full bg-blue-600 text-white font-medium"
+                >
+                  Always On
+                </button>
+                <button
+                  onclick="updateLocationSetting(this, 'demand')"
+                  class="px-3 py-1 rounded-full bg-gray-200 text-gray-700 font-medium hover:bg-gray-300"
+                >
+                  On Demand
+                </button>
+                <button
+                  onclick="updateLocationSetting(this, 'off')"
+                  class="px-3 py-1 rounded-full bg-gray-200 text-gray-700 font-medium hover:bg-gray-300"
+                >
+                  Off
+                </button>
+              </div>
             </div>
-          </div>
+
+            <div class="flex items-center justify-between">
+              <div>
+                <label class="block font-semibold">Anomaly Detection</label>
+                <p class="text-sm text-gray-500">
+                  Get alerts for unusual travel patterns.
+                </p>
+              </div>
+              <label
+                for="anomaly-toggle"
+                class="relative inline-flex items-center cursor-pointer"
+              >
+                <input
+                  type="checkbox"
+                  id="anomaly-toggle"
+                  class="sr-only peer"
+                  checked
+                />
+                <div
+                  class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-blue-600 peer-focus:ring-4 peer-focus:ring-blue-300 transition"
+                ></div>
+                <div
+                  class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition peer-checked:translate-x-5"
+                ></div>
+              </label>
+            </div>
+
+            <div>
+              <label class="font-semibold block mb-1"
+                >Manage Emergency Contacts</label
+              >
+              <button
+                onclick="openContactModal()"
+                class="w-full text-center bg-gray-200 text-gray-600 rounded-md py-2 text-sm hover:bg-gray-300 focus:outline-none"
+              >
+                Add New Contact
+              </button>
+            </div>
+          </section>
+          <!-- maps -->
+          <section class="bg-white rounded-lg shadow p-6 relative z-0">
+            <h3 class="text-lg font-semibold mb-4">Live Trip Map</h3>
+            <div
+              id="map"
+              class="w-full h-72 rounded-lg border border-gray-300"
+            ></div>
+          </section>
+          <!-- alerts -->
+          <section class="space-y-3">
+            <div
+              class="flex items-center space-x-3 bg-yellow-100 border-l-4 border-yellow-400 text-yellow-700 px-4 py-3 rounded"
+              role="alert"
+            >
+              <svg
+                class="w-5 h-5 flex-shrink-0"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M8.257 3.099c.765-1.36 2.683-1.36 3.448 0l6.518 11.59c.75 1.335-.213 2.998-1.724 2.998H3.463c-1.511 0-2.473-1.663-1.724-2.998l6.518-11.59zM11 14a1 1 0 10-2 0 1 1 0 002 0zm-1-7a1 1 0 00-.993.883L9 8v3a1 1 0 001.993.117L11 11V8a1 1 0 00-1-1z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+              <div>
+                <p class="font-bold">You are entering a high-risk zone</p>
+                <p class="text-sm">
+                  Stay vigilant and aware of your surroundings.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section class="bg-white rounded-lg shadow p-6 space-y-4">
+            <h3 class="text-lg font-semibold">Trip Itinerary</h3>
+            <ul class="space-y-4 text-sm text-gray-700">
+              <li class="flex items-center space-x-3">
+                <span
+                  class="inline-block w-3 h-3 rounded-full bg-blue-600"
+                ></span>
+                <div>
+                  <p class="font-semibold">Arrival in Mumbai</p>
+                  <p class="text-gray-500 text-xs">Completed</p>
+                </div>
+              </li>
+              <li class="flex items-center space-x-3">
+                <span
+                  class="inline-block w-3 h-3 rounded-full bg-cyan-400"
+                ></span>
+                <div>
+                  <p class="font-semibold">Exploring Colaba</p>
+                  <p class="text-gray-500 text-xs">Current Location</p>
+                </div>
+              </li>
+              <li class="flex items-center space-x-3">
+                <span
+                  class="inline-block w-3 h-3 rounded-full bg-gray-400"
+                ></span>
+                <div>
+                  <p class="font-semibold">Departure from Mumbai</p>
+                  <p class="text-gray-500 text-xs">Planned</p>
+                </div>
+              </li>
+            </ul>
+          </section>
+
+          <section class="bg-white rounded-lg shadow p-6">
+            <div
+              class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4"
+            >
+              <h3 class="text-lg font-semibold">My Trips</h3>
+              <div class="flex items-center gap-2">
+                <div class="flex space-x-1 bg-gray-200 p-1 rounded-lg">
+                  <button
+                    onclick="tripsToggle(this ,'AllTrips')"
+                    class="px-3 py-1 text-sm bg-blue-500 text-white rounded-md shadow"
+                  >
+                    All
+                  </button>
+                  <button
+                    onclick="tripsToggle(this ,'Upcoming')"
+                    class="px-3 py-1 text-sm text-gray-700 rounded-md"
+                  >
+                    Upcoming
+                  </button>
+                  <button
+                    onclick="tripsToggle(this ,'Completed')"
+                    class="px-3 py-1 text-sm text-gray-700 rounded-md"
+                  >
+                    Completed
+                  </button>
+                </div>
+                <button
+                  onclick="document.getElementById('journeyForm').style.display='block'"
+                  class="px-4 py-2 bg-blue-600 text-white rounded-lg flex items-center hover:bg-blue-700 shadow-sm transition-colors"
+                >
+                  <i class="fas fa-plus mr-2"></i> New Trip
+                </button>
+              </div>
+            </div>
+
+            <div
+              id="AllTrips"
+              class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
+            >
+              <% Trips.forEach((trip) => { %>
+              <div
+                data-trip-id="<%= trip._id %>"
+                class="trip-card bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col card-hover"
+              >
+                <div class="relative h-28">
+                  <img
+                    alt="trip image"
+                    class="h-full w-full object-cover"
+                    src="https://source.unsplash.com/random/300x200/?<%= trip.endLocation %>"
+                  />
+                  <span
+                    id="tripStatus<%=trip._id%>"
+                    class="absolute top-2 right-2 text-xs font-semibold px-2 py-0.5 rounded-full capitalize bg-white/80 backdrop-blur-sm"
+                    ><%=trip.status%></span
+                  >
+                </div>
+                <div class="p-3 flex-1">
+                  <div
+                    class="flex items-center gap-2 text-sm text-gray-700 font-medium truncate"
+                  >
+                    <i class="fas fa-map-marker-alt text-gray-400"></i>
+                    <span class="truncate"
+                      ><%= trip.startLocation %> → <%= trip.endLocation %></span
+                    >
+                  </div>
+                  <div class="mt-1 text-xs text-gray-500 truncate">
+                    <%= trip.travelDate.toString().slice(4, 15) %> — <%=
+                    trip.endDate %>
+                  </div>
+                </div>
+                <div class="p-3 border-t border-gray-200">
+                  <% if(trip.status === "scheduled") { %>
+                  <button
+                    onclick="startTrip(this,'<%= trip._id %>')"
+                    class="start-trip-btn w-full text-xs py-1.5 rounded-md bg-green-600 text-white transition-colors hover:bg-green-700"
+                    data-trip-id="<%= trip._id %>"
+                  >
+                    <i class="fas fa-play mr-1"></i> Start
+                  </button>
+                  <% } else if(trip.status === "in-progress") { %>
+                  <button
+                    onclick="endTrip(this,'<%= trip._id %>')"
+                    class="w-full text-xs py-1.5 rounded-md bg-red-600 text-white transition-colors hover:bg-red-700"
+                    data-trip-id="<%= trip._id %>"
+                  >
+                    <i class="fas fa-stop mr-1"></i> End Trip
+                  </button>
+                  <% } else { %>
+                  <button
+                    class="w-full text-xs py-1.5 rounded-md bg-gray-500 text-white cursor-not-allowed"
+                  >
+                    <i class="fas fa-check mr-1"></i> Completed
+                  </button>
+                  <% } %>
+                </div>
+              </div>
+              <% }) %>
+            </div>
+            <div id="Upcoming" class="hidden text-center py-8 text-gray-500">
+              <p>No upcoming trips scheduled.</p>
+            </div>
+            <div id="Completed" class="hidden text-center py-8 text-gray-500">
+              <p>No trips completed yet.</p>
+            </div>
+          </section>
+        </main>
+
+        <aside class="space-y-6 overflow-y-auto no-scrollbar mt-8">
+          <section class="bg-white rounded-lg shadow p-6 text-center">
+            <h4 class="font-semibold mb-2 text-gray-700">
+              Tourist Safety Score
+            </h4>
+            <p
+              id="safetyScoreDisplay"
+              class="text-4xl font-bold mb-2 text-gray-900"
+            >
+              --%
+            </p>
+            <p class="text-xs text-gray-500">
+              Based on your travel route and current area risk.
+            </p>
+          </section>
+
+          <section class="bg-white rounded-lg shadow p-6 space-y-3">
+            <h4 class="font-semibold text-gray-700 mb-2">Quick Actions</h4>
+            <button
+              onclick="emergencyService()"
+              class="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded shadow w-full"
+            >
+              <span
+                class="uppercase font-mono text-xs bg-white text-red-600 px-2 py-0.5 rounded"
+                >SOS</span
+              >
+              Panic Button (SOS)
+            </button>
+            <button
+              class="flex items-center gap-2 bg-blue-300 hover:bg-blue-400 text-blue-900 font-semibold px-4 py-2 rounded shadow focus:outline-none w-full"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 flex-shrink-0"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M17 8h2a2 2 0 012 2v0a2 2 0 01-2 2h-2m-6 4h.01M12 2a10 10 0 11-6.7 17.2"
+                />
+              </svg>
+              Share Live Location
+            </button>
+            <button
+              class="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold px-4 py-2 rounded shadow focus:outline-none w-full"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 flex-shrink-0"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M18 13v6a2 2 0 01-2 2H8a2 2 0 01-2-2v-6M12 9v4m0 0l3-3m-3 3l-3-3"
+                />
+              </svg>
+              Report Incident
+            </button>
+          </section>
+
+          <section class="bg-white rounded-lg shadow p-6 space-y-3">
+            <h4 class="font-semibold text-gray-700 mb-2">Emergency Contacts</h4>
+            <div id="emergencyContactsList" class="space-y-2">
+              <div
+                class="flex items-center justify-between bg-blue-50 border-l-4 border-blue-400 rounded-r-md px-4 py-2 text-gray-700 text-sm"
+              >
+                <span>Local Police</span>
+                <button
+                  aria-label="Call Local Police"
+                  class="text-blue-500 hover:text-blue-700"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.272 1.09l-2.09 1.68a12.042 12.042 0 005.516 5.516l1.68-2.09a1 1 0 011.09-.272l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.163 21 3 14.837 3 7V5z"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </div>
 
         </div>
 
@@ -381,316 +519,277 @@
                 <div class="location-point">
                   <span class="circle bg-primary"></span>
                   <p class="mt-2 mb-0 small" id="startLabel">Start</p>
+    <div
+      class="modal fixed inset-0 z-[10000]"
+      id="journeyForm"
+      style="display: none; background: rgba(0, 0, 0, 0.5)"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content rounded shadow-lg">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title">
+              <i class="fas fa-route me-2"></i>Plan Your Journey
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              aria-label="Close"
+              onclick="closeForm()"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form
+              action="/journey/submit"
+              method="POST"
+              id="journeyDetailsForm"
+            >
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="startLocation" class="form-label"
+                    >Start Location</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="startLocation"
+                    name="startLocation"
+                    placeholder="Enter starting point"
+                    required
+                  />
                 </div>
-                <div class="route-line flex-grow-1 mx-2">
-                  <div class="dashed-line"></div>
-                  <i class="fas fa-arrow-right text-muted"></i>
-                </div>
-                <div class="location-point">
-                  <span class="circle bg-success"></span>
-                  <p class="mt-2 mb-0 small" id="destinationLabel">Destination</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="startLocation" class="form-label">
-                    <i class="fas fa-map-marker-alt text-primary me-1"></i>Start Location
-                  </label>
-                  <input type="text" class="form-control" id="startLocation" name="startLocation"
-                    placeholder="Enter starting point" required oninput="updateLocationLabel('startLabel', this.value)">
-                  <div class="form-text">Start typing for suggestions</div>
-                  <div id="startSuggestions" class="list-group position-absolute w-100 d-none"></div>
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="destination" class="form-label">
-                    <i class="fas fa-flag text-success me-1"></i>Destination
-                  </label>
-                  <input type="text" class="form-control" id="destination" name="destination"
-                    placeholder="Enter destination" required
-                    oninput="updateLocationLabel('destinationLabel', this.value)">
-                  <div class="form-text">Start typing for suggestions</div>
-                  <div id="destinationSuggestions" class="list-group position-absolute w-100 d-none"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="date" class="form-label">
-                    <i class="far fa-calendar-alt me-1"></i>Journey Date
-                  </label>
-                  <input type="date" class="form-control" id="date" name="date" required
-                    min="<?= new Date().toISOString().split('T')[0] ?>">
-                  <div class="form-text" id="dateInfo"></div>
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="enddate" class="form-label">
-                    <i class="far fa-calendar-alt me-1"></i>Journey End Date
-                  </label>
-                  <input type="date" class="form-control" id="enddate" name="enddate" required>
-                  <div class="form-text" id="enddateInfo"></div>
+                <div class="col-md-6 mb-3">
+                  <label for="destination" class="form-label"
+                    >Destination</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="destination"
+                    name="destination"
+                    placeholder="Enter destination"
+                    required
+                  />
                 </div>
               </div>
-            </div>
-
-            <div class="mb-3">
-              <label for="passengers" class="form-label">
-                <i class="fas fa-users me-1"></i>Passengers
-              </label>
-              <div class="d-flex align-items-center">
-                <button type="button" class="btn btn-outline-secondary" onclick="adjustPassengers(-1)">
-                  <i class="fas fa-minus"></i>
-                </button>
-                <input type="number" class="form-control mx-2 text-center" id="passengers" name="passengers" min="1"
-                  value="1" readonly>
-                <button type="button" class="btn btn-outline-secondary" onclick="adjustPassengers(1)">
-                  <i class="fas fa-plus"></i>
-                </button>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="date" class="form-label">Journey Date</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="date"
+                    name="date"
+                    required
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="enddate" class="form-label"
+                    >Journey End Date</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="enddate"
+                    name="enddate"
+                    required
+                  />
+                </div>
               </div>
-            </div>
-
-
-            <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" id="rememberDetails" name="rememberDetails">
-              <label class="form-check-label" for="rememberDetails">
-                Remember my details for future journeys
-              </label>
-            </div>
-
-            <button type="submit" class="btn btn-primary w-100 py-2">
-              <i class="fas fa-paper-plane me-2"></i>Plan Journey
-            </button>
-          </form>
+              <div class="mb-3">
+                <label for="passengers" class="form-label">Passengers</label>
+                <div class="d-flex align-items-center">
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    onclick="adjustPassengers(-1)"
+                  >
+                    -
+                  </button>
+                  <input
+                    type="number"
+                    class="form-control mx-2 text-center"
+                    id="passengers"
+                    name="passengers"
+                    min="1"
+                    value="1"
+                    readonly
+                  />
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    onclick="adjustPassengers(1)"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary w-100 py-2">
+                Plan Journey
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</body>
-<script>
 
-  function tripsToggle(button, sectionId) {
+    <!-- pop contact form -->
+    <div
+      id="addContactModal"
+      class="hidden fixed inset-0 z-[10000] bg-black bg-opacity-50 flex items-center justify-center"
+    >
+      <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-sm">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-semibold">Add Emergency Contact</h3>
+          <button
+            onclick="closeContactModal()"
+            class="text-gray-400 hover:text-gray-600"
+          >
+            &times;
+          </button>
+        </div>
+        <form id="addContactForm">
+          <div class="space-y-4">
+            <div>
+              <label
+                for="contactName"
+                class="block text-sm font-medium text-gray-700"
+                >Name</label
+              >
+              <input
+                type="text"
+                id="contactName"
+                required
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+            <div>
+              <label
+                for="contactNumber"
+                class="block text-sm font-medium text-gray-700"
+                >Contact Number</label
+              >
+              <input
+                type="tel"
+                id="contactNumber"
+                required
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+          </div>
+          <div class="mt-6 flex justify-end space-x-3">
+            <button
+              type="button"
+              onclick="closeContactModal()"
+              class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+            >
+              Save Contact
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script>
+      let map = null;
+      let userLocationMarker = null;
 
-    document.getElementById('AllTrips').classList.add('hidden');
-    document.getElementById('Upcoming').classList.add('hidden');
-    document.getElementById('Completed').classList.add('hidden');
+      // --- Trip Toggling ---
+      function tripsToggle(button, sectionId) {
+        document.getElementById("AllTrips").style.display = "none";
+        document.getElementById("Upcoming").style.display = "none";
+        document.getElementById("Completed").style.display = "none";
+        document.getElementById(sectionId).style.display = "grid";
 
-
-    document.getElementById(sectionId).classList.remove('hidden');
-
-
-    const buttons = button.parentElement.querySelectorAll('button');
-    buttons.forEach(btn => {
-      btn.classList.remove('bg-blue-500', 'text-white');
-      btn.classList.add('bg-white', 'text-gray-700');
-      btn.classList.remove('hover:bg-blue-600');
-      btn.classList.add('hover:bg-gray-100');
-    });
-
-
-    button.classList.remove('bg-white', 'text-gray-700');
-    button.classList.add('bg-blue-500', 'text-white');
-    button.classList.remove('hover:bg-gray-100');
-    button.classList.add('hover:bg-blue-600');
-
-
-  }
-
-  // Initialize the form with current date and time
-  document.addEventListener('DOMContentLoaded', function () {
-    const now = new Date();
-
-    // Set default date to today
-    const today = now.toISOString().split('T')[0];
-    document.getElementById('date').value = today;
-    updateDateInfo(today);
-    // Add event listeners
-    document.getElementById('date').addEventListener('change', function () {
-      updateDateInfo(this.value);
-    });
-    // document.getElementById('notes').addEventListener('input', function () {
-    //   const count = this.value.length;
-    //   document.getElementById('noteCount').textContent = count;
-
-    //   if (count > 200) {
-    //     this.classList.add('is-invalid');
-    //   } else {
-    //     this.classList.remove('is-invalid');
-    //   }
-    // });
-
-    // Setup location autocomplete
-    setupAutocomplete('startLocation', 'startSuggestions');
-    setupAutocomplete('destination', 'destinationSuggestions');
-  });
-
-  function updateDateInfo(dateString) {
-    const date = new Date(dateString);
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const formattedDate = date.toLocaleDateString('en-US', options);
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const selectedDate = new Date(dateString);
-
-    let infoText = formattedDate;
-
-    if (selectedDate.getTime() === today.getTime()) {
-      infoText += " (Today)";
-    } else if (selectedDate.getTime() === today.getTime() + 86400000) {
-      infoText += " (Tomorrow)";
-    } else {
-      const diffTime = selectedDate.getTime() - today.getTime();
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      infoText += ` (in ${diffDays} days)`;
-    }
-
-    document.getElementById('dateInfo').textContent = infoText;
-  }
-
-
-  function adjustPassengers(change) {
-    const passengersInput = document.getElementById('passengers');
-    let currentValue = parseInt(passengersInput.value);
-    let newValue = currentValue + change;
-
-    if (newValue < 1) newValue = 1;
-
-    passengersInput.value = newValue;
-  }
-
-  function updateLocationLabel(elementId, value) {
-    const label = document.getElementById(elementId);
-    label.textContent = value || (elementId === 'startLabel' ? 'Start' : 'Destination');
-  }
-
-  function setupAutocomplete(inputId, suggestionsId) {
-    const input = document.getElementById(inputId);
-    const suggestionsContainer = document.getElementById(suggestionsId);
-
-    input.addEventListener('focus', function () {
-      if (this.value.length > 1) {
-        showSuggestions(this.value, suggestionsContainer, input);
+        const buttons = button.parentElement.querySelectorAll("button");
+        buttons.forEach((btn) => {
+          btn.classList.remove("bg-blue-500", "text-white", "shadow");
+          btn.classList.add("text-gray-700");
+        });
+        button.classList.add("bg-blue-500", "text-white", "shadow");
       }
-    });
 
-    input.addEventListener('input', function () {
-      showSuggestions(this.value, suggestionsContainer, input);
-    });
-
-    // Hide suggestions when clicking outside
-    document.addEventListener('click', function (e) {
-      if (e.target !== input && !suggestionsContainer.contains(e.target)) {
-        suggestionsContainer.classList.add('d-none');
+      // --- Form Helpers ---
+      function closeForm() {
+        document.getElementById("journeyForm").style.display = "none";
       }
-    });
-  }
+      function adjustPassengers(change) {
+        const input = document.getElementById("passengers");
+        let current = parseInt(input.value) + change;
+        if (current < 1) current = 1;
+        input.value = current;
+      }
 
-  function showSuggestions(query, container, input) {
-    if (query.length < 2) {
-      container.classList.add('d-none');
-      return;
-    }
+      // --- Emergency SOS ---
+      async function emergencyService() {
+        if (!navigator.geolocation) {
+          return alert("Geolocation is not supported by this browser.");
+        }
+        navigator.geolocation.getCurrentPosition(
+          async (pos) => {
+            const payload = {
+              touristId: "<%= user._id %>",
+              lat: pos.coords.latitude,
+              lng: pos.coords.longitude,
+            };
+            try {
+              const response = await fetch("/emergencySos", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ payload }),
+              });
+              if (!response.ok)
+                throw new Error("Server responded with an error");
+              alert(
+                "Emergency services have been notified. Help is on the way!"
+              );
+            } catch (error) {
+              console.error("Error:", error);
+              alert("Failed to notify emergency services. Please try again.");
+            }
+          },
+          () => {
+            alert(
+              "Failed to get your location. Please enable location services."
+            );
+          }
+        );
+      }
 
-    const filtered = locationSuggestions.filter(location =>
-      location.toLowerCase().includes(query.toLowerCase())
-    );
-
-    if (filtered.length === 0) {
-      container.classList.add('d-none');
-      return;
-    }
-
-    container.innerHTML = '';
-    filtered.forEach(location => {
-      const item = document.createElement('button');
-      item.type = 'button';
-      item.classList.add('list-group-item', 'list-group-item-action');
-      item.textContent = location;
-      item.addEventListener('click', function () {
-        input.value = location;
-        updateLocationLabel(input.id === 'startLocation' ? 'startLabel' : 'destinationLabel', location);
-        container.classList.add('d-none');
-      });
-      container.appendChild(item);
-    });
-
-    // Position the suggestions container below the input
-    const rect = input.getBoundingClientRect();
-    container.style.top = `${rect.bottom + window.scrollY}px`;
-    container.style.left = `${rect.left + window.scrollX}px`;
-    container.style.width = `${rect.width}px`;
-    container.classList.remove('d-none');
-  }
-
-  function closeForm() {
-    document.getElementById('journeyForm').style.display = 'none';
-  }
-  async function emergencyService() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(async (pos) => {
-        const payload = {
-          touristId: "<%= user._id %>", // dynamic from server
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-        };
-        console.log("SOS Payload:", payload);
-        await fetch('/emergencySos', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ payload })
+      // --- Trip Management API Calls ---
+      // --- Trip Management API Calls ---
+      function startTrip(element, id) {
+        fetch("/startTrip", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tripId: id }),
         })
-          .then(response => response.json())
-          .then(data => {
-            alert('Emergency services have been notified. Help is on the way!');
+          .then((res) => {
+            if (!res.ok) throw new Error("Failed to start trip");
+            return res.json();
           })
-          .catch(error => {
-            console.error('Error:', error);
-            alert('Failed to notify emergency services. Please try again.');
-          });
-        alert("🚨 SOS sent to authorities!");
-      }, () => {
-        alert("❌ Failed to get location!");
-      });
-    }
-    else {
-      alert("❌ Geolocation is not supported by this browser.");
-    }
-  }
+          .then((data) => {
+            console.log("Trip started:", data);
+            // Update UI
+            document.getElementById(`tripStatus${id}`).textContent =
+              "in-progress";
 
-
-
-
-  function startTrip(element, id) {
-    console.log(element)
-    let tripStatus = document.getElementById(`tripStatus${id}`);
-    tripStatus.innerHTML = '';
-    tripStatus.innerHTML = 'Ongoing'
-    element.innerHTML = '';
-    element.innerHTML = `
-     <i class="fas fa-play"></i>
-        in-progress
-     `
-    element.setAttribute("onclick", `endTrip(this,'${id}')`);
-
-    fetch('/startTrip', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tripId: id })
-    })
-      .then(response => response.json())
-      .then(data => console.log('Trip started:', data))
-      .catch(err => console.error('Error starting trip:', err));
-  }
+            // NEW: More robust way to update the button and its event handler
+            element.classList.remove(
+              "start-trip-btn",
+              "bg-green-600",
+              "hover:bg-green-700"
+            );
+            element.classList.add("bg-red-600", "hover:bg-red-700");
+            element.innerHTML = `<i class="fas fa-stop mr-1"></i> End Trip`;
+            element.onclick = (event) => endTrip(element, id); // Re-assign the click handler
+          })
+          .catch((err) => console.error("Error starting trip:", err));
+      }
 
   function endTrip(element, tripId) {
 
@@ -767,6 +866,80 @@
 
   // Draw a straight line between start & end
 
+      function endTrip(element, tripId) {
+        fetch("/endTrip", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tripId }),
+        })
+          .then((res) => {
+            if (!res.ok) throw new Error("Failed to end trip");
+            return res.json();
+          })
+          .then((data) => {
+            console.log("Trip ended:", data);
+            // Update UI
+            document.getElementById(`tripStatus${tripId}`).textContent =
+              "completed";
+
+            // NEW: More robust way to update the button and its event handler
+            element.classList.remove("bg-red-600", "hover:bg-red-700");
+            element.classList.add("bg-gray-500", "cursor-not-allowed");
+            element.innerHTML = `<i class="fas fa-check mr-1"></i> Completed`;
+            element.onclick = null; // Remove the click handler as it's completed
+            element.disabled = true; // Disable the button
+          })
+          .catch((err) => console.error("Error ending trip:", err));
+      }
+
+      // --- Safety Settings ---
+      async function updateLocationSetting(clickedButton, settingValue) {
+        const buttons = document.querySelectorAll(
+          "#locationSharingButtons button"
+        );
+        buttons.forEach((button) => {
+          button.classList.remove("bg-blue-600", "text-white");
+          button.classList.add("bg-gray-200", "text-gray-700");
+        });
+
+        clickedButton.classList.remove("bg-gray-200", "text-gray-700");
+        clickedButton.classList.add("bg-blue-600", "text-white");
+
+        if (userLocationMarker) {
+          if (settingValue === "off") {
+            map.removeLayer(userLocationMarker);
+          } else {
+            // This was the line with the typo. It is now corrected.
+            if (!map.hasLayer(userLocationMarker)) {
+              userLocationMarker.addTo(map);
+            }
+          }
+        }
+
+        try {
+          const response = await fetch("/user/settings/location", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              userId: "<%= user._id %>",
+              locationSharing: settingValue,
+            }),
+          });
+          if (!response.ok) throw new Error("Failed to save setting");
+          const result = await response.json();
+          console.log("Setting saved:", result);
+        } catch (error) {
+          console.error("Error saving setting:", error);
+        }
+      }
+
+      // --- Leaflet Map Initialization ---
+      document.addEventListener("DOMContentLoaded", function () {
+        map = L.map("map").setView([26.9124, 75.7873], 13);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+          attribution: "© OpenStreetMap",
+        }).addTo(map);
 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(async (pos) => {
@@ -915,4 +1088,92 @@
 </script>
 
 
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition((pos) => {
+            const userPos = [pos.coords.latitude, pos.coords.longitude];
+            map.setView(userPos, 13);
+            userLocationMarker = L.marker(userPos)
+              .addTo(map)
+              .bindPopup("Your current location");
+          });
+        }
+
+        document.getElementById("safetyScoreDisplay").textContent = `${
+          Math.floor(Math.random() * (95 - 65 + 1)) + 65
+        }%`;
+      });
+
+      // function for emergency contact
+      // --- Emergency Contact Functions ---
+      function openContactModal() {
+        document.getElementById("addContactModal").classList.remove("hidden");
+      }
+
+      function closeContactModal() {
+        document.getElementById("addContactModal").classList.add("hidden");
+      }
+
+      function renderContact(contact) {
+        const list = document.getElementById("emergencyContactsList");
+        if (!list) return; // Failsafe if the list element isn't found
+
+        const contactEl = document.createElement("div");
+        contactEl.className =
+          "flex items-center justify-between bg-gray-100 rounded-md px-4 py-2 text-gray-700 text-sm";
+
+        // Create the text part of the contact
+        const textPart = document.createElement("span");
+        textPart.textContent = `${contact.name} (${contact.number})`;
+
+        // Create the call button
+        const callButton = document.createElement("a"); // Changed to an anchor tag for calling
+        callButton.href = `tel:${contact.number}`;
+        callButton.setAttribute("aria-label", `Call ${contact.name}`);
+        callButton.className = "text-gray-400 hover:text-gray-600";
+        callButton.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.272 1.09l-2.09 1.68a12.042 12.042 0 005.516 5.516l1.68-2.09a1 1 0 011.09-.272l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.163 21 3 14.837 3 7V5z" />
+        </svg>
+    `;
+
+        contactEl.appendChild(textPart);
+        contactEl.appendChild(callButton);
+        list.appendChild(contactEl);
+      }
+
+      // Add an event listener for the new form
+      const contactForm = document.getElementById("addContactForm");
+      if (contactForm) {
+        contactForm.addEventListener("submit", async function (event) {
+          event.preventDefault(); // Stop the form from reloading the page
+
+          const name = document.getElementById("contactName").value;
+          const number = document.getElementById("contactNumber").value;
+
+          if (!name || !number) {
+            return alert("Please enter both a name and a number.");
+          }
+
+          try {
+            const response = await fetch("/user/contacts/add", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ name, number }),
+            });
+
+            if (!response.ok) throw new Error("Failed to save contact");
+
+            const newContact = await response.json();
+
+            renderContact(newContact); // Add the new contact to the sidebar list
+            closeContactModal(); // Close the pop-up
+            this.reset(); // Clear the form fields
+          } catch (error) {
+            console.error("Error saving contact:", error);
+            alert("Could not save contact. Please try again.");
+          }
+        });
+      }
+    </script>
+  </body>
 </html>

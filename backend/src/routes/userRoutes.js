@@ -98,10 +98,8 @@ router.post('/startTrip', isLoggendIn, async (req, res) => {
     try {
         const journey = await journeyModel.findByIdAndUpdate(tripId, { status: 'in-progress' }, { new: true });
         if (!journey) {
-            req.flash("error", "Journey not found.");
-            return res.redirect('/dashboard');
+            return res.status(404).json({ success: false, message: "Journey not found." });
         }
-
         await Trip.create({
             userId: req.user._id,
             startLocation: journey.startLocation,
@@ -109,14 +107,11 @@ router.post('/startTrip', isLoggendIn, async (req, res) => {
             travelDate: journey.travelDate,
             passengers: journey.passengers
         });
-
         getIO().emit("tripStarted", { tripId, status: "Ongoing" });
-
-        res.redirect('/dashboard');
+        res.status(200).json({ success: true, message: "Trip started successfully." });
     } catch (error) {
         console.error("Error starting trip:", error);
-        req.flash("error", "Failed to start trip.");
-        res.redirect('/dashboard');
+        res.status(500).json({ success: false, message: "Failed to start trip." });
     }
 });
 router.post('/endTrip', async (req, res) => {
@@ -124,14 +119,13 @@ router.post('/endTrip', async (req, res) => {
     try {
         await journeyModel.findByIdAndUpdate(tripId, { status: 'completed' });
         getIO().emit("tripEnded", { tripId, status: "Completed" });
-        res.redirect('/dashboard');
+        res.status(200).json({ success: true, message: "Trip ended successfully." });
     } catch (error) {
         console.error("Error ending trip:", error);
-        req.flash("error", "Failed to end trip.");
-        res.redirect('/dashboard');
+        res.status(500).json({ success: false, message: "Failed to end trip." });
     }
 });
-router.post('/emergencySos', isLoggendIn, async (req, res) => {
+router.post('/emergencySos', isLoggendIn, async (req, res) => { 
     try {
         const { payload } = req.body;
 
@@ -164,5 +158,64 @@ router.post('/emergencySos', isLoggendIn, async (req, res) => {
 router.get('/map',(req,res)=>{
     res.render('A');
 })
+
+// ADD THIS CODE BLOCK BEFORE module.exports
+
+// Route to update user settings
+router.post('/user/settings/location', isLoggendIn, async (req, res) => {
+  try {
+    const { locationSharing } = req.body;
+    const userId = req.user._id;
+
+    // A list of valid options
+    const validSettings = ['always', 'demand', 'off'];
+    if (!validSettings.includes(locationSharing)) {
+      return res.status(400).json({ message: 'Invalid setting value' });
+    }
+
+    // Find the user and update their preference in the database
+    const updatedUser = await userModel.findByIdAndUpdate(
+      userId,
+      { 'settings.locationSharing': locationSharing },
+      { new: true, runValidators: true } // Options to return the new doc and run schema validation
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'Setting saved successfully', settings: updatedUser.settings });
+
+  } catch (error) {
+    console.error('Error saving setting:', error);
+    res.status(500).json({ message: 'Server error while saving setting' });
+  }
+});
+
+
+// This line should be right after the code you just added
+router.post('/user/contacts/add', isLoggendIn, async (req, res) => {
+    try {
+        const { name, number } = req.body;
+        const user = await userModel.findById(req.user._id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const newContact = { name, number };
+        user.emergencyContacts.push(newContact);
+        await user.save();
+
+        // Return the newly added contact so the frontend can display it
+        res.status(201).json(user.emergencyContacts[user.emergencyContacts.length - 1]);
+
+    } catch (error) {
+        console.error('Error adding contact:', error);
+        res.status(500).json({ message: 'Server error while adding contact' });
+    }
+});
+
+module.exports = router; // Paste the code block above this line
 
 module.exports = router;

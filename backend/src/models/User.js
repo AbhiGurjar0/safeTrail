@@ -29,11 +29,24 @@ const userSchema = mongoose.Schema(
             type: Buffer,
             required: true,
         },
-        contact: Number,
         emergencyContact: Number,
         role: { type: String, default: "User" },
-    }
 
+        settings: {
+            locationSharing: {
+              type: String,
+              enum: ['always', 'demand', 'off'],
+              default: 'always'
+            }
+        },
+
+        // --- ADDED THIS BLOCK ---
+        emergencyContacts: [{
+            name: { type: String, required: true },
+            number: { type: String, required: true }
+        }]
+        // -------------------------
+    }
 );
 
 module.exports = mongoose.models.User || mongoose.model("user", userSchema);

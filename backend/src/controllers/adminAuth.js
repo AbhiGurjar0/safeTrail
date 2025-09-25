@@ -55,7 +55,7 @@ module.exports.loginUser = async function (req, res) {
         return res.redirect("/admin");
       } else {
         req.flash("error", "email or password incorrect ");
-        return res.redirect("/admin");
+        return res.redirect("/admin");    
       }
     });
   } catch (err) {
