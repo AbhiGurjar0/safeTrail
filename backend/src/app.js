@@ -43,5 +43,6 @@ app.use((req, res, next) => {
     next();
 });
 app.use('/', userRouter);
-module.exports = server;
+// module.exports = server;
+app.listen(3000);
 
