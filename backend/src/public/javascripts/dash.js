@@ -97,28 +97,56 @@ function startTrip(element, id) {
 }
 
 function endTrip(element, tripId) {
-
-
-    let tripStatus = document.getElementById(`tripStatus${tripId}`);
-    tripStatus.innerHTML = '';
-    tripStatus.innerHTML = 'Completed'
-
-    element.innerHTML = '';
-    element.innerHTML = `
-     <i class="fas fa-play"></i>
-        completed
-     `
-    element.removeAttribute("onclick")
-    // backend call
-    fetch('/endTrip', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tripId })
+    fetch("/endTrip", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tripId }),
     })
-        .then(r => r.json())
-        .then(data => console.log('Trip ended:', data))
-        .catch(err => console.error('Error ending trip:', err));
+        .then((res) => {
+            if (!res.ok) throw new Error("Failed to end trip");
+            return res.json();
+        })
+        .then((data) => {
+            console.log("Trip ended:", data);
+            // Update UI
+            document.getElementById(`tripStatus${tripId}`).textContent =
+                "completed";
+
+            // NEW: More robust way to update the button and its event handler
+            element.classList.remove("bg-red-600", "hover:bg-red-700");
+            element.classList.add("bg-gray-500", "cursor-not-allowed");
+            element.innerHTML = `<i class="fas fa-check mr-1"></i> Completed`;
+            element.onclick = null; // Remove the click handler as it's completed
+            element.disabled = true; // Disable the button
+            let tripDetails = localStorage.setItem("activeTrip", "");
+            tripStarted(tripDetails)
+        })
+        .catch((err) => console.error("Error ending trip:", err));
 }
+
+// function endTrip(element, tripId) {
+
+
+//     let tripStatus = document.getElementById(`tripStatus${tripId}`);
+//     tripStatus.innerHTML = '';
+//     tripStatus.innerHTML = 'Completed'
+
+//     element.innerHTML = '';
+//     element.innerHTML = `
+//      <i class="fas fa-play"></i>
+//         completed
+//      `
+//     element.removeAttribute("onclick")
+//     // backend call
+//     fetch('/endTrip', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ tripId })
+//     })
+//         .then(r => r.json())
+//         .then(data => console.log('Trip ended:', data))
+//         .catch(err => console.error('Error ending trip:', err));
+// }
 
 
 
@@ -126,6 +154,8 @@ function endTrip(element, tripId) {
 // socket.on("alert", ({ message }) => {
 //   alert(`Safety Alert: ${message}`);
 // });
+
+
 
 // Center map on current position
 const currentLat = 26.825511139750535;
@@ -153,7 +183,7 @@ function currentLocation(lat, lon) {
         visible = !visible;
     }, 500);
 }
-currentLocation(26.825, 75.856)
+currentLocation(26.825, 75.856);
 async function tripStarted(tripDetails) {
     // Save trip details to localStorage for persistence
     localStorage.setItem("activeTrip", JSON.stringify(tripDetails));
@@ -235,34 +265,33 @@ window.addEventListener("load", async () => {
 });
 
 
+// function endTrip(element, tripId) {
+//     fetch("/endTrip", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({ tripId }),
+//     })
+//         .then((res) => {
+//             if (!res.ok) throw new Error("Failed to end trip");
+//             return res.json();
+//         })
+//         .then((data) => {
+//             console.log("Trip ended:", data);
+//             // Update UI
+//             document.getElementById(`tripStatus${tripId}`).textContent =
+//                 "completed";
 
-function endTrip(element, tripId) {
-    fetch("/endTrip", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tripId }),
-    })
-        .then((res) => {
-            if (!res.ok) throw new Error("Failed to end trip");
-            return res.json();
-        })
-        .then((data) => {
-            console.log("Trip ended:", data);
-            // Update UI
-            document.getElementById(`tripStatus${tripId}`).textContent =
-                "completed";
-
-            // NEW: More robust way to update the button and its event handler
-            element.classList.remove("bg-red-600", "hover:bg-red-700");
-            element.classList.add("bg-gray-500", "cursor-not-allowed");
-            element.innerHTML = `<i class="fas fa-check mr-1"></i> Completed`;
-            element.onclick = null; // Remove the click handler as it's completed
-            element.disabled = true; // Disable the button
-            let tripDetails = localStorage.setItem("activeTrip", "");
-            tripStarted(tripDetails)
-        })
-        .catch((err) => console.error("Error ending trip:", err));
-}
+//             // NEW: More robust way to update the button and its event handler
+//             element.classList.remove("bg-red-600", "hover:bg-red-700");
+//             element.classList.add("bg-gray-500", "cursor-not-allowed");
+//             element.innerHTML = `<i class="fas fa-check mr-1"></i> Completed`;
+//             element.onclick = null; // Remove the click handler as it's completed
+//             element.disabled = true; // Disable the button
+//             let tripDetails = localStorage.setItem("activeTrip", "");
+//             tripStarted(tripDetails)
+//         })
+//         .catch((err) => console.error("Error ending trip:", err));
+// }
 
 // --- Safety Settings ---
 async function updateLocationSetting(clickedButton, settingValue) {
@@ -306,173 +335,165 @@ async function updateLocationSetting(clickedButton, settingValue) {
 }
 
 // --- Leaflet Map Initialization ---
-document.addEventListener("DOMContentLoaded", function () {
-    map = L.map("map").setView([26.9124, 75.7873], 13);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        attribution: "© OpenStreetMap",
-    }).addTo(map);
+// document.addEventListener("DOMContentLoaded", function () {
+// const currentPoint = turf.point([currentLng, currentLat]);
+// map = L.map("map").setView([26.9124, 75.7873], 13);
+// L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+//     maxZoom: 19,
+//     attribution: "© OpenStreetMap",
+// }).addTo(map);
 
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(async (pos) => {
-            const currentPos = [pos.coords.latitude, pos.coords.longitude];
-            L.circleMarker(currentPos, {
-                radius: 8,
-                color: 'green',
-                fillColor: 'green',
-                fillOpacity: 0.7
-            }).addTo(map)
-                .bindPopup('Current Position');
-        });
+// if (navigator.geolocation) {
+//     navigator.geolocation.getCurrentPosition(async (pos) => {
+//         const currentPos = [pos.coords.latitude, pos.coords.longitude];
+//         L.circleMarker(currentPos, {
+//             radius: 8,
+//             color: 'red',
+//             fillColor: 'green',
+//             fillOpacity: 0.7
+//         }).addTo(map)
+//             .bindPopup('Current Position');
+//     });
 
-    }
-    const restrictedZones = {
-        "type": "FeatureCollection",
-        "features": [
-            {
-                "type": "Feature",
-                "properties": { "name": "Restricted Zone", "severity": 8 },
-                "geometry": {
-                    "type": "Polygon",
-                    "coordinates": [
-                        [
-                            [76.86411835620566, 26.824511139750535],
-                            [76.86611835620567, 26.824511139750535],
-                            [76.86611835620567, 26.826511139750536],
-                            [76.86411835620566, 26.826511139750536],
-                            [76.86411835620566, 26.824511139750535]
-                        ]
+// }
+const restrictedZones = {
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": { "name": "Restricted Zone", "severity": 8 },
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [76.86411835620566, 26.824511139750535],
+                        [76.86611835620567, 26.824511139750535],
+                        [76.86611835620567, 26.826511139750536],
+                        [76.86411835620566, 26.826511139750536],
+                        [76.86411835620566, 26.824511139750535]
                     ]
+                ]
 
-                }
             }
-        ]
-    };
+        }
+    ]
+};
 
-    L.geoJSON(restrictedZones, {
-        style: { color: 'blue', fillColor: '#ff4d4d', fillOpacity: 0.35 }
-    }).addTo(map);
+L.geoJSON(restrictedZones, {
+    style: { color: 'blue', fillColor: '#ff4d4d', fillOpacity: 0.35 }
+}).addTo(map);
+const currentPoint = turf.point([currentLng, currentLat]);
 
-    const currentPoint = turf.point([currentLng, currentLat]);
-    const inside = turf.booleanPointInPolygon(currentPoint, restrictedZones.features[0]);
 
-    if (inside) {
-        alert("⚠️ You are inside a restricted area!");
+const inside = turf.booleanPointInPolygon(currentPoint, restrictedZones.features[0]);
+
+if (inside) {
+    alert("⚠️ You are inside a restricted area!");
+} else {
+    console.log("✅ Safe zone");
+}
+
+
+async function getWeather(city) {
+    const apiKey = 'fab1287105dc652116091b8007a1638a';
+    const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
+    const data = await res.json();
+    console.log(data);
+    let rainLevel = data.rain && data.rain["1h"] ? data.rain["1h"] : 0;
+    let text = "";
+    if (rainLevel === 0) {
+        text = "🌤 No recent rain. Weather is clear.";
+    } else if (rainLevel < 2.5) {
+        text = `🌧 Light rain: ${rainLevel} mm in last 1h.`;
+    } else if (rainLevel < 7.6) {
+        text = `🌧🌧 Moderate rain: ${rainLevel} mm in last 1h. Carry an umbrella.`;
     } else {
-        console.log("✅ Safe zone");
+        text = `🌧🌧🌧 Heavy rain alert! ${rainLevel} mm in last 1h. Stay safe.`;
     }
 
 
-    async function getWeather(city) {
-        const apiKey = 'fab1287105dc652116091b8007a1638a';
-        const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
-        const data = await res.json();
-        console.log(data);
-        let rainLevel = data.rain && data.rain["1h"] ? data.rain["1h"] : 0;
-        let text = "";
-        if (rainLevel === 0) {
-            text = "🌤 No recent rain. Weather is clear.";
-        } else if (rainLevel < 2.5) {
-            text = `🌧 Light rain: ${rainLevel} mm in last 1h.`;
-        } else if (rainLevel < 7.6) {
-            text = `🌧🌧 Moderate rain: ${rainLevel} mm in last 1h. Carry an umbrella.`;
-        } else {
-            text = `🌧🌧🌧 Heavy rain alert! ${rainLevel} mm in last 1h. Stay safe.`;
-        }
 
 
-
-
-        return {
-            city: data.name,
-            country: data.sys.country,
-            temperature: Math.floor(data.main.temp),
-            humidity: data.main.humidity,
-            description: data.weather[0].description,
-            icon: data.weather[0].icon,
-            windSpeed: (data.wind.speed * (5 / 18)).toFixed(2),
-            windDirection: data.wind.deg,
-            pressure: data.main.pressure,
-            visibility: (data.visibility / 1000),
-            dateTime: new Date(data.dt * 1000).toLocaleString(),
-            rainChance: data.rain && data.rain["1h"] ? `${data.rain["1h"]} mm (last 1h)` : "No recent rain"
-        }
+    return {
+        city: data.name,
+        country: data.sys.country,
+        temperature: Math.floor(data.main.temp),
+        humidity: data.main.humidity,
+        description: data.weather[0].description,
+        icon: data.weather[0].icon,
+        windSpeed: (data.wind.speed * (5 / 18)).toFixed(2),
+        windDirection: data.wind.deg,
+        pressure: data.main.pressure,
+        visibility: (data.visibility / 1000),
+        dateTime: new Date(data.dt * 1000).toLocaleString(),
+        rainChance: data.rain && data.rain["1h"] ? `${data.rain["1h"]} mm (last 1h)` : "No recent rain"
     }
+}
 
-    // weights
-    const weights = { zone: 30, route: 20, inactivity: 20, time: 15, anomaly: 15 };
+// weights
+const weights = { zone: 30, route: 20, inactivity: 20, time: 15, anomaly: 15 };
 
-    async function calculateSafetyScore(userLocation, userRoute, geoFences, lastActiveTime) {
-        let score = 100;
-        // 2. Weather Based
-        async function getWeatherScore(data) {
-            let res = await fetch('/ai/genai/score', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ data }),
+async function calculateSafetyScore(userLocation, userRoute, geoFences, lastActiveTime) {
+    let score = 100;
+    console.log("started")
+    // async function getWeatherScore(data) {
+    //     let res = await fetch('/ai/genai/score', {
+    //         method: 'POST',
+    //         headers: { 'Content-Type': 'application/json' },
+    //         body: JSON.stringify({ data }),
+    //     });
+    //     res = await res.json();
+    //     return res;
+    // }
 
-            })
-            res = await res.json();
-            return res;
+    // try {
+    //     const weatherData = await getWeather("jaipur");
+    //     let data = await getWeatherScore(weatherData);
+    //     data = data.reply.replace(/```json/g, "").replace(/```/g, "").trim();
+    //     let parsed = JSON.parse(data);
 
-        }
-        async function main() {
-            try {
-                const weatherData = await getWeather("jaipur");
-                let data = await getWeatherScore(weatherData);
-                data = data.reply;
-                data = data.replace(/```json/g, "").replace(/```/g, "").trim();
-                let parsed = JSON.parse(data);
-                console.log(parsed)
-                console.log(parsed["Risk_score"]);
-                score -= parsed["Risk_score"];
-            } catch (err) {
-                console.error(err);
-            }
-        }
+    //     console.log(parsed);
+    //     console.log("Weather risk:", parsed["Risk_score"]);
 
-        main();
+    //     score -= parsed["Risk_score"];
+    // } catch (err) {
+    //     console.error("Weather error:", err);
+    // }
 
-        // 3. Inactivity
-        const now = new Date();
-        if ((now - lastActiveTime) / 60000 > 30) score -= 15;
+    // Inactivity check
+    const now = new Date();
+    if ((now - lastActiveTime) / 60000 > 30) score -= 15;
 
-        // 4. Time-based risk
-        const hour = now.getUTCHours() + 5.5; // IST
-        if (hour >= 23 || hour <= 4) score -= 10;
+    // Time-based risk (IST)
+    const hour = new Date().toLocaleString("en-US", {
+        timeZone: "Asia/Kolkata",
+        hour: "numeric",
+        hour12: false
+    });
+    if (hour >= 23 || hour <= 4) score -= 10;
 
-        return Math.max(0, score); // keep between 0–100
-    }
-    calculateSafetyScore(" ", " ", " ", " ")
-        .then(score => {
+    return Math.max(0, score);
+}
 
-        });
+// Example usage
+calculateSafetyScore(" ", " ", " ", new Date(Date.now() - 40 * 60000)) // inactive > 30min
+    .then(score => {
+        console.log("Final Safety Score:", score);
+        document.getElementById("safetyScoreDisplay").textContent = `${score}%`;
+    });
 
+// // Geolocation
+// if (navigator.geolocation) {
+//     navigator.geolocation.getCurrentPosition((pos) => {
+//         const userPos = [pos.coords.latitude, pos.coords.longitude];
+//         map.setView(userPos, 13);
+//         userLocationMarker = L.marker(userPos)
+//             .addTo(map)
+//             .bindPopup("Your current location");
+//     });
+// }
 
-
-
-
-    // console.log(data)
-
-
-
-
-
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((pos) => {
-            const userPos = [pos.coords.latitude, pos.coords.longitude];
-            map.setView(userPos, 13);
-            userLocationMarker = L.marker(userPos)
-                .addTo(map)
-                .bindPopup("Your current location");
-        });
-    }
-
-    document.getElementById("safetyScoreDisplay").textContent = `${Math.floor(Math.random() * (95 - 65 + 1)) + 65
-        }%`;
-});
+// });
 
 // function for emergency contact
 // --- Emergency Contact Functions ---
@@ -547,3 +568,110 @@ if (contactForm) {
         }
     });
 }
+
+
+// async function getWeather(city) {
+//     const apiKey = 'fab1287105dc652116091b8007a1638a';
+//     const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
+
+//     const data = await res.json();
+//     console.log(data);
+//     let rainLevel = data.rain && data.rain["1h"] ? data.rain["1h"] : 0;
+//     let text = "";
+//     if (rainLevel === 0) {
+//         text = "🌤 No recent rain. Weather is clear.";
+//     } else if (rainLevel < 2.5) {
+//         text = `🌧 Light rain: ${rainLevel} mm in last 1h.`;
+//     } else if (rainLevel < 7.6) {
+//         text = `🌧🌧 Moderate rain: ${rainLevel} mm in last 1h. Carry an umbrella.`;
+//     } else {
+//         text = `🌧🌧🌧 Heavy rain alert! ${rainLevel} mm in last 1h. Stay safe.`;
+//     }
+//     return {
+//         city: data.name,
+//         country: data.sys.country,
+//         temperature: Math.floor(data.main.temp),
+//         humidity: data.main.humidity,
+//         description: data.weather[0].description,
+//         icon: data.weather[0].icon,
+//         windSpeed: (data.wind.speed * (5 / 18)).toFixed(2),
+//         windDirection: data.wind.deg,
+//         pressure: data.main.pressure,
+//         visibility: (data.visibility / 1000),
+//         dateTime: new Date(data.dt * 1000).toLocaleString(),
+//         rainChance: data.rain && data.rain["1h"] ? `${data.rain["1h"]} mm (last 1h)` : "No recent rain"
+
+
+//     }
+// // }
+
+// async function main() {
+//     try {
+//         const weatherData = await getWeather("jaipur");
+//         let data = await getWeatherScore(weatherData);
+//         data = data.reply;
+//         data = data.replace(/```json/g, "").replace(/```/g, "").trim();
+//         let parsed = JSON.parse(data);
+//         console.log(parsed)
+//         console.log(parsed["Risk_score"]);
+//         // score -= parsed["Risk_score"];
+//     } catch (err) {
+//         console.error(err);
+//     }
+
+// }
+
+
+// main();
+
+
+// restricted area alerts  system
+
+// const restrictedZones = {
+//     "type": "FeatureCollection",
+//     "features": [
+//         {
+//             "type": "Feature",
+//             "properties": { "name": "Restricted Zone", "severity": 8 },
+//             "geometry": {
+//                 "type": "Polygon",
+//                 "coordinates": [
+//                     [
+//                         [77.592, 12.971],
+//                         [77.595, 12.971],
+//                         [77.595, 12.973],
+//                         [77.592, 12.973],
+//                         [77.592, 12.971]
+//                     ]
+//                 ]
+//             }
+//         }
+//     ]
+// };
+
+// const restrictedLayer = L.geoJSON(restrictedZones, {
+//     style: {
+//         color: 'blue',
+//         fillColor: '#ff4d4d',
+//         fillOpacity: 0.5
+//     }
+// }).addTo(map);
+
+// map.fitBounds(restrictedLayer.getBounds());
+
+
+// function isInsideRestrictedZone(lat, lng) {
+//     console.log("hi")
+//     const point = turf.point([lng, lat]); // GeoJSON: [lng, lat]
+//     return restrictedZones.features.some(zone =>
+//         turf.booleanPointInPolygon(point, zone)
+//     );
+// } if (isInsideRestrictedZone(12.973, 77.595)) {
+//     console.log("hi");
+//     // alert("⚠️ Warning: You are inside a restricted zone!");
+//     // window.userMarker.setStyle({ color: "red", fillColor: "red" });
+// } else {
+//     // window.userMarker.setStyle({ color: "green", fillColor: "lime" });
+// }
+
+
