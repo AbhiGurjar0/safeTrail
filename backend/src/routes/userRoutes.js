@@ -71,6 +71,9 @@ router.get('/Admin', async (req, res) => {
 // router.get('/Admin', (req, res) => {
 //     res.render('admin');
 // })
+router.get('/Owner', (req, res) => {
+    res.render('owner');
+})
 router.get('/police', isLoggendIn, async (req, res) => {
     let user = await userModel.findById(req.user._id);
     res.render('police', { user });
