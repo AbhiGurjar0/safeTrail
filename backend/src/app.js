@@ -43,11 +43,6 @@ app.use((req, res, next) => {
     next();
 });
 app.use('/', userRouter);
-<<<<<<< HEAD
-// module.exports = server;
-app.listen(3000);
-=======
 app.use('/ai',Ai);
 module.exports = server;
->>>>>>> ed60ae9090951c1ecec7415bb57fffa3ee610417
 
