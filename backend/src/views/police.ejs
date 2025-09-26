@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Police Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <style>
+    /* Blurred background image - NOTE: Make sure your image path is correct */
+    body {
+      background-image: url('./Gemini_Generated_Image_wv0zo1wv0zo1wv0z.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+    }
+
+    /* Frosted glass effect for cards */
+    /* A more aesthetic frosted glass effect */
+    .frosted-card {
+      background-color: rgba(255, 255, 255, 0.5);
+      /* More transparent */
+      backdrop-filter: blur(16px);
+      /* More blur */
+      -webkit-backdrop-filter: blur(16px);
+      /* Support for Safari */
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      /* A slightly stronger border */
+    }
+  </style>
+</head>
+
+<body class="blurred-bg min-h-screen font-sans text-gray-800">
+
+  <div class="p-8 md:p-12">
+
+    <header class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900">Police Dashboard</h1>
+      <p class="text-gray-700 mt-1">Monitor and manage SOS emergency requests from tourists</p>
+    </header>
+
+    <div class="frosted-card rounded-2xl p-6 shadow-lg">
+      <h2 class="text-xl font-semibold text-gray-800">SOS Emergency Requests</h2>
+      <p class="text-gray-700 mt-1 mb-6">Respond to emergencies quickly and efficiently</p>
+      <div id="requests-container" class="space-y-4"></div>
+    </div>
+
+  </div>
+
+  <div id="touristModal" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+    <div class="frosted-card w-4/5 max-w-4xl p-8 rounded-2xl shadow-2xl relative overflow-y-auto max-h-[90vh]">
+      <button onclick="closeTouristModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">✖</button>
+
+      <h2 class="text-2xl font-bold text-blue-600 mb-6 flex items-center gap-2">
+        <i data-feather="user-check" class="w-6 h-6"></i> Tourist Safety Profile
+      </h2>
+
+      <div id="modalContent" class="grid grid-cols-2 gap-6 mb-8 text-gray-700 text-sm"></div>
+
+      <div id="tripRoute" class="bg-gray-50/50 p-6 rounded-xl shadow-inner mb-8">
+        <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center gap-2">
+          <i data-feather="map" class="w-5 h-5 text-green-600"></i> Trip Route
+        </h3>
+        <div class="flex items-center justify-center gap-6 text-gray-700 font-medium" id="tripContent"></div>
+      </div>
+
+      <div id="mapContainer" class="h-64 w-full rounded-xl overflow-hidden mb-6"></div>
+    </div>
+  </div>
+
+  <script src="../javascripts/police.js">
+
+  </script>
+</body>
+
+</html>

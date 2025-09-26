@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <header class="absolute w-full px-4 py-2 flex justify-center sticky top-0 z-50">
+        <div class="w-full max-w-7xl flex justify-between items-center frosted-input p-2 rounded-full shadow-lg">
+            <a href="#" class="flex items-center space-x-2 [perspective:1000px]">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="h-8 w-8 text-primary animate-flip [transform-style:preserve-3d]" viewBox="0 0 24 24"
+                    fill="currentColor">
+                    <path
+                        d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.3l6.5 3.25L12 10.8l-6.5-3.25L12 4.3zM4 9l8 4 8-4v6l-8 4-8-4V9z" />
+                </svg>
+                <span class="text-xl font-bold text-dark">TouristSafe</span>
+            </a>
+            <nav class="hidden md:flex items-center space-x-6">
+                <a href="/"
+                    class="text-gray-600 hover:text-primary transition duration-300 transform hover:-translate-y-1 hover:font-bold hover:[text-shadow:1px_1px_2px_rgba(59,130,246,0.2)]">Home</a>
+                <a href="/emergencysos"
+                    class="text-gray-600 hover:text-primary transition duration-300 transform hover:-translate-y-1 hover:font-bold hover:[text-shadow:1px_1px_2px_rgba(59,130,246,0.2)]">Emergency</a>
+                <a href="/dashboard"
+                    class="text-gray-600 hover:text-primary transition duration-300 transform hover:-translate-y-1 hover:font-bold hover:[text-shadow:1px_1px_2px_rgba(59,130,246,0.2)]">Dashboard</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <% if(user && user.length>0){ %>
+                    <a href="/login"
+                        class="text-gray-600 hover:text-primary transition duration-300 hidden md:inline-block">Login</a>
+                    <a href="/register"
+                        class="bg-primary hover:bg-secondary text-white font-semibold py-2 px-6 rounded-full shadow-md hover:shadow-lg transition duration-300">
+                        Get Started
+                    </a>
+                    <% } else { %>
+                        <div class="relative">
+                            <button id="profileBtn"
+                                class="flex items-center gap-2 p-2 rounded-full hover:bg-gray-100 transition">
+                                <!-- Profile Icon -->
+                                <div
+                                    class="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-semibold shadow-md">
+                                    A
+                                </div>
+
+                                <!-- Username -->
+                                <span class="font-medium text-gray-700 hidden sm:block">
+                                    Abhi Gurjar
+                                </span>
+
+                                <!-- Dropdown Arrow -->
+                                <svg id="arrowIcon" class="w-4 h-4 text-gray-600 transition-transform" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+
+                            <!-- Dropdown Menu -->
+                            <div id="dropdownMenu"
+                                class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-xl py-2 hidden">
+                                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50">Profile</a>
+                                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-indigo-50">Settings</a>
+                                <a href="#" class="block px-4 py-2 text-red-600 hover:bg-red-50">Logout</a>
+                            </div>
+                        </div>
+                        <% } %>
+            </div>
+
+        </div>
+    </header>
+</body>
+
+</html>

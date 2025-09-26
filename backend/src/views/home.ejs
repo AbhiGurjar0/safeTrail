@@ -4,59 +4,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TouristSafe - Safe & Trusted Travel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#3B82F6',
-                        secondary: '#60A5FA',
-                        accent: '#BFDBFE',
-                        dark: '#1F2937',
-                        light: '#F9FAFB'
-                    },
-                    fontFamily: {
-                        sans: ['Montserrat', 'sans-serif'], // Changed to Montserrat
-                    },
-                    boxShadow: {
-                        '3xl': '0 35px 60px -15px rgba(0, 0, 0, 0.3)',
-                    },
-                }
-            }
-        }
-    </script>
+    <title>TouristSafe - Travel Safety System</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-            /* Changed to Montserrat */
-            background-color: #F9FAFB;
+        /* Blurred background image */
+        .blurred-bg {
+            background-image: url(../images/background.jpg);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
         }
 
-        .gradient-bg {
-            background: linear-gradient(to right, #3B82F6, #60A5FA);
+        /* Frosted glass effect for cards and input bar */
+        .frosted-card,
+        .frosted-input,
+        .frosted-section {
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .section-header {
-            position: relative;
-            text-align: center;
-            padding-top: 4rem;
-            padding-bottom: 2rem;
+        /* Styling for the collapsible FAQ answers */
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
         }
 
-        .section-header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background-color: #3B82F6;
-            border-radius: 9999px;
+        .faq-answer.open {
+            max-height: 500px;
+            transition: max-height 0.5s ease-in;
         }
+
+        /* Styling for the rotating arrow icon */
+        .faq-arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-arrow.rotate {
+            transform: rotate(-180deg);
+        }
+
+        /* Keyframes for animations */
 
         @keyframes fadeInUp {
             from {
@@ -70,324 +60,501 @@
             }
         }
 
-        .animate-fade-in-up {
-            animation: fadeInUp 1s ease-out forwards;
+        @keyframes sparkle-animation {
+            to {
+                background-position: 200% center;
+            }
         }
 
-        .hero-image-container img {
-            width: 100%;
-            height: auto;
-            object-fit: contain;
+        /* --- NEW MARQUEE ANIMATION --- */
+        @keyframes marquee-scroll {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Header Nav Link Styling */
+        .header-nav-link {
+            transition: all 0.2s ease-in-out;
+            padding: 4px 0;
+        }
+
+        .header-nav-link:hover {
+            font-weight: 700;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+            transform: scale(1.1);
+        }
+
+        /* Brand Logo Sparkle Style */
+        .brand-logo {
+            background-image: linear-gradient(-75deg, #1e293b 30%, #94a3b8 50%, #1e293b 70%);
+            background-size: 200% auto;
+            color: #000;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: sparkle-animation 4s linear infinite;
+        }
+
+        /* Feature Card Styles */
+        .perspective-grid {
+            perspective: 1200px;
+        }
+
+        .feature-card {
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .feature-card:hover {
+            transform: rotateY(-3deg) rotateX(5deg) scale(1.05);
+        }
+
+        .feature-card.blue:hover {
+            box-shadow: 0 25px 50px -12px rgba(59, 130, 246, 0.25);
+        }
+
+        .feature-card.yellow:hover {
+            box-shadow: 0 25px 50px -12px rgba(234, 179, 8, 0.25);
+        }
+
+        .feature-card.red:hover {
+            box-shadow: 0 25px 50px -12px rgba(239, 68, 68, 0.25);
+        }
+
+        .feature-card.teal:hover {
+            box-shadow: 0 25px 50px -12px rgba(20, 184, 166, 0.25);
+        }
+
+        .feature-card.green:hover {
+            box-shadow: 0 25px 50px -12px rgba(34, 197, 94, 0.25);
+        }
+
+        /* --- NEW STYLES FOR TESTIMONIALS --- */
+        .scrolling-wrapper {
+            overflow: hidden;
+            position: relative;
+            -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+        }
+
+        .scrolling-content {
+            display: flex;
+            width: fit-content;
+            animation: marquee-scroll 25s linear infinite;
+        }
+
+        .scrolling-wrapper:hover .scrolling-content {
+            animation-play-state: paused;
+        }
+
+        .testimonial-card {
+            flex-shrink: 0;
+            width: 380px;
+            margin: 0 1rem;
         }
     </style>
 </head>
 
-<body class="text-dark">
+<body class="blurred-bg min-h-screen font-sans text-gray-800">
 
-    <header class="bg-white shadow-md py-4 px-6 md:px-12 flex items-center justify-between">
-        <a href="#" class="flex items-center space-x-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary" viewBox="0 0 24 24"
-                fill="currentColor">
-                <path
-                    d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.3l6.5 3.25L12 10.8l-6.5-3.25L12 4.3zM4 9l8 4 8-4v6l-8 4-8-4V9z" />
-            </svg>
-            <span class="text-xl font-bold text-dark">TouristSafe</span>
-        </a>
-        <nav class="hidden md:flex items-center space-x-6">
-            <a href="#" class="text-gray-600 hover:text-primary transition duration-300">Home</a>
-            <a href="#" class="text-gray-600 hover:text-primary transition duration-300">Emergency</a>
-            <a href="#" class="text-gray-600 hover:text-primary transition duration-300">Dashboard</a>
-        </nav>
-        <div class="flex items-center space-x-4">
-            <% if(user && user.length>0){ %>
-                <a href="/login"
-                    class="text-gray-600 hover:text-primary transition duration-300 hidden md:inline-block">Login</a>
-                <a href="/register"
-                    class="bg-primary hover:bg-secondary text-white font-semibold py-2 px-6 rounded-full shadow-md hover:shadow-lg transition duration-300">
-                    Get Started
-                </a>
-                <% } else { %>
-                    <a href="/profile" class="flex items-center space-x-2">
-                        <img src="https://placehold.co/32x32/E5E7EB/4B5563?text=<%= user.name.substring(0,2).toUpperCase() %>"
-                            alt="Profile" class="w-8 h-8 rounded-full border border-gray-300">
-                        <span class="text-gray-700 font-semibold">
-                            <%= user.name %>
+    <header class="w-full p-8 flex justify-center sticky top-0 z-50">
+        <div class="w-full max-w-7xl flex justify-between items-center frosted-input p-4 rounded-full shadow-lg">
+
+            <div class="flex items-center space-x-2">
+                <span class="font-bold text-xl brand-logo">TouristSafe</span>
+            </div>
+
+            <nav class="hidden md:flex space-x-6 text-nixtio-text font-semibold">
+                <a href="#features" class="hover:text-gray-900 transition">Features</a>
+
+            </nav>
+            <%if(user){%>
+                <a href="/profile">
+                    <div
+                        class="bg-nixtio-blue text-black px-4 py-2 rounded-full flex items-center space-x-2 shadow-lg hover:bg-nixtio-hover transition hover:bg-gray-800 hover:text-white hover:shadow-md">
+                        <span>
+                            <%=user.name%>
                         </span>
+
+                    </div>
+                </a>
+
+                <%} else{%>
+                    <a href="/register">
+                        <button
+                            class="bg-nixtio-blue text-black px-4 py-2 rounded-full flex items-center space-x-2 shadow-lg hover:bg-nixtio-hover transition hover:bg-gray-800 hover:text-white hover:shadow-md">
+                            <span>Register</span>
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
                     </a>
-                    <% } %>
+
+                    <%}%>
+
         </div>
     </header>
 
-    <section class="gradient-bg text-white py-24 px-6 text-center shadow-lg">
-        <div class="container mx-auto animate-fade-in-up">
-            <div class="flex justify-center mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="h-24 w-24 text-white p-4 bg-white bg-opacity-20 rounded-full shadow-lg" viewBox="0 0 24 24"
-                    fill="currentColor">
-                    <path
-                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 16c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm-1-8v4h2v-4h-2zm0-4h2v2h-2z" />
-                </svg>
+
+    <div class="flex flex-col items-center p-8">
+
+        <main class="w-full max-w-7xl flex-grow flex flex-col items-center justify-center text-center py-20">
+            <div class="relative w-full max-w-4xl mb-12">
+                <h1 class="text-6xl font-extrabold text-gray-900 leading-tight mb-4">
+                    Smart Tourist Safety System
+                </h1>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Safe & Trusted Travel - Your digital companion for secure tourism experiences worldwide.
+                </p>
+                <div class="absolute top-1/2 -right-40 transform -translate-y-1/2 hidden lg:block">
+                    <div class="flex flex-col items-center">
+                        <div class="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center mb-2">
+                            <span class="text-4xl">🤖</span>
+                        </div>
+                        <div class="frosted-card p-2 rounded-lg shadow-md text-sm font-semibold text-gray-700 relative">
+                            Travel Safe! 🗺<br> I'm here to help.
+                            <div
+                                class="absolute w-3 h-3 frosted-card transform rotate-45 -bottom-1 left-1/2 -translate-x-1/2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <h1 class="text-5xl md:text-6xl font-extrabold leading-tight tracking-tight mb-4 text-center">
-                Smart Tourist Safety System
-            </h1>
-            <p class="text-lg md:text-xl font-light mb-8 opacity-90 text-center">
-                Safe & Trusted Travel – Your digital companion for secure tourism experiences worldwide
+        </main>
+
+        <section id="features" class="w-full max-w-7xl py-20 container mx-auto">
+            <div class="text-center mb-12 animate-fade-in-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-2 text-gray-900">Why Choose TouristSafe?</h2>
+                <p class="text-lg text-gray-600">Advanced safety features designed to protect tourists and provide peace
+                    of mind</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 perspective-grid">
+                <div class="group frosted-card p-8 rounded-2xl shadow-lg animate-fade-in-up text-center feature-card blue"
+                    style="animation-delay: 0.1s;">
+                    <div class="flex justify-center mb-4">
+                        <div
+                            class="flex items-center justify-center h-16 w-16 text-blue-500 p-2 bg-blue-100 rounded-full transition-transform duration-300 ease-in-out group-hover:scale-110 group-hover:-rotate-12">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4v1m6 11h2m-6.5 6.5v1M4.5 12.5H3M15 4.5l1.4 1.4M5 19.5l1.4-1.4M19.5 5l-1.4 1.4M6.4 18.1l-1.4 1.4M12 19h.01M18 15h.01M6 9h.01M12 6h.01M9 18h.01M9 6h.01M15 18h.01M15 6h.01M18 9h.01M6 15h.01" />
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 transition-colors duration-300 group-hover:text-blue-600">Digital
+                        Tourist ID</h3>
+                    <p class="text-gray-600">Get a unique digital ID with QR code for instant identification and
+                        verification by authorities.</p>
+                </div>
+                <div class="group frosted-card p-8 rounded-2xl shadow-lg animate-fade-in-up text-center feature-card yellow"
+                    style="animation-delay: 0.2s;">
+                    <div class="flex justify-center mb-4">
+                        <div
+                            class="flex items-center justify-center h-16 w-16 text-yellow-500 p-2 bg-yellow-100 rounded-full transition-transform duration-300 ease-in-out group-hover:scale-110 group-hover:-rotate-12">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0021 16.382V5.618a1 1 0 00-1.447-.894L15 7m-6 10V7" />
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 transition-colors duration-300 group-hover:text-yellow-600">
+                        Journey Tracking</h3>
+                    <p class="text-gray-600">Log your travel plans and current location for enhanced safety monitoring.
+                    </p>
+                </div>
+                <div class="group frosted-card p-8 rounded-2xl shadow-lg animate-fade-in-up text-center feature-card red"
+                    style="animation-delay: 0.3s;">
+                    <div class="flex justify-center mb-4">
+                        <div
+                            class="flex items-center justify-center h-16 w-16 text-red-500 p-2 bg-red-100 rounded-full transition-transform duration-300 ease-in-out group-hover:scale-110 group-hover:-rotate-12">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 transition-colors duration-300 group-hover:text-red-600">Emergency
+                        SOS</h3>
+                    <p class="text-gray-600">One-click emergency alert that shares your location with nearest
+                        authorities.</p>
+                </div>
+                <div class="group frosted-card p-8 rounded-2xl shadow-lg animate-fade-in-up text-center feature-card teal"
+                    style="animation-delay: 0.4s;">
+                    <div class="flex justify-center mb-4">
+                        <div
+                            class="flex items-center justify-center h-16 w-16 text-teal-500 p-2 bg-teal-100 rounded-full transition-transform duration-300 ease-in-out group-hover:scale-110 group-hover:-rotate-12">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 transition-colors duration-300 group-hover:text-teal-600">Admin
+                        Monitoring</h3>
+                    <p class="text-gray-600">24/7 monitoring by authorities with real-time tourist tracking and
+                        emergency response.</p>
+                </div>
+                <div class="group frosted-card p-8 rounded-2xl shadow-lg animate-fade-in-up text-center feature-card yellow"
+                    style="animation-delay: 0.5s;">
+                    <div class="flex justify-center mb-4">
+                        <div
+                            class="flex items-center justify-center h-16 w-16 text-yellow-500 p-2 bg-yellow-100 rounded-full transition-transform duration-300 ease-in-out group-hover:scale-110 group-hover:-rotate-12">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 transition-colors duration-300 group-hover:text-yellow-600">Safety
+                        Alerts</h3>
+                    <p class="text-gray-600">Receive important safety updates and travel advisories for your
+                        destination.</p>
+                </div>
+                <div class="group frosted-card p-8 rounded-2xl shadow-lg animate-fade-in-up text-center feature-card green"
+                    style="animation-delay: 0.6s;">
+                    <div class="flex justify-center mb-4">
+                        <div
+                            class="flex items-center justify-center h-16 w-16 text-green-500 p-2 bg-green-100 rounded-full transition-transform duration-300 ease-in-out group-hover:scale-110 group-hover:-rotate-12">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 transition-colors duration-300 group-hover:text-green-600">Secure
+                        Verification</h3>
+                    <p class="text-gray-600">Blockchain-secured identity verification ensuring authenticity and
+                        preventing fraud.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="how-it-works" class="w-full max-w-7xl py-20 text-center">
+            <div class="frosted-section p-12 rounded-3xl shadow-xl">
+                <h2 class="text-4xl font-extrabold text-gray-900 mb-4">How It Works</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto mb-12">Simple steps to get started with TouristSafe.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+                    <div class="group flex flex-col items-center" style="perspective: 1000px;">
+                        <div class="relative w-24 h-24 mb-6" style="transform-style: preserve-3d;"
+                            onmouseenter="this.classList.add('animate-flip-fast')"
+                            onmouseleave="this.classList.remove('animate-flip-fast')">
+                            <div class="absolute w-full h-full flex items-center justify-center rounded-full bg-gray-800 text-white text-3xl font-bold shadow-md"
+                                style="backface-visibility: hidden;">1</div>
+                            <div class="absolute w-full h-full flex items-center justify-center rounded-full bg-blue-500 text-white text-3xl font-bold shadow-md"
+                                style="backface-visibility: hidden; transform: rotateY(180deg);">1</div>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-2">Register & Verify</h3>
+                        <p class="text-gray-600">Create your account and verify your identity to get your secure digital
+                            ID.</p>
+                    </div>
+                    <div class="group flex flex-col items-center" style="perspective: 1000px;">
+                        <div class="relative w-24 h-24 mb-6" style="transform-style: preserve-3d;"
+                            onmouseenter="this.classList.add('animate-flip-fast')"
+                            onmouseleave="this.classList.remove('animate-flip-fast')">
+                            <div class="absolute w-full h-full flex items-center justify-center rounded-full bg-gray-800 text-white text-3xl font-bold shadow-md"
+                                style="backface-visibility: hidden;">2</div>
+                            <div class="absolute w-full h-full flex items-center justify-center rounded-full bg-blue-500 text-white text-3xl font-bold shadow-md"
+                                style="backface-visibility: hidden; transform: rotateY(180deg);">2</div>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-2">Add Journey Details</h3>
+                        <p class="text-gray-600">Plan your trip by adding your destination, duration, and important
+                            contacts.</p>
+                    </div>
+                    <div class="group flex flex-col items-center" style="perspective: 1000px;">
+                        <div class="relative w-24 h-24 mb-6" style="transform-style: preserve-3d;"
+                            onmouseenter="this.classList.add('animate-flip-fast')"
+                            onmouseleave="this.classList.remove('animate-flip-fast')">
+                            <div class="absolute w-full h-full flex items-center justify-center rounded-full bg-gray-800 text-white text-3xl font-bold shadow-md"
+                                style="backface-visibility: hidden;">3</div>
+                            <div class="absolute w-full h-full flex items-center justify-center rounded-full bg-blue-500 text-white text-3xl font-bold shadow-md"
+                                style="backface-visibility: hidden; transform: rotateY(180deg);">3</div>
+                        </div>
+                        <h3 class="text-2xl font-semibold mb-2">Stay Protected</h3>
+                        <p class="text-gray-600">Activate your safety features and travel with confidence, knowing help
+                            is a tap away.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials" class="w-full max-w-7xl py-20 text-center">
+            <h2 class="text-4xl font-extrabold text-gray-900 mb-4">What Our Users Say</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto mb-12">
+                See how TouristSafe is helping travelers explore the world with confidence.
             </p>
-            <% if(user && user.length>0){ %>
-                <div class="space-x-4">
-                    <a href="/register"
-                        class="bg-white text-primary font-bold py-3 px-8 rounded-full shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105">
-                        Register as Tourist
-                    </a>
-                    <a href="/login"
-                        class="bg-transparent border-2 border-white text-white font-bold py-3 px-8 rounded-full hover:bg-white hover:text-primary transition duration-300 transform hover:scale-105">
-                        Login
-                    </a>
+            <div class="scrolling-wrapper">
+                <div class="scrolling-content">
+                    <div class="testimonial-card frosted-card p-8 rounded-3xl shadow-xl border border-gray-200">
+                        <p class="text-gray-700 mb-4 italic">"TouristSafe gave me complete peace of mind during my solo
+                            trip. The journey tracking feature was a lifesaver!"</p>
+                        <div class="font-semibold text-gray-900">- Jane D.</div>
+                        <div class="text-sm text-gray-500">Solo Traveler</div>
+                    </div>
+                    <div class="testimonial-card frosted-card p-8 rounded-3xl shadow-xl border border-gray-200">
+                        <p class="text-gray-700 mb-4 italic">"The Emergency SOS button is a fantastic feature. It's
+                            great to know that help is always just a tap away, no matter where I am."</p>
+                        <div class="font-semibold text-gray-900">- John S.</div>
+                        <div class="text-sm text-gray-500">Business Traveler</div>
+                    </div>
+                    <div class="testimonial-card frosted-card p-8 rounded-3xl shadow-xl border border-gray-200">
+                        <p class="text-gray-700 mb-4 italic">"We used this for our family vacation. It was so reassuring
+                            to have everyone's location and digital IDs in one place."</p>
+                        <div class="font-semibold text-gray-900">- Michael B.</div>
+                        <div class="text-sm text-gray-500">Family Vacationer</div>
+                    </div>
+                    <div class="testimonial-card frosted-card p-8 rounded-3xl shadow-xl border border-gray-200">
+                        <p class="text-gray-700 mb-4 italic">"TouristSafe gave me complete peace of mind during my solo
+                            trip. The journey tracking feature was a lifesaver!"</p>
+                        <div class="font-semibold text-gray-900">- Jane D.</div>
+                        <div class="text-sm text-gray-500">Solo Traveler</div>
+                    </div>
+                    <div class="testimonial-card frosted-card p-8 rounded-3xl shadow-xl border border-gray-200">
+                        <p class="text-gray-700 mb-4 italic">"The Emergency SOS button is a fantastic feature. It's
+                            great to know that help is always just a tap away, no matter where I am."</p>
+                        <div class="font-semibold text-gray-900">- John S.</div>
+                        <div class="text-sm text-gray-500">Business Traveler</div>
+                    </div>
+                    <div class="testimonial-card frosted-card p-8 rounded-3xl shadow-xl border border-gray-200">
+                        <p class="text-gray-700 mb-4 italic">"We used this for our family vacation. It was so reassuring
+                            to have everyone's location and digital IDs in one place."</p>
+                        <div class="font-semibold text-gray-900">- Michael B.</div>
+                        <div class="text-sm text-gray-500">Family Vacationer</div>
+                    </div>
                 </div>
-                <% } else{%>
-                    <a href="/dashboard"
-                        class="bg-white text-primary font-bold py-3 px-8 rounded-full shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105">
-                        Go to Dashboard
-                    </a>
-                    <% } %>
-        </div>
-    </section>
+            </div>
+        </section>
 
-    <section class="py-20 px-6 container mx-auto">
-        <div class="section-header mb-12 animate-fade-in-up">
-            <h2 class="text-3xl md:text-4xl font-bold mb-2">Why Choose TouristSafe?</h2>
-            <p class="text-lg text-gray-600">Advanced safety features designed to protect tourists and provide peace of
-                mind</p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 hover:shadow-2xl transition duration-500 transform hover:-translate-y-2 animate-fade-in-up text-center"
-                style="animation-delay: 0.1s;">
-                <div class="flex justify-center mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="h-16 w-16 text-primary p-2 bg-primary bg-opacity-10 rounded-full" viewBox="0 0 24 24"
-                        fill="currentColor">
-                        <path
-                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 16c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm-1-8v4h2v-4h-2zm0-4h2v2h-2z" />
-                    </svg>
-                </div>
-                <h3 class="text-xl font-bold mb-2">Digital Tourist ID</h3>
-                <p class="text-gray-600">Get a unique digital ID with QR code for instant identification and
-                    verification by authorities</p>
-            </div>
-            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 hover:shadow-2xl transition duration-500 transform hover:-translate-y-2 animate-fade-in-up text-center"
-                style="animation-delay: 0.2s;">
-                <div class="flex justify-center mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="h-16 w-16 text-primary p-2 bg-primary bg-opacity-10 rounded-full" viewBox="0 0 24 24"
-                        fill="currentColor">
-                        <path
-                            d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-                    </svg>
-                </div>
-                <h3 class="text-xl font-bold mb-2">Journey Tracking</h3>
-                <p class="text-gray-600">Log your travel plans and current location for enhanced safety monitoring</p>
-            </div>
-            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 hover:shadow-2xl transition duration-500 transform hover:-translate-y-2 animate-fade-in-up text-center"
-                style="animation-delay: 0.3s;">
-                <div class="flex justify-center mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="h-16 w-16 text-red-500 p-2 bg-red-500 bg-opacity-10 rounded-full" viewBox="0 0 24 24"
-                        fill="currentColor">
-                        <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
-                    </svg>
-                </div>
-                <h3 class="text-xl font-bold mb-2">Emergency SOS</h3>
-                <p class="text-gray-600">One-click emergency alert that shares your location with nearest authorities
-                </p>
-            </div>
-            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 hover:shadow-2xl transition duration-500 transform hover:-translate-y-2 animate-fade-in-up text-center"
-                style="animation-delay: 0.4s;">
-                <div class="flex justify-center mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="h-16 w-16 text-primary p-2 bg-primary bg-opacity-10 rounded-full" viewBox="0 0 24 24"
-                        fill="currentColor">
-                        <path
-                            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                    </svg>
-                </div>
-                <h3 class="text-xl font-bold mb-2">Admin Monitoring</h3>
-                <p class="text-gray-600">24/7 monitoring by authorities with real-time tourist tracking and emergency
-                    response</p>
-            </div>
-            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 hover:shadow-2xl transition duration-500 transform hover:-translate-y-2 animate-fade-in-up text-center"
-                style="animation-delay: 0.5s;">
-                <div class="flex justify-center mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="h-16 w-16 text-accent p-2 bg-accent bg-opacity-10 rounded-full" viewBox="0 0 24 24"
-                        fill="currentColor">
-                        <path
-                            d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H4V4h16v16zM11 9.5H8v-2h3V6H8V4h3c1.1 0 2 .9 2 2v3.5h-2v-2zm-2-2h-1v-1h1v1zM11 15.5H8v-2h3v2zm-2-2H8v-1h1v1zM16 12h-3v-2h3v2zm-1-1h-1v-1h1v1zm1 3.5h-3v-2h3v2zm-1-2h-1v-1h1v1zm1 3.5h-3v-2h3v2zm-1-2h-1v-1h1v1z" />
-                    </svg>
-                </div>
-                <h3 class="text-xl font-bold mb-2">Safety Alerts</h3>
-                <p class="text-gray-600">Receive important safety updates and travel advisories for your destination</p>
-            </div>
-            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 hover:shadow-2xl transition duration-500 transform hover:-translate-y-2 animate-fade-in-up text-center"
-                style="animation-delay: 0.6s;">
-                <div class="flex justify-center mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="h-16 w-16 text-accent p-2 bg-accent bg-opacity-10 rounded-full" viewBox="0 0 24 24"
-                        fill="currentColor">
-                        <path
-                            d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99c-2.34 0-4.25-1.91-4.25-4.25s1.91-4.25 4.25-4.25 4.25 1.91 4.25 4.25-1.91 4.25-4.25 4.25z" />
-                    </svg>
-                </div>
-                <h3 class="text-xl font-bold mb-2">Secure Verification</h3>
-                <p class="text-gray-600">Blockchain-secured identity verification ensuring authenticity and preventing
-                    fraud</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="how-it-works" class="py-20 px-6 container mx-auto">
-        <div class="section-header mb-12 animate-fade-in-up">
-            <h2 class="text-3xl md:text-4xl font-bold mb-2">How It Works</h2>
-            <p class="text-lg text-gray-600">Simple steps to get started with TouristSafe</p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
-            <div class="flex flex-col items-center animate-fade-in-up" style="animation-delay: 0.5s;">
-                <div class="relative mb-6">
-                    <div
-                        class="w-24 h-24 flex items-center justify-center rounded-full bg-primary text-white text-3xl font-bold shadow-md">
-                        1
-                    </div>
-                    <div
-                        class="absolute inset-0 rounded-full border-4 border-primary border-opacity-20 transform scale-110">
-                    </div>
-                </div>
-                <h3 class="text-2xl font-semibold mb-2">Register & Verify</h3>
-                <p class="text-gray-600">Create your account and verify your identity to get your secure digital ID.</p>
-            </div>
-            <div class="flex flex-col items-center animate-fade-in-up" style="animation-delay: 0.6s;">
-                <div class="relative mb-6">
-                    <div
-                        class="w-24 h-24 flex items-center justify-center rounded-full bg-primary text-white text-3xl font-bold shadow-md">
-                        2
-                    </div>
-                    <div
-                        class="absolute inset-0 rounded-full border-4 border-primary border-opacity-20 transform scale-110">
-                    </div>
-                </div>
-                <h3 class="text-2xl font-semibold mb-2">Add Journey Details</h3>
-                <p class="text-gray-600">Plan your trip by adding your destination, duration, and important contacts.
-                </p>
-            </div>
-            <div class="flex flex-col items-center animate-fade-in-up" style="animation-delay: 0.7s;">
-                <div class="relative mb-6">
-                    <div
-                        class="w-24 h-24 flex items-center justify-center rounded-full bg-primary text-white text-3xl font-bold shadow-md">
-                        3
-                    </div>
-                    <div
-                        class="absolute inset-0 rounded-full border-4 border-primary border-opacity-20 transform scale-110">
-                    </div>
-                </div>
-                <h3 class="text-2xl font-semibold mb-2">Stay Protected</h3>
-                <p class="text-gray-600">Activate your safety features and travel with confidence, knowing help is a tap
-                    away.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-20 px-6 bg-light">
-        <div class="container mx-auto">
-            <div class="section-header mb-12 animate-fade-in-up">
-                <h2 class="text-3xl md:text-4xl font-bold mb-2">What Our Users Say</h2>
-                <p class="text-lg text-gray-600">Hear from travelers who trust TouristSafe</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 animate-fade-in-up"
-                    style="animation-delay: 0.8s;">
-                    <p class="text-gray-700 italic mb-4 text-center">"TouristSafe gave me complete peace of mind during
-                        my solo trip to Paris. The journey tracking feature was a lifesaver!"</p>
-                    <div class="flex items-center justify-center">
-                        <img src="https://placehold.co/64x64/E5E7EB/4B5563?text=AN" alt="Avatar"
-                            class="w-12 h-12 rounded-full mr-4">
-                        <div>
-                            <p class="font-bold text-dark">Jane Doe</p>
-                            <p class="text-sm text-gray-500">Solo Traveler, USA</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 animate-fade-in-up"
-                    style="animation-delay: 0.9s;">
-                    <p class="text-gray-700 italic mb-4 text-center">"The Emergency SOS button is a fantastic feature.
-                        It's great to know that help is always just a tap away, no matter where I am."</p>
-                    <div class="flex items-center justify-center">
-                        <img src="https://placehold.co/64x64/E5E7EB/4B5563?text=AN" alt="Avatar"
-                            class="w-12 h-12 rounded-full mr-4">
-                        <div>
-                            <p class="font-bold text-dark">John Smith</p>
-                            <p class="text-sm text-gray-500">Business Traveller, UK</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 animate-fade-in-up"
-                    style="animation-delay: 1.0s;">
-                    <p class="text-gray-700 italic mb-4 text-center">"We used TouristSafe for our family vacation. It
-                        was so reassuring to have everyone's location and digital IDs in one place."</p>
-                    <div class="flex items-center justify-center">
-                        <img src="https://placehold.co/64x64/E5E7EB/4B5563?text=AN" alt="Avatar"
-                            class="w-12 h-12 rounded-full mr-4">
-                        <div>
-                            <p class="font-bold text-dark">Emily Johnson</p>
-                            <p class="text-sm text-gray-500">Family Vacationer, Canada</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer id="contact" class="bg-dark text-white py-12 px-6">
-        <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
-            <div class="col-span-1 md:col-span-2">
-                <h3 class="text-2xl font-bold mb-4">TouristSafe</h3>
-                <p class="text-gray-400">Your digital companion for secure tourism experiences worldwide.</p>
-                <div class="flex space-x-4 mt-6 justify-center md:justify-start">
-                    <a href="#" class="text-gray-400 hover:text-white transition duration-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 16c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zM9 13v-2h2v2H9zm3-3v2h2v-2h-2z" />
+        <section id="faq" class="w-full max-w-4xl py-20">
+            <h2 class="text-4xl font-extrabold text-gray-900 text-center mb-4">Frequently Asked Questions</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto text-center mb-12">
+                Have a question? We've got answers. If you can't find what you're looking for, feel free to contact us.
+            </p>
+            <div class="space-y-6 frosted-card p-8 rounded-3xl">
+                <div class="faq-item cursor-pointer">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-lg text-gray-800">How does the Emergency SOS feature work?</h3>
+                        <svg class="faq-arrow w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
                         </svg>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition duration-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M22 6.5C22 4.41 20.21 2 18 2c-2.42 0-3.69 1.6-4.99 3.51C11.71 3.6 10.42 2 8 2c-2.21 0-4 2.41-4 4.5 0 3.32 2.61 5.95 6.94 9.17C14.07 18.23 18.3 22 18 22c2.21 0 4-2.41 4-4.5 0-3.32-2.61-5.95-6.94-9.17L18 6.5z" />
+                    </div>
+                    <div class="faq-answer">
+                        <p class="mt-4 text-gray-600">When you activate SOS, the app instantly sends your precise GPS
+                            location to the nearest law enforcement agencies and your pre-saved emergency contacts,
+                            along with your digital ID details.</p>
+                    </div>
+                </div>
+                <hr class="border-gray-300">
+
+                <div class="faq-item cursor-pointer">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-lg text-gray-800">Is my personal and travel data secure?</h3>
+                        <svg class="faq-arrow w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
                         </svg>
-                    </a>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="mt-4 text-gray-600">Yes, your data security is our top priority. We use end-to-end
+                            encryption and secure servers to ensure your information is protected. We are fully
+                            compliant with major data protection regulations.</p>
+                    </div>
+                </div>
+                <hr class="border-gray-300">
+
+                <div class="faq-item cursor-pointer">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-lg text-gray-800">Can I use TouristSafe in any country?</h3>
+                        <svg class="faq-arrow w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="mt-4 text-gray-600">Absolutely. TouristSafe is designed for global use. As long as you
+                            have an internet connection, you can access all features, including location tracking and
+                            SOS alerts, anywhere in the world.</p>
+                    </div>
+                </div>
+                <hr class="border-gray-300">
+
+                <div class="faq-item cursor-pointer">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-lg text-gray-800">What is included in the free plan?</h3>
+                        <svg class="faq-arrow w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="mt-4 text-gray-600">Our free plan gives you access to core features like Digital ID
+                            creation and manual journey logging. Premium features like live tracking, SOS alerts, and
+                            admin monitoring are available in our paid plans.</p>
+                    </div>
                 </div>
             </div>
-            <div>
-                <h4 class="text-xl font-semibold mb-4">Quick Links</h4>
-                <ul class="space-y-2 text-gray-400">
-                    <li><a href="#" class="hover:text-white transition duration-300">Features</a></li>
-                    <li><a href="#" class="hover:text-white transition duration-300">Pricing</a></li>
-                    <li><a href="#" class="hover:text-white transition duration-300">About Us</a></li>
-                    <li><a href="#" class="hover:text-white transition duration-300">Blog</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-xl font-semibold mb-4">Support</h4>
-                <ul class="space-y-2 text-gray-400">
-                    <li><a href="#" class="hover:text-white transition duration-300">Help Center</a></li>
-                    <li><a href="#" class="hover:text-white transition duration-300">Contact Us</a></li>
-                    <li><a href="#" class="hover:text-white transition duration-300">Privacy Policy</a></li>
-                    <li><a href="#" class="hover:text-white transition duration-300">Terms of Service</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="mt-8 pt-8 border-t border-gray-700 text-center text-gray-500">
-            &copy; 2024 TouristSafe. All rights reserved.
-        </div>
-    </footer>
+        </section>
+        <%if(!user){%>
+
+            <section class="w-full max-w-7xl py-20 text-center">
+                <div class="frosted-section p-12 rounded-3xl shadow-xl border border-gray-200">
+                    <h2 class="text-4xl font-extrabold text-gray-900 mb-4">Ready to travel with confidence?</h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto mb-8">
+                        Join thousands of travelers who trust TouristSafe. Start your safe journey today. No credit
+                        card
+                        required.
+                    </p>
+                    <button
+                        class="bg-gray-800 text-white px-8 py-4 rounded-full text-lg font-bold shadow-lg hover:bg-gray-700 transition">
+                        Get Started for Free
+                    </button>
+                </div>
+            </section>
+            <%}%>
+
+                <footer class="w-full max-w-7xl py-12 text-center text-gray-600 border-t border-gray-300 mt-20">
+                    <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                        <div class="text-sm">&copy; 2025 TouristSafe. All rights reserved.</div>
+                        <div class="flex space-x-6">
+                            <a href="#" class="hover:text-gray-900">Privacy Policy</a>
+                            <a href="#" class="hover:text-gray-900">Terms of Service</a>
+                            <a href="#" class="hover:text-gray-900">Contact</a>
+                        </div>
+                    </div>
+                </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const faqItems = document.querySelectorAll('.faq-item');
+
+            faqItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const answer = item.querySelector('.faq-answer');
+                    const arrow = item.querySelector('.faq-arrow');
+
+                    answer.classList.toggle('open');
+                    arrow.classList.toggle('rotate');
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

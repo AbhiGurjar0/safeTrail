@@ -60,7 +60,7 @@ module.exports.loginUser = async function (req, res) {
         return res.redirect("/");
       } else {
         req.flash("error", "email or password incorrect ");
-        return res.redirect("/)login");
+        return res.redirect("/login");
       }
     });
   } catch (err) {

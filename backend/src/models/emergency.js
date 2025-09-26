@@ -3,12 +3,9 @@ const mongoose = require("mongoose");
 const emergencySchema = mongoose.Schema(
     {
         userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-        startLocation: { type: String, required: true },
-        endLocation: { type: String, required: true },
-        travelDate: { type: Date, required: true },
-        travelTime: { type: String, required: true },
-        passengers: { type: Number, required: true },
-        status: { type: String, enum: ['scheduled', 'in-progress', 'completed'], default: 'scheduled' },
+        lat: { type: String, required: true },
+        long: { type: String, required: true },
+        timestamp: { type: Date, default: Date.now },
     }
 
 );

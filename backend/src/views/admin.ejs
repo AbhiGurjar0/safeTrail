@@ -9,6 +9,9 @@
 </head>
 
 <body class="bg-white text-gray-900 font-sans min-h-screen p-8">
+  <div class="sticky top-0 z-50 h-[5vh]">
+
+  </div>
   <div class="max-w-4xl mx-auto">
     <!-- Header -->
     <header class="mb-6">
@@ -92,7 +95,7 @@
             <div class="flex items-center gap-3">
               <span
                 class="px-2 py-0.5 text-xs font-semibold rounded-full bg-blue-600 text-white lowercase">active</span>
-              <button type="button"
+              <button type="button" onclick="viewTourist('John Doe')"
                 class="flex items-center gap-2 px-3 py-1 border border-gray-300 rounded-md text-gray-800 text-sm hover:bg-gray-100">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
                   aria-hidden="true">
@@ -108,6 +111,80 @@
           <% })%>
 
 
+            <div id="touristModal"
+              class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+              <div class="bg-white w-4/5 max-w-4xl p-8 rounded-2xl shadow-2xl relative">
+                <!-- Close button -->
+                <button onclick="closeTouristModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
+                  ✖
+                </button>
+
+                <!-- Header -->
+                <h2 class="text-2xl font-bold text-blue-600 mb-6 flex items-center gap-2">
+                  <i data-feather="user-check" class="w-6 h-6"></i> Tourist Safety Profile
+                </h2>
+
+                <!-- Tourist Info -->
+                <div class="grid grid-cols-2 gap-6 mb-8">
+                  <p class="flex items-center gap-2"><i data-feather="user" class="w-4 h-4 text-blue-500"></i>
+                    <strong>Name:</strong> Jane Smith
+                  </p>
+                  <p class="flex items-center gap-2"><i data-feather="flag" class="w-4 h-4 text-green-500"></i>
+                    <strong>Nationality:</strong> Canadian
+                  </p>
+                  <p class="flex items-center gap-2"><i data-feather="phone" class="w-4 h-4 text-indigo-500"></i>
+                    <strong>Contact:</strong> +1 234 567 890
+                  </p>
+                  <p class="flex items-center gap-2"><i data-feather="phone-call" class="w-4 h-4 text-red-500"></i>
+                    <strong>Emergency Contact:</strong> +1 111 222 333
+                  </p>
+                  <p class="flex items-center gap-2"><i data-feather="mail" class="w-4 h-4 text-pink-500"></i>
+                    <strong>Email:</strong> jane@example.com
+                  </p>
+                  <p class="flex items-center gap-2"><i data-feather="id-card" class="w-4 h-4 text-gray-600"></i>
+                    <strong>ID Proof:</strong> Passport #123456
+                  </p>
+                </div>
+
+                <!-- Trip Details -->
+                <div class="bg-gray-50 p-6 rounded-xl shadow-inner mb-8">
+                  <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center gap-2">
+                    <i data-feather="map" class="w-5 h-5 text-green-600"></i> Trip Route
+                  </h3>
+
+                  <div class="flex items-center justify-center gap-6 text-gray-700 font-medium">
+                    <!-- Start City -->
+                    <div class="flex flex-col items-center">
+                      <div class="flex items-center gap-2">
+                        <i data-feather="map-pin" class="w-5 h-5 text-red-500"></i>
+                        <span class="text-lg">Jaipur</span>
+                      </div>
+                      <span class="text-sm text-gray-500">12 Sep 2025, 10:00 AM</span>
+                    </div>
+
+                    <!-- Arrow Line -->
+                    <div class="flex items-center w-2/5 relative">
+                      <div class="border-t-2 border-blue-500 w-full"></div>
+
+                    </div>
+
+                    <!-- End City -->
+                    <div class="flex flex-col items-center">
+                      <div class="flex items-center gap-2">
+                        <i data-feather="map-pin" class="w-5 h-5 text-green-600"></i>
+                        <span class="text-lg">Delhi</span>
+                      </div>
+                      <span class="text-sm text-gray-500">12 Sep 2025, 05:00 PM</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+
+
       </div>
 
 
@@ -116,7 +193,7 @@
 
     <!-- SOS Emergency Requests Section -->
     <section id="sos-requests" aria-labelledby="sos-requests-title"
-      class="border border-gray-200 rounded-lg p-6 bg-white">
+      class="border border-gray-200 rounded-lg p-6 bg-white hidden">
       <h2 id="sos-requests-title" class="text-lg font-semibold text-gray-900 flex items-center gap-2 mb-1">
         <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
           stroke-linecap="round" stroke-linejoin="round">
@@ -177,7 +254,7 @@
         <% })%>
     </section>
     <!-- Safety alerts -->
-    <section id="safety-alerts" class="bg-white rounded-md border border-gray-200 p-6 space-y-5 shadow-sm">
+    <section id="safety-alerts" class="bg-white rounded-md border border-gray-200 p-6 space-y-5 shadow-sm hidden">
       <header class="flex items-center space-x-2">
         <svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -245,17 +322,39 @@
       </div>
     </section>
   </div>
+  <!-- Modal -->
+  <div id="mapModal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center">
+    <div class="bg-white p-4 rounded-lg w-3/4 h-3/4">
+      <button onclick="closeMap()" class="float-right bg-red-500 text-white px-3 py-1 rounded">X</button>
+      <iframe id="mapFrame" class="w-full h-full" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+  </div>
+
+
   <!-- fucntion -->
   <script src="/socket.io/socket.io.js"></script>
 
   <script>
+    function viewTourist(name) {
+      document.getElementById("touristModal").classList.remove("hidden");
+    }
+    function closeTouristModal() {
+      document.getElementById("touristModal").classList.add("hidden");
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
+
+
+
       const tabs = document.querySelectorAll("nav button");
       const sections = [
         document.getElementById("tourist-list"),
         document.getElementById("sos-requests"),
         document.getElementById("safety-alerts"),
       ];
+
+
+
 
       tabs.forEach((tab, index) => {
         tab.addEventListener("click", () => {
@@ -272,6 +371,8 @@
     socket.on("tripStarted", (data) => {
       console.log("Trip started:", data);
       // Find the tourist list container
+
+      // showMap(data.location.lat, data.location.long);
       const touristList = document.querySelector("#tourist-list .space-y-4");
       if (touristList) {
         // Create a new tourist card element
@@ -327,6 +428,7 @@
     });
     socket.on('emergency', (data) => {
       console.log('Emergency SOS received:', data);
+      showMap(data.location.lat, data.location.long);
       // You can add code here to update the SOS requests section in real-time
     });
 
@@ -345,6 +447,16 @@
       alert("Alert broadcasted to all tourists.");
       document.getElementById("alert-message").value = "";
     };
+    function showMap(lat, lng) {
+      document.getElementById("mapModal").classList.remove("hidden");
+      document.getElementById("mapFrame").src =
+        `https://www.google.com/maps?q=${lat},${lng}&z=15&output=embed`;
+    }
+
+    function closeMap() {
+      document.getElementById("mapModal").classList.add("hidden");
+      document.getElementById("mapFrame").src = "";
+    }
   </script>
 
 

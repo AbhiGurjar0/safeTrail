@@ -13,10 +13,10 @@ const expressSession = require("express-session");
 const flash = require('connect-flash');
 app.set('view engine', 'ejs');
 app.set('views', 'src/views');
-
+const Ai = require('../src/routes/ai');
 const { initSocket } = require("./socket");
 const http = require("http");
-const { Server } = require("socket.io");
+const { Server } = require("socket.io");             
 
 const server = http.createServer(app);
 const io = initSocket(server);
@@ -43,6 +43,11 @@ app.use((req, res, next) => {
     next();
 });
 app.use('/', userRouter);
+<<<<<<< HEAD
 // module.exports = server;
 app.listen(3000);
+=======
+app.use('/ai',Ai);
+module.exports = server;
+>>>>>>> ed60ae9090951c1ecec7415bb57fffa3ee610417
 
